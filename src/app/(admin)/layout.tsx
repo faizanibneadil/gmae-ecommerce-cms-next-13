@@ -156,7 +156,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                         <span className="font-semibold text-gray-900 dark:text-white">
                           Bonnie Green
                         </span>
-                        : "Hey, what's up? All set for the presentation?"
+                        Hey, whats up? All set for the presentation?
                       </div>
                       <div className="text-xs font-medium text-primary-600 dark:text-primary-500">
                         a few moments ago
