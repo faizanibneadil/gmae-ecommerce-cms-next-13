@@ -46,31 +46,31 @@ export default function RootLayout({
         </div>
         <div className="w-full p-4 md:w-1/3 2xl:w-1/4">
           <div className="grid grid-cols-2 gap-2">
-            <div className="w-full card bg-neutral text-neutral-content">
+            <div className="w-full dark:text-base-100 card bg-warning">
               <div className="items-center text-center card-body">
                 <TagIcon className="w-8" />
                 <h2>Promotions</h2>
               </div>
             </div>
-            <div className="w-full card bg-neutral text-neutral-content">
+            <div className="w-full dark:text-base-100 card bg-warning">
               <div className="items-center text-center card-body">
                 <Square2StackIcon className="w-8" />
                 <h2>Categories</h2>
               </div>
             </div>
-            <div className="w-full card bg-neutral text-neutral-content">
+            <div className="w-full dark:text-base-100 card bg-warning">
               <div className="items-center text-center card-body">
                 <SparklesIcon className="w-8" />
                 <h2>Services</h2>
               </div>
             </div>
-            <div className="w-full card bg-neutral text-neutral-content">
+            <div className="w-full dark:text-base-100 card bg-warning">
               <div className="items-center text-center card-body">
                 <CurrencyDollarIcon className="w-8" />
                 <h2>Offers</h2>
               </div>
             </div>
-            <div className="w-full card bg-neutral text-neutral-content">
+            <div className="w-full dark:text-base-100 card bg-warning">
               <div className="items-center text-center card-body">
                 <PuzzlePieceIcon className="w-8" />
                 <h2>Gaming</h2>

@@ -1,6 +1,7 @@
 "use client";
 
 export default function Navbar() {
+  console.log("server")
   return (
     <>
       <div className="navbar bg-base-100">
