@@ -17,7 +17,7 @@ export default function Slider() {
           clickable: true,
         }}
         modules={[Pagination, Autoplay]}
-        className="max-h-[25rem] rounded-3xl"
+        className=""
         autoplay={{ delay: 2500 }}
       >
         <SwiperSlide>
