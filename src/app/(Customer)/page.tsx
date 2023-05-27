@@ -1,22 +1,12 @@
 import Carousel from "@/components/common/carousel";
-import Accessories from "@/components/common/landingPage/accessories";
-import Gaming from "@/components/common/landingPage/gaming";
-import Laptops from "@/components/common/landingPage/laptops";
-import MobilePhone from "@/components/common/landingPage/mobilePhone";
-import NewArrivals from "@/components/common/landingPage/newArrivals";
-import OnSale from "@/components/common/landingPage/onSale";
 import Services from "@/components/common/landingPage/services";
-import TopSellingProducts from "@/components/common/landingPage/topSellingProducts";
+import ProductCard from "@/components/common/product/productCard";
+import ProductsSection from "@/components/common/sections/productsSections";
+import ProductsSlider from "@/components/common/sliders/productsSlider";
 
-import {
-  TagIcon,
-  Square2StackIcon,
-  SparklesIcon,
-  CurrencyDollarIcon,
-  PuzzlePieceIcon,
-} from "@heroicons/react/24/solid";
-
-export default function Page() {
+export default async function Page() {
+  const products = await fetch("https://fakestoreapi.com/products")
+  .then((res) => res.json())
   return (
     <>
       <div>
@@ -29,22 +19,43 @@ export default function Page() {
             <Carousel />
           </div>
         </div>
-        <div className="divider">Top Selling Products.</div>
-        <TopSellingProducts />
-        <div className="divider">New Arrivals.</div>
-        <NewArrivals />
-        <div className="divider">On Sale.</div>
-        <OnSale />
+        <ProductsSection name="Top Selling Products">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
+        <ProductsSection name="New Arrivals">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
+        <ProductsSection name="On Sale">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
         <div className="divider">Our Services.</div>
         <Services />
-        <div className="divider">Mobile Phones.</div>
-        <MobilePhone />
-        <div className="divider">Accessories.</div>
-        <Accessories />
-        <div className="divider">Laptops.</div>
-        <Laptops />
-        <div className="divider">Gaming.</div>
-        <Gaming />
+        <ProductsSection name="Mobile Phones.">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
+        <ProductsSection name="Accessories.">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
+        <ProductsSection name="Laptops.">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
+        <ProductsSection name="Gaming.">
+          <ProductsSlider>
+            {products?.map((product:any) => <ProductCard {...product} />)}
+          </ProductsSlider>
+        </ProductsSection>
       </div>
     </>
   );
