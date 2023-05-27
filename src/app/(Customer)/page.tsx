@@ -30,9 +30,9 @@ export default function Page() {
           </div>
         </div>
         <TopSellingProducts />
-        <Services />
         <NewArrivals />
         <OnSale />
+        <Services />
         <MobilePhone />
         <Accessories />
         <Laptops />
