@@ -29,13 +29,21 @@ export default function Page() {
             <Carousel />
           </div>
         </div>
+        <div className="divider">Top Selling Products.</div>
         <TopSellingProducts />
+        <div className="divider">New Arrivals.</div>
         <NewArrivals />
+        <div className="divider">On Sale.</div>
         <OnSale />
+        <div className="divider">Our Services.</div>
         <Services />
+        <div className="divider">Mobile Phones.</div>
         <MobilePhone />
+        <div className="divider">Accessories.</div>
         <Accessories />
+        <div className="divider">Laptops.</div>
         <Laptops />
+        <div className="divider">Gaming.</div>
         <Gaming />
       </div>
     </>
