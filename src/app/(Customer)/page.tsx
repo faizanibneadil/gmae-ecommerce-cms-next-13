@@ -21,39 +21,39 @@ export default async function Page() {
         </div>
         <ProductsSection name="Top Selling Products">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <ProductsSection name="New Arrivals">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <ProductsSection name="On Sale">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <div className="divider">Our Services.</div>
         <Services />
         <ProductsSection name="Mobile Phones.">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <ProductsSection name="Accessories.">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <ProductsSection name="Laptops.">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
         <ProductsSection name="Gaming.">
           <ProductsSlider>
-            {products?.map((product:any) => <ProductCard {...product} />)}
+            {products?.map((product:any) => <ProductCard key={product.id} {...product} />)}
           </ProductsSlider>
         </ProductsSection>
       </div>
