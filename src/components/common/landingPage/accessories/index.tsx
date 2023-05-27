@@ -71,9 +71,9 @@ export default function TopSellingProducts() {
                     </p>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1">
                       <button className="gap-2 btn btn-xs btn-outline btn-circle btn-warning">
-                        <ShoppingBagIcon className="w-3 h-3" />
+                        <ShoppingBagIcon className="w-4 h-4" />
                       </button>
                       <button className="gap-2 btn btn-xs btn-outline btn-circle btn-success">
                         <HeartIcon className="w-3 h-3" />
