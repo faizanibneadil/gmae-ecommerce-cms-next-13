@@ -1,52 +1,10 @@
-import { ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import Categories from "@/components/common/landingPage/sidebar/categories";
 import { ReactNode } from "react";
 
-export default function Layout({ children }: { children: ReactNode }) {
-  const menu = [
-    {
-      name: "Home",
-      href: "/",
-      msg: "12 New Offers",
-      img: "https://img.freepik.com/free-vector/stay-home-abstract-concept-vector-illustration-forced-isolation-covid19-outbreak-prevention-measures-social-distance-governmental-support-self-protection-wear-mask-abstract-metaphor_335657-4138.jpg",
-    },
-    {
-      name: "Mobiles",
-      href: "/mobiles",
-      msg: "145 Mobiles Variants",
-      img: "https://img.freepik.com/free-vector/dark-themed-mobile-phone-surrounded-by-apps_52683-23826.jpg",
-    },
-    {
-      name: "Laptops",
-      href: "/laptops",
-      msg: "12 Brands",
-      img: "https://img.freepik.com/free-vector/antigravity-technology-with-elements_23-2148072447.jpg",
-    },
-    {
-      name: "New Arrivals",
-      href: "/newArrivals",
-      msg: "240 New Stuff",
-      img: "https://img.freepik.com/free-vector/new-arrival-background-with-colorful-confetti_23-2147878673.jpg",
-    },
-    {
-      name: "Services",
-      href: "/services",
-      msg: "4 Services",
-      img: "https://img.freepik.com/premium-photo/male-hand-touching-service-concept_220873-7826.jpg",
-    },
-    {
-      name: "Gaming",
-      href: "/gaming",
-      msg: "12 New Gaming Tools",
-      img: "https://img.freepik.com/free-vector/online-games-concept_52683-38701.jpg",
-    },
-    {
-      name: "Accessories",
-      href: "/accessories",
-      msg: "150+ new accessories",
-      img: "https://img.freepik.com/free-vector/social-media-concept-with-antigravity-smartphone_23-2148276983.jpg",
-    },
-  ];
+export default async function Layout({ children }: { children: ReactNode }) {
+  const menu = await fetch("https://dummyjson.com/products/categories").then(
+    (res) => res.json()
+  );
   return (
     <>
       <div className="drawer drawer-mobile">
@@ -178,54 +136,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
           </footer>
         </div>
-        <div className="drawer-side">
-          {/* SIDE BAR CONTENT HARE ...  */}
-          <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-          <div className="w-60 bg-base-100">
-            {/* BRAND LOGO CARD  */}
-            <div className="w-full mt-4">
-              <div className="flex flex-col items-center">
-                <img className="w-32 mb-3" src="/logo.png" alt="Logo" />
-              </div>
-            </div>
-            {/* BRAND LOGO CARD  */}
-            {/* MENU CARD  */}
-            <div className="w-full ">
-              <div className="flow-root">
-                <ul className="divide-y divide-gray-200 mx dark:divide-gray-700">
-                  {menu?.map((menu) => (
-                    <li key={menu.name} className="p-2 mx- hover:bg-base-200">
-                      <Link
-                        href={menu.href}
-                        className="flex items-center space-x-4"
-                      >
-                        <div className="flex-shrink-0">
-                          <img
-                            className="w-8 h-8 rounded-full"
-                            src={`${menu.img}`}
-                            alt="Neil image"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            {menu.name}
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            {menu.msg}
-                          </p>
-                        </div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                          <ChevronDoubleRightIcon className="w-4 " />
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            {/* MENU CARD  */}
-          </div>
-        </div>
+        <Categories menu={menu} />
       </div>
     </>
   );

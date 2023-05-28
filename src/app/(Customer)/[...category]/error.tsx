@@ -15,9 +15,10 @@ export default function Error({
   }, [error]);
  
   return (
-    <div>
+    <div className='items-center w-full h-screen mx-auto text-center'>
       <h2>Something went wrong!</h2>
       <button
+      className='btn btn-warning'
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
