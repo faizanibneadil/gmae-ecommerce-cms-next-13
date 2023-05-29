@@ -7,7 +7,7 @@ import CategoriesHeader from "./components/CategoriesHeader";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <div className="flex flex-row items-center p-4 mb-4 space-x-4">
+      <div className="sticky top-0 z-50 flex flex-row items-center p-4 space-x-4 bg-base-300">
         <div>
           <Link href="/create" className="btn btn-circle btn-outline btn-sm">
             <ArrowLeftIcon className="w-4 h-4" />
@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div>Create New Category.</div>
       </div>
       <CategoriesHeader />
-      <div className="p-4">{children}</div>
+      {children}
     </div>
   );
 }

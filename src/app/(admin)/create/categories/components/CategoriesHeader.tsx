@@ -99,16 +99,6 @@ export default function CategoriesHeader() {
               </AlertDialog.Content>
             </AlertDialog.Portal>
           </AlertDialog.Root>
-
-          <div className="flex items-center w-full space-x-3 md:w-auto">
-            <button className="gap-2 btn btn-sm md:btn-md">
-              <ChevronDownIcon className="w-5 h-5" /> Actions
-            </button>
-            <button className="gap-2 btn btn-sm md:btn-md">
-              <ChevronDownIcon className="w-5 h-5" /> Filter{" "}
-              <FunnelIcon className="w-5 h-5" />
-            </button>
-          </div>
         </div>
       </div>
     </div>
