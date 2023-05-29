@@ -12,7 +12,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Some Colors.
+          Lets Create Some Colors.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Create colors collection for each product because the colors is ery
@@ -25,7 +25,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Promotion.
+          Lets Create Promotion.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Promotion is very important to engage new customers. Customers will
@@ -38,7 +38,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Some Categories.
+          Lets Create Some Categories.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Categories is very important for customer for filter out your products
@@ -51,7 +51,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Promo Codes.
+          Lets Create Promo Codes.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Promo Code is very important to engage new customers. Customers will
@@ -64,7 +64,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Some Products.
+          Lets Create Some Products.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Basically products is content. The user will spend more time if lots
@@ -77,7 +77,7 @@ export default function Page() {
         className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Let's Create Some Users.
+          Lets Create Some Users.
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
           Multiple Users can help you to manege store together.
