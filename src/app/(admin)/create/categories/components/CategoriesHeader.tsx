@@ -92,7 +92,7 @@ export default function CategoriesHeader() {
                       <button className="btn btn-warning">Cancel</button>
                     </AlertDialog.Cancel>
                     <AlertDialog.Action asChild>
-                      <button className="btn">Save</button>
+                      <button className="btn" type="submit">Save</button>
                     </AlertDialog.Action>
                   </div>
                 </Form.Root>
