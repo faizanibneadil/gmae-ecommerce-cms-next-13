@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <img className="w-16" src="/logo.png" />
             </div>
             <TransitionButton
-              path="/"
+              path="/search"
               className="btn btn-circle btn-outline btn-sm"
             >
               <MagnifyingGlassCircleIcon className="w-6 h-6" />

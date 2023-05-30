@@ -27,7 +27,7 @@ export default function Navigation() {
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <TransitionButton
-            path="/"
+            path="/browse"
             className="btn btn-circle btn-outline btn-sm md:btn-md btn-secondary"
           >
             <RectangleGroupIcon className="w-5 h-5" />
@@ -35,7 +35,7 @@ export default function Navigation() {
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <TransitionButton
-            path="/"
+            path="/hot"
             className="btn btn-circle btn-outline btn-sm md:btn-md btn-error"
           >
             <FireIcon className="w-5 h-5" />
@@ -43,7 +43,7 @@ export default function Navigation() {
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <TransitionButton
-            path="/"
+            path="/cart"
             className="btn btn-circle btn-outline btn-warning"
           >
             <ShoppingBagIcon className="w-5 h-5" />
@@ -51,7 +51,7 @@ export default function Navigation() {
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <TransitionButton
-            path="/"
+            path="/freebies"
             className="btn btn-circle btn-outline btn-sm md:btn-md btn-primary"
           >
             <GiftIcon className="w-5 h-5" />
@@ -59,7 +59,7 @@ export default function Navigation() {
         </NavigationMenu.Item>
         <NavigationMenu.Item>
           <TransitionButton
-            path="/"
+            path="/bookmark"
             className="btn btn-circle btn-outline btn-sm md:btn-md btn-info"
           >
             <BookmarkIcon className="w-5 h-5" />
@@ -68,7 +68,7 @@ export default function Navigation() {
         {session ? (
           <NavigationMenu.Item>
             <TransitionButton
-              path="/"
+              path="/cuser"
               className="btn btn-circle btn-outline btn-sm md:btn-md btn-success"
             >
               <Avatar.Root className="inline-flex h-[20px] w-[20px] md:h-[35px] md:w-[35px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
@@ -84,6 +84,7 @@ export default function Navigation() {
         ) : (
           <NavigationMenu.Item>
             <button
+              disabled={status.toString() === `loading`}
               onClick={() => signIn("google")}
               className={`btn btn-circle btn-outline btn-sm md:btn-md btn-success ${
                 status.toString() === `loading` && `loading`
@@ -95,7 +96,7 @@ export default function Navigation() {
                   src={`https://cdn-icons-png.flaticon.com/512/281/281764.png`}
                   alt={`SignIn With Google`}
                 />
-                <Avatar.Fallback></Avatar.Fallback>
+                <Avatar.Fallback>user</Avatar.Fallback>
               </Avatar.Root>
             </button>
           </NavigationMenu.Item>
