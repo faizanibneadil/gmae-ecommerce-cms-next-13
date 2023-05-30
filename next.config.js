@@ -10,6 +10,10 @@ const nextConfig = {
       "loremflickr.com",
     ],
   },
+  experimental: {
+    serverActions: true,
+    serverComponentsExternalPackages: ["@prisma/client"],
+  },
 };
 
 module.exports = nextConfig;

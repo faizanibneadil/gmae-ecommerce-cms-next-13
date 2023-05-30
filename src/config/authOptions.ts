@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from '@/config/db'
@@ -30,6 +30,3 @@ export const authOptions: NextAuthOptions = {
         // newUser: "/newUser",
     }
 }
-const handler = NextAuth(authOptions)
-
-export { handler as GET, handler as POST }
