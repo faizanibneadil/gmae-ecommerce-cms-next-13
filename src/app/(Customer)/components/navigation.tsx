@@ -20,7 +20,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/"
-            className="btn btn-circle btn-outline btn-sm md:btn-md btn-accent"
+            className="btn btn-circle btn-sm md:btn-md btn-accent"
           >
             <HomeIcon className="w-5 h-5" />
           </TransitionButton>
@@ -28,7 +28,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/browse"
-            className="btn btn-circle btn-outline btn-sm md:btn-md btn-secondary"
+            className="btn btn-circle btn-sm md:btn-md btn-secondary"
           >
             <RectangleGroupIcon className="w-5 h-5" />
           </TransitionButton>
@@ -36,7 +36,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/hot"
-            className="btn btn-circle btn-outline btn-sm md:btn-md btn-error"
+            className="btn btn-circle btn-sm md:btn-md btn-error"
           >
             <FireIcon className="w-5 h-5" />
           </TransitionButton>
@@ -44,7 +44,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/cart"
-            className="btn btn-circle btn-outline btn-warning"
+            className="btn btn-circle btn-warning"
           >
             <ShoppingBagIcon className="w-5 h-5" />
           </TransitionButton>
@@ -52,7 +52,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/freebies"
-            className="btn btn-circle btn-outline btn-sm md:btn-md btn-primary"
+            className="btn btn-circle btn-sm md:btn-md btn-primary"
           >
             <GiftIcon className="w-5 h-5" />
           </TransitionButton>
@@ -60,7 +60,7 @@ export default function Navigation() {
         <NavigationMenu.Item>
           <TransitionButton
             path="/bookmark"
-            className="btn btn-circle btn-outline btn-sm md:btn-md btn-info"
+            className="btn btn-circle btn-sm md:btn-md btn-info"
           >
             <BookmarkIcon className="w-5 h-5" />
           </TransitionButton>
@@ -69,7 +69,7 @@ export default function Navigation() {
           <NavigationMenu.Item>
             <TransitionButton
               path="/cuser"
-              className="btn btn-circle btn-outline btn-sm md:btn-md btn-success"
+              className="btn btn-circle btn-sm md:btn-md btn-success"
             >
               <Avatar.Root className="inline-flex h-[20px] w-[20px] md:h-[35px] md:w-[35px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                 <Avatar.Image
@@ -86,7 +86,7 @@ export default function Navigation() {
             <button
               disabled={status.toString() === `loading`}
               onClick={() => signIn("google")}
-              className={`btn btn-circle btn-outline btn-sm md:btn-md btn-success ${
+              className={`btn btn-circle  btn-sm md:btn-md btn-success ${
                 status.toString() === `loading` && `loading`
               }`}
             >

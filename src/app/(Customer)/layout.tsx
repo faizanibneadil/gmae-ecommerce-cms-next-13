@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <div className="grid grid-flow-row-dense grid-cols-2 ...">
-        <div className="sticky top-0 z-50 col-span-2 p-2 md:p-4 md:col-span-1 bg-base-300">
+        <div className="sticky top-0 z-50 col-span-2 p-2 md:p-4 md:col-span-1 backdrop-blur-xl bg-base-100/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <TransitionButton
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="col-span-2">{children}</div>
-        <div className="sticky top-0 bottom-0 z-50 col-span-2 p-2 md:col-span-1 bg-base-300">
+        <div className="sticky top-0 bottom-0 z-50 col-span-2 p-2 md:col-span-1 backdrop-blur-xl bg-base-100/30">
           <Navigation />
         </div>
       </div>
