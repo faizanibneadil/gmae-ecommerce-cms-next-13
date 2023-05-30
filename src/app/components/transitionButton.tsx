@@ -18,7 +18,8 @@ export default function TransitionButton({
   return (
     <button
       disabled={isPending}
-      onClick={() => startTransition(() => router.replace(path))}
+      onClick={() => startTransition(() => router.replace(path))
+      }
       className={`${isPending ? `loading ${className}` : className}`}
     >
       {isPending ? `` : children}

@@ -1,14 +1,39 @@
 import { ReactNode } from "react";
 import Navigation from "./components/navigation";
+import {
+  ChevronLeftIcon,
+  HomeIcon,
+  MagnifyingGlassCircleIcon,
+} from "@heroicons/react/24/solid";
+import TransitionButton from "../components/transitionButton";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <div className="flex flex-col-reverse md:flex-col">
-        <div className="sticky bottom-0 z-50 w-full bg-base-300 md:relative">
+      <div className="grid grid-flow-row-dense grid-cols-2 ...">
+        <div className="sticky top-0 z-50 col-span-2 p-2 md:p-4 md:col-span-1 bg-base-300">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <TransitionButton
+                path="/"
+                className="btn btn-circle btn-outline btn-sm"
+              >
+                <ChevronLeftIcon className="w-5 h-5" />
+              </TransitionButton>
+              <img className="w-16" src="/logo.png" />
+            </div>
+            <TransitionButton
+              path="/"
+              className="btn btn-circle btn-outline btn-sm"
+            >
+              <MagnifyingGlassCircleIcon className="w-6 h-6" />
+            </TransitionButton>
+          </div>
+        </div>
+        <div className="col-span-2">{children}</div>
+        <div className="sticky top-0 bottom-0 z-50 col-span-2 p-2 md:col-span-1 bg-base-300">
           <Navigation />
         </div>
-        <div>{children}</div>
       </div>
     </div>
   );
