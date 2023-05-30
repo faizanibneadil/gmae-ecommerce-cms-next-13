@@ -2,12 +2,12 @@
 
 import {
   MagnifyingGlassCircleIcon,
+  PlusCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { useSession, signIn, signOut } from "next-auth/react";
 import * as Avatar from "@radix-ui/react-avatar";
-import Image from "next/image";
 import { HomeIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import TransitionButton from "@/app/components/transitionButton";
@@ -25,36 +25,13 @@ export default function Navigation() {
             <HomeIcon className="w-5 h-5" />
           </TransitionButton>
         </NavigationMenu.Item>
-        <NavigationMenu.Item className="hidden md:block md:w-2/3">
-          <div className="w-full form-control">
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="Search…"
-                className="w-full input input-bordered"
-              />
-              <button className="btn btn-square">
-                <MagnifyingGlassCircleIcon className="w-6 h-6" />
-              </button>
-            </div>
-          </div>
-        </NavigationMenu.Item>
-        <NavigationMenu.Item className={`${!session && `hidden`} md:hidden`}>
-          <TransitionButton path="/browse" className="rounded-full btn btn-outline">
-            Categories
-          </TransitionButton>
-        </NavigationMenu.Item>
         <div className="flex items-center space-x-2">
           <NavigationMenu.Item className="relative">
             <NavigationMenu.Trigger>
-              <Avatar.Root className="inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                <Avatar.Image
-                  className="h-full w-full rounded-[inherit] object-cover"
-                  src={`https://img.freepik.com/free-vector/shopping-cart-vector-technology-icon-silver-gradient-background_53876-112159.jpg`}
-                  alt="Cart"
-                />
-                <Avatar.Fallback>Cart</Avatar.Fallback>
-              </Avatar.Root>
+              <button className="w-full gap-2 rounded-full btn btn-outline">
+                <PlusCircleIcon className="w-5 h-5" />
+                Add New
+              </button>
             </NavigationMenu.Trigger>
             <NavigationMenu.Content className="top-0 bottom-0 z-50 right-0 w-screen h-screen data-[state=open]:animate-enterFromRight fixed md:w-80 bg-base-100">
               <NavigationMenu.Link asChild>
@@ -101,6 +78,7 @@ export default function Navigation() {
               </NavigationMenu.Link>
             </NavigationMenu.Content>
           </NavigationMenu.Item>
+          <NavigationMenu.Item className="relative"></NavigationMenu.Item>
           {session ? (
             <NavigationMenu.Item className="relative">
               <NavigationMenu.Trigger>
@@ -140,7 +118,10 @@ export default function Navigation() {
                           <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Any Query.?
                           </button>
-                          <button onClick={()=> signOut()} className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">
+                          <button
+                            onClick={() => signOut()}
+                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
+                          >
                             Logout
                           </button>
                         </div>
