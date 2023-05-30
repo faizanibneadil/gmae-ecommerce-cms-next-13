@@ -10,5 +10,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
         <div>{children}</div>
       </div>
+    </div>
   );
 }
