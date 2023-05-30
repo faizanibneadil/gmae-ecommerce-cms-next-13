@@ -8,6 +8,7 @@ const nextConfig = {
       "gmae.pk",
       "fakestoreapi.com",
       "loremflickr.com",
+      "lh3.googleusercontent.com",
     ],
   },
   experimental: {

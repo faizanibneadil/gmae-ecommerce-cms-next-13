@@ -3,6 +3,7 @@ import {
   BookmarkIcon,
   FireIcon,
   GiftIcon,
+  MagnifyingGlassCircleIcon,
   RectangleGroupIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
@@ -42,10 +43,7 @@ export default function Navigation() {
           </TransitionButton>
         </NavigationMenu.Item>
         <NavigationMenu.Item>
-          <TransitionButton
-            path="/cart"
-            className="btn btn-circle btn-warning"
-          >
+          <TransitionButton path="/cart" className="btn btn-circle btn-warning">
             <ShoppingBagIcon className="w-5 h-5" />
           </TransitionButton>
         </NavigationMenu.Item>
@@ -65,13 +63,21 @@ export default function Navigation() {
             <BookmarkIcon className="w-5 h-5" />
           </TransitionButton>
         </NavigationMenu.Item>
+        <NavigationMenu.Item>
+          <TransitionButton
+            path="/search"
+            className="hidden btn btn-circle btn-sm md:btn-md btn-accent md:flex"
+          >
+            <MagnifyingGlassCircleIcon className="w-8 h-8" />
+          </TransitionButton>
+        </NavigationMenu.Item>
         {session ? (
           <NavigationMenu.Item>
             <TransitionButton
               path="/cuser"
               className="btn btn-circle btn-sm md:btn-md btn-success"
             >
-              <Avatar.Root className="inline-flex h-[20px] w-[20px] md:h-[35px] md:w-[35px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+              <Avatar.Root className="inline-flex h-[20px] w-[20px] md:h-[40px] md:w-[40px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                 <Avatar.Image
                   className="h-full w-full rounded-[inherit] object-cover"
                   src={`${session?.user?.image}`}

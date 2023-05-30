@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="flex items-center space-x-4">
               <TransitionButton
                 path="/"
-                className="btn btn-circle btn-outline btn-sm"
+                className="btn btn-circle btn-outline btn-sm md:hidden"
               >
                 <ChevronLeftIcon className="w-5 h-5" />
               </TransitionButton>
@@ -24,14 +24,14 @@ export default function Layout({ children }: { children: ReactNode }) {
             </div>
             <TransitionButton
               path="/search"
-              className="btn btn-circle btn-outline btn-sm"
+              className="btn btn-circle btn-outline btn-sm md:hidden"
             >
               <MagnifyingGlassCircleIcon className="w-6 h-6" />
             </TransitionButton>
           </div>
         </div>
         <div className="col-span-2">{children}</div>
-        <div className="sticky top-0 bottom-0 z-50 col-span-2 p-2 md:col-span-1 backdrop-blur-xl bg-base-100/30">
+        <div className="sticky bottom-0 right-0 z-50 col-span-2 p-2 m-0 md:top-0 md:col-span-1 backdrop-blur-xl bg-base-100/30">
           <Navigation />
         </div>
       </div>
