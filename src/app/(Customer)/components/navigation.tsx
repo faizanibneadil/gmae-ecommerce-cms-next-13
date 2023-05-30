@@ -17,7 +17,7 @@ export default function Navigation() {
   const { data: session, status } = useSession();
   return (
     <NavigationMenu.Root>
-      <NavigationMenu.List className="flex items-center justify-between md:justify-end md:space-x-2">
+      <NavigationMenu.List className="flex items-center justify-center space-x-2 md:justify-end">
         <NavigationMenu.Item>
           <TransitionButton
             path="/"
