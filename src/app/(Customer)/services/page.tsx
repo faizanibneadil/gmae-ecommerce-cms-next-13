@@ -3,7 +3,7 @@ export default async function Page() {
     (res) => res.json()
   );
   return (
-    <div className="grid gap-4 px-4 grid-cols- md:grid-cols-4">
+    <div >
       {products?.map((_: any) => (
         <div
           key={_.id}

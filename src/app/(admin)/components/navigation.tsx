@@ -1,22 +1,21 @@
 "use client";
 import {
-  BookmarkIcon,
   ChartPieIcon,
   Cog6ToothIcon,
-  FireIcon,
-  GiftIcon,
-  MagnifyingGlassCircleIcon,
   PlusCircleIcon,
-  RectangleGroupIcon,
-  ShoppingBagIcon,
+  RectangleStackIcon,
+  SquaresPlusIcon,
+  TagIcon,
+  UserCircleIcon,
   UserGroupIcon,
-  UserIcon,
 } from "@heroicons/react/24/solid";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { useSession, signIn, signOut } from "next-auth/react";
 import * as Avatar from "@radix-ui/react-avatar";
-import { HomeIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import TransitionButton from "@/app/components/transitionButton";
+import { useRouter } from "next/navigation";
+import { ReactNode, useTransition } from "react";
 
 export default function Navigation() {
   const { data: session, status } = useSession();
@@ -46,44 +45,32 @@ export default function Navigation() {
           <NavigationMenu.Content className="p-4">
             <div className="grid grid-cols-2 gap-4 cursor-pointer md:grid-cols-4">
               <NavigationMenu.Link asChild>
-                <div className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl">
-                  <button className="btn btn-lg btn-circle">Dil</button>
-                  <h2 className="text-black btn btn-ghost btn-block">
-                    Create User
-                  </h2>
-                </div>
+                <NavigationItem path="/create/users" label="Create User">
+                  <UserCircleIcon className="w-12 h-12" />
+                </NavigationItem>
               </NavigationMenu.Link>
               <NavigationMenu.Link asChild>
-                <div className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl">
-                  <button className="btn btn-lg btn-circle">Dil</button>
-                  <h2 className="text-black btn btn-ghost btn-block">
-                    Create Category
-                  </h2>
-                </div>
+                <NavigationItem path="/create/categories" label="Create Category">
+                  <SquaresPlusIcon className="w-10 h-10" />
+                </NavigationItem>
               </NavigationMenu.Link>
               <NavigationMenu.Link asChild>
-                <div className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl">
-                  <button className="btn btn-lg btn-circle">Dil</button>
-                  <h2 className="text-black btn btn-ghost btn-block">
-                    Create Promotion
-                  </h2>
-                </div>
+                <NavigationItem path="/create/promotions" label="Create Promotion">
+                  <RectangleStackIcon className="w-10 h-10" />
+                </NavigationItem>
               </NavigationMenu.Link>
               <NavigationMenu.Link asChild>
-                <div className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl">
-                  <button className="btn btn-lg btn-circle">Dil</button>
-                  <h2 className="text-black btn btn-ghost btn-block">
-                    Create Promo Codes
-                  </h2>
-                </div>
+                <NavigationItem
+                  path="/create/promocodes"
+                  label="Create Promo Codes"
+                >
+                  <TagIcon className="w-10 h-10" />
+                </NavigationItem>
               </NavigationMenu.Link>
               <NavigationMenu.Link asChild>
-                <div className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl">
-                  <button className="btn btn-lg btn-circle">Dil</button>
-                  <h2 className="text-black btn btn-ghost btn-block">
-                    Create Product
-                  </h2>
-                </div>
+                <NavigationItem path="/create/products" label="Create Product">
+                  <PlusIcon className="w-10 h-10" />
+                </NavigationItem>
               </NavigationMenu.Link>
             </div>
           </NavigationMenu.Content>
@@ -137,9 +124,35 @@ export default function Navigation() {
           <div className="relative md:top-[70%] bottom-1 h-[10px] w-[10px] -rotate-45 md:rotate-45 rounded-tl-[2px] bg-white" />
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
-      <div className="perspective-[2000px] absolute bottom-full md:top-full left-0 flex w-full justify-center">
+      <div className="absolute left-0 flex justify-center w-full bottom-full md:top-full">
         <NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[3px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] bg-white transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
       </div>
     </NavigationMenu.Root>
+  );
+}
+
+function NavigationItem({
+  children,
+  label,
+  path,
+}: {
+  children: ReactNode;
+  path: string;
+  label: string;
+}) {
+  const [ispending, startTransition] = useTransition();
+  const { replace } = useRouter();
+  return (
+    <NavigationMenu.Link asChild>
+      <button
+        onClick={() => startTransition(() => replace(path))}
+        className="flex flex-col w-full pt-4 mt-auto space-y-2 rounded-3xl place-items-center hover:bg-primary backdrop-blur-xl"
+      >
+        <div className={`btn btn-lg btn-circle ${ispending && `loading`}`}>
+          {children}
+        </div>
+        <h2 className="text-black btn btn-ghost btn-block">{label}</h2>
+      </button>
+    </NavigationMenu.Link>
   );
 }

@@ -17,8 +17,17 @@ export const authOptions: NextAuthOptions = {
     ],
     adapter: PrismaAdapter(prisma),
     callbacks: {
+        async jwt({ token, user, account, profile, session }) {
+            // console.log("SESSION FROM JWT => ", session)
+            // console.log("token FROM JWT => ", token)
+            // console.log("user FROM JWT => ", user)
+            // console.log("account FROM JWT => ", account)
+            // console.log("profile FROM JWT => ", profile)
+            return token
+        },
         async session(props) {
-            console.log("SESSION => ", props.session)
+            // console.log("SESSION => ", props)
+            props.session.user.id = props.token.sub
             return props.session
         },
     },
