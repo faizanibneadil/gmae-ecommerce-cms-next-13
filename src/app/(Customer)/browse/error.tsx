@@ -1,4 +1,4 @@
-"use client"; // Error components must be Client Components
+"use client"; 
 
 import { useEffect } from "react";
 
@@ -10,7 +10,6 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error);
   }, [error]);
 
@@ -30,7 +29,6 @@ export default function Error({
           </p>
           <button
             onClick={
-              // Attempt to recover by trying to re-render the segment
               () => reset()
             }
             className="inline-flex text-white bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
