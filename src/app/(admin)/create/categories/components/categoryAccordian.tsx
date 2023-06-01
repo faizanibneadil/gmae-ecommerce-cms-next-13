@@ -26,7 +26,7 @@ export default function CategoriesAccordian({
   return (
     <Accordion.Root type="single" collapsible className="space-y-2">
       {categories?.map((category) => (
-        <Accordion.Item value={category.id}>
+        <Accordion.Item key={category.id} value={category.id}>
           <Accordion.Header>
             <Accordion.Trigger asChild className="w-full p-2 rounded-full bg-base-300">
               <div className="flex items-center justify-between">
