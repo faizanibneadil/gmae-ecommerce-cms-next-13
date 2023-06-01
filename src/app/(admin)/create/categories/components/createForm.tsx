@@ -1,7 +1,7 @@
 "use client";
 import { CldImage, CldUploadButton, CldUploadWidget } from "next-cloudinary";
 import { ReactNode, useState, useTransition } from "react";
-import { createCategoryAction } from "../_actions";
+import { createCategoryAction } from "../../../../../_actions";
 import { CheckIcon, ChevronDownIcon, Save, UploadCloud } from "lucide-react";
 import * as Select from "@radix-ui/react-select";
 import { ChevronUpIcon } from "lucide-react";
@@ -86,7 +86,9 @@ export default function CreateCategoryForm({
                 </Select.ScrollUpButton>
                 <Select.Viewport className="p-[5px]">
                   {categories?.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>{category.name} </SelectItem>
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}{" "}
+                    </SelectItem>
                   ))}
                 </Select.Viewport>
                 <Select.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
