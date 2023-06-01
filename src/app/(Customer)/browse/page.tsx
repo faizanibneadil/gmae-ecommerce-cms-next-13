@@ -1,4 +1,4 @@
-import CImage from "@/app/(Admin)/create/categories/components/customImage";
+import CustomImage from "@/app/components/customImage";
 import { prisma } from "@/config/db";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 
@@ -9,7 +9,7 @@ export default async function Page() {
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
         {categories?.map((category) => (
           <div key={category.id} className="w-full rounded-2xl bg-base-300">
-            <CImage
+            <CustomImage
               crop="thumb"
               gravity="faces"
               width={400}

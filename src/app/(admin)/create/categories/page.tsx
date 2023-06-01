@@ -4,7 +4,7 @@ import DeleteButton from "./components/deleteButton";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
-import CustomImage from "./components/customImage";
+import CustomImage from "@/app/components/customImage";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
