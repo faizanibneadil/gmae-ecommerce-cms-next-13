@@ -50,7 +50,7 @@ export default function CategoriesAccordian({
             <Accordion.Content className="p-4 mt-2 rounded-2xl bg-base-300">
               <ol className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                 {category?.subCategory?.map((subCat) => (
-                  <li key={subCat.id} className="py-3 pl-4 sm:py-4">
+                  <li key={subCat.id} className="py-3 sm:py-4">
                     <div className="flex items-center space-x-4">
                       <div className="self-start flex-shrink-0">
                         <Image
