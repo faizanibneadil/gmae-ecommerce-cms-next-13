@@ -2,7 +2,7 @@
 
 import { CldImage } from "next-cloudinary";
 
-export default function CImage({
+export default function CustomImage({
   ...props
 }: {
   src: string;

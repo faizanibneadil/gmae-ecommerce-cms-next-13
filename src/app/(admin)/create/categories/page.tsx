@@ -4,7 +4,7 @@ import DeleteButton from "./components/deleteButton";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
-import CImage from "./components/img";
+import CustomImage from "./components/customImage";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -42,7 +42,7 @@ export default async function Page() {
           className="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
         >
           <div className="flex items-center justify-start space-x-4 text-lg font-semibold text-gray-900 dark:text-white">
-            <CImage
+            <CustomImage
               width={100}
               height={100}
               crop="thumb"
@@ -61,7 +61,7 @@ export default async function Page() {
               <li key={subCat.id} className="py-3 pl-4 sm:py-4">
                 <div className="flex items-center space-x-4">
                   <div className="self-start flex-shrink-0">
-                    <CImage
+                    <CustomImage
                       width={100}
                       height={100}
                       className="w-8 h-8 rounded-full"

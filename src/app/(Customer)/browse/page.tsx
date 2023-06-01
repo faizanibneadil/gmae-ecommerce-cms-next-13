@@ -1,4 +1,4 @@
-import CImage from "@/app/(Admin)/create/categories/components/img";
+import CImage from "@/app/(Admin)/create/categories/components/customImage";
 import { prisma } from "@/config/db";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 
