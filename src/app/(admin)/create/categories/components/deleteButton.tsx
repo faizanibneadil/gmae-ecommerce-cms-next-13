@@ -17,7 +17,7 @@ export default function DeleteButton({
   return (
     <button
       disabled={isPending}
-      className={`btn btn-circle btn-sm btn-outline btn-error self-start ${
+      className={`btn btn-circle btn-sm btn-outline btn-error ${
         isPending && `loading`
       }`}
       onClick={() => deleteCategory(CategoryId)}
