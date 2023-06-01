@@ -7,7 +7,7 @@ const nextConfig = {
       "source.unsplash.com",
       "gmae.pk",
       "fakestoreapi.com",
-      "loremflickr.com",
+      "res.cloudinary.com",
       "lh3.googleusercontent.com",
     ],
   },

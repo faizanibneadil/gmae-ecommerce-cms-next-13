@@ -6,6 +6,7 @@ import { CheckIcon, ChevronDownIcon, Save, UploadCloud } from "lucide-react";
 import * as Select from "@radix-ui/react-select";
 import { ChevronUpIcon } from "lucide-react";
 import { Categories } from "@prisma/client";
+import Image from "next/image";
 export default function CreateCategoryForm({
   userId,
   categories,
@@ -31,7 +32,7 @@ export default function CreateCategoryForm({
       >
         <div className="flex-shrink-0">
           {image ? (
-            <CldImage
+            <Image
               width={12}
               height={12}
               className="w-12 h-12 rounded-full"
@@ -50,7 +51,7 @@ export default function CreateCategoryForm({
                 singleUploadAutoClose: true,
               }}
               uploadPreset="ml_default"
-              onUpload={(data: any) => setImage(data.info.public_id)}
+              onUpload={(data: any) => setImage(data.info.secure_url)}
             >
               <div className="shadow-lg btn btn-circle btn-outline">
                 <UploadCloud className="w-5 h-5" />
