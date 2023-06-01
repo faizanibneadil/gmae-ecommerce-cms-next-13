@@ -1,5 +1,5 @@
-import CategoryCard from "@/app/components/categoryCart";
 import { prisma } from "@/config/db";
+import CategoryCard from "../components/categoryCard";
 
 export default async function Page() {
   const categories = await prisma.categories.findMany();
@@ -10,7 +10,7 @@ export default async function Page() {
           <CategoryCard key={category.id} category={category} />
         ))} */}
         
-        {categories?.map( c => <h1 key={c.id}>{c.name}</h1>)}
+        {categories?.map( c => <CategoryCard key={c.id} category={c} />)}
       </div>
     </div>
   );
