@@ -86,7 +86,7 @@ export default function CreateCategoryForm({
                 </Select.ScrollUpButton>
                 <Select.Viewport className="p-[5px]">
                   {categories?.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                    <SelectItem key={category.id} value={category.id}>{category.name} </SelectItem>
                   ))}
                 </Select.Viewport>
                 <Select.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
