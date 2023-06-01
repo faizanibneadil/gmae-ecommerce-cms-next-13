@@ -9,7 +9,8 @@ export default async function Page() {
         {/* {categories?.map((category) => (
           <CategoryCard key={category.id} category={category} />
         ))} */}
-        page
+        
+        {categories?.map( c => <h1 key={c.id}>{c.name}</h1>)}
       </div>
     </div>
   );
