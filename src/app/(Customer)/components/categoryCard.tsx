@@ -7,6 +7,7 @@ export default function CategoryCard({ category }: { category: Categories }) {
   return (
     <div className="w-full rounded-2xl bg-base-300">
       <CldImage
+        fetchPriority="auto"
         width={400}
         height={400}
         crop="thumb"
