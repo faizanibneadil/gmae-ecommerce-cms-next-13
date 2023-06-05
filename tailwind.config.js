@@ -2,14 +2,22 @@
 module.exports = {
   darkMode: "media",
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   daisyui: {
-    logs: true,
+    logs: false,
   },
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       keyframes: {
         slideDownAndFade: {
@@ -83,5 +91,10 @@ module.exports = {
         "slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
     },
   },
-  plugins: [require("daisyui"), require("@tailwindcss/typography")],
+  plugins: [
+    // require("daisyui"),
+    require("@tailwindcss/typography"),
+    require("tailwindcss-radix"),
+    require("tailwindcss-animate"),
+  ],
 };
