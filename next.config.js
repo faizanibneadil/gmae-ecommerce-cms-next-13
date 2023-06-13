@@ -9,6 +9,7 @@ const nextConfig = {
       "fakestoreapi.com",
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
+      "drive.google.com"
     ],
   },
   experimental: {

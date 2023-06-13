@@ -12,7 +12,7 @@ export default function Page() {
       </Card>
 
       {/* KPI section */}
-      <Grid numColsMd={2} className="gap-6 mt-6">
+      <Grid numItemsMd={2} className="gap-6 mt-6">
         <Card>
           {/* Placeholder to set height */}
           <div className="h-28" />

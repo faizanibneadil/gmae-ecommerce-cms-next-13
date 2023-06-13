@@ -15,24 +15,28 @@ model Example {
   name String
 }
 
-model Attributes {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  Products   Products? @relation(fields: [productsId], references: [id])
-  productsId String?   @db.ObjectId
-}
-
 model Products {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  price       Int
-  isPublished Boolean?     @default(false)
-  variants    Products[]   @relation("variants")
-  Products    Products?    @relation("variants", fields: [productsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  productsId  String?      @db.ObjectId
-  attributes  Attributes[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  slug           String      @unique
+  description    String
+  regularPrice   Int
+  salePrice      Int
+  purchasePrice  Int
+  purchaseLimit  Boolean
+  isTrackStock   Boolean
+  isReviewEnable Boolean
+  visibility     Boolean
+  stock          Int
+  images         Json
+  attributes     Json
+  variants       Products[]  @relation("variants")
+  Products       Products?   @relation("variants", fields: [productsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  productsId     String?     @db.ObjectId
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  Categories     Categories? @relation(fields: [categoryId], references: [id])
+  categoryId     String?     @db.ObjectId
 }
 
 model Categories {
@@ -42,6 +46,7 @@ model Categories {
   parentCategoryId String?      @db.ObjectId
   parentCategory   Categories?  @relation("subCategory", fields: [parentCategoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   subCategory      Categories[] @relation("subCategory")
+  products         Products[]
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   User             User?        @relation(fields: [userId], references: [id])

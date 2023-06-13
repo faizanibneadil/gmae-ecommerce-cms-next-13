@@ -1,7 +1,6 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { createAttribute, createCategory, deleteCategoryById } from "./_mutations";
-
+import { createCategory, deleteCategoryById, deleteProduct } from "./_mutations";
 /**
  * 
  * @param values 
@@ -19,8 +18,8 @@ export async function deleteCategoryByIdAction(id: string) {
     revalidatePath("/create/categories")
 }
 
-export async function createAttributeAction(name: string) {
-    await createAttribute(name)
-    revalidatePath("/create/attributes")
+export async function deleteProductAction(id: string) {
+    await deleteProduct(id)
+    revalidatePath("/admin/products")
 }
 

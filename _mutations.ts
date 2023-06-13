@@ -36,19 +36,17 @@ export async function createCategory(values: TCategory) {
 export async function deleteCategoryById(id: string) {
     try {
         await prisma.categories.delete({ where: { id: id } })
-        console.log("Delete Success 👎")
+        console.log("Delete Success 👍")
     } catch (e) {
         console.log(e)
     }
 }
 
-
-export async function createAttribute(name: string) {
+export async function deleteProduct(id: string) {
     try {
-        await prisma.attributes.create({ data: { name } })
-        console.log("Create Attributes Success 👍")
+        await prisma.products.delete({ where: { id } })
+        console.log("Delete Product Success 👍")
     } catch (e) {
         console.log(e)
-
     }
 }
