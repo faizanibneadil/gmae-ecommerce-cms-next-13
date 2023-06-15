@@ -25,7 +25,6 @@ export default function ImagesForm({ images, actions }: any) {
             <Flex justifyContent="start" className="space-x-4 truncate">
               {image.src ? (
                 <Image
-                  priority
                   loader={imageLoader}
                   className="w-10 h-10 rounded-full"
                   width={30}

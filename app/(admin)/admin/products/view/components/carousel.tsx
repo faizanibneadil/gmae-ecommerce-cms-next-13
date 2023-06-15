@@ -13,19 +13,10 @@ export default function Carousel({ images }: { images: any }) {
   };
   return (
     <div>
-      <Swiper
-        ref={ref}
-        loop={true}
-        spaceBetween={2}
-        slidesPerView={1}
-      >
+      <Swiper ref={ref} loop={true} spaceBetween={2} slidesPerView={1}>
         {images?.map((image: any) => (
-          <SwiperSlide
-            key={image.id}
-            className="p-4 rounded-lg bg-gray-400/90 backdrop-blur-lg"
-          >
+          <SwiperSlide key={image.id}>
             <Image
-              priority
               loader={imageLoader}
               src={image.src}
               alt=""
