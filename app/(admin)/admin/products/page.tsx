@@ -8,6 +8,8 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 import Badges from "./components/badges";
 
+export const revalidate = 60
+
 export default async function Page() {
   const products = await prisma.products.findMany();
   return (
@@ -48,37 +50,4 @@ export default async function Page() {
       </div>
     </div>
   );
-}
-
-{
-  /* <Card
-              key={product.id}
-              className="p-2 text-center"
-              decorationColor="orange"
-              decoration="top"
-            >
-              <Link href={`/admin/products/view/${product.slug}`}>
-                <div className="h-32">
-                  <Image
-                    width={100}
-                    height={100}
-                    className="w-auto mx-auto"
-                    alt=""
-                    src={`https://drive.google.com/uc?id=${images[0]?.src}`}
-                  />
-                </div>
-                <div className="py-4 text-left">
-                  <Text className="font-medium line-clamp-2">
-                    {product?.title}
-                  </Text>
-                  <Text>Price Rs: {product?.regularPrice}</Text>
-                  <Text>Price Rs: {product?.salePrice}</Text>
-                  <Text>{attributes?.length} Variants.</Text> 
-                </div>
-              </Link>
-              <div className="flex flex-col space-y-2">
-                <EditButton id={product.id} />
-                <DeleteButton id={product.id} />
-              </div>
-            </Card> */
 }
