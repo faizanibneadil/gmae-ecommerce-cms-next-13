@@ -11,6 +11,8 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "drive.google.com"
     ],
+    // loader: "custom",
+    // loaderFile: ""
   },
   experimental: {
     serverActions: true,

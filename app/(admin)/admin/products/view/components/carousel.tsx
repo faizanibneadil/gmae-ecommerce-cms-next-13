@@ -9,7 +9,7 @@ import { useRef } from "react";
 export default function Carousel({ images }: { images: any }) {
   const ref = useRef<any>();
   const imageLoader = ({ src }: { src: string }) => {
-    return `https://drive.google.com/uc?export=view&id=${src}`;
+    return `https://drive.google.com/uc?id=${src}`;
   };
   return (
     <div>
@@ -32,6 +32,7 @@ export default function Carousel({ images }: { images: any }) {
               width={100}
               height={100}
               className="w-full"
+              loading="lazy"
             />
           </SwiperSlide>
         ))}

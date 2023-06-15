@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import AuthButton from "./authButton";
 
 export default function Navigation() {
   return (
@@ -32,23 +33,26 @@ export default function Navigation() {
         </div>
         <div className="flex items-center justify-center col-span-2 ">
           <div className="grid grid-flow-col overflow-x-scroll no-scrollbar auto-cols-max">
-            <button className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group">
+            <Link
+              href="/admin"
+              className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
+            >
               <Gauge className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
               <span className="text-xs font-semibold truncate text-ay-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
                 Dashboard
               </span>
-            </button>
+            </Link>
             <Link
               href="/admin/products"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <LayoutGrid className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
               <span className="text-xs font-semibold truncate text-ay-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                Products
+                Inventory
               </span>
             </Link>
             <Link
-              href="/create"
+              href="/admin/categories"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <List className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -58,7 +62,7 @@ export default function Navigation() {
             </Link>
 
             <Link
-              href="/create/user"
+              href="/admin/deliveries"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Truck className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -67,7 +71,7 @@ export default function Navigation() {
               </span>
             </Link>
             <Link
-              href="/create/user"
+              href="/admin/transactions"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <ArrowRightLeft className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -76,7 +80,7 @@ export default function Navigation() {
               </span>
             </Link>
             <Link
-              href="/create/user"
+              href="/admin/coupons"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Percent className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -85,7 +89,7 @@ export default function Navigation() {
               </span>
             </Link>
             <Link
-              href="/create/user"
+              href="/admin/users"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Users className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -94,16 +98,16 @@ export default function Navigation() {
               </span>
             </Link>
             <Link
-              href="/create/user"
+              href="/admin/customers"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Users2 className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
               <span className="text-xs font-semibold truncate text-ay-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                Customres
+                Customers
               </span>
             </Link>
             <Link
-              href="/settings"
+              href="/admin/settings"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Settings className="w-5 h-5 mb-1 text-gray-950 group-hover:text-blue-600" />
@@ -114,9 +118,7 @@ export default function Navigation() {
           </div>
         </div>
         <div className="flex items-center justify-end p-2 pr-4 border-b-2 md:border-b-0">
-          <Button size="xs" variant="light">
-            login
-          </Button>
+          <AuthButton />
         </div>
       </div>
     </>

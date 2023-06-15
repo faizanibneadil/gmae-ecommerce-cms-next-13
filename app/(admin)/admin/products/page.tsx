@@ -29,7 +29,7 @@ export default async function Page() {
                     height={100}
                     className="w-auto mx-auto"
                     alt=""
-                    src={`https://drive.google.com/uc?export=view&id=${images[0]?.src}`}
+                    src={`https://drive.google.com/uc?id=${images[0]?.src}`}
                   />
                 </div>
                 <div className="py-4 text-left">

@@ -15,7 +15,7 @@ import Image from "next/image";
 
 export default function ImagesForm({ images, actions }: any) {
   const imageLoader = ({ src }: { src: string }) => {
-    return `https://drive.google.com/uc?export=view&id=${src}`;
+    return `https://drive.google.com/uc?id=${src}`;
   };
   return (
     <div>
@@ -32,6 +32,7 @@ export default function ImagesForm({ images, actions }: any) {
                   height={30}
                   alt=""
                   src={image.src}
+                  loading="lazy"
                 />
               ) : (
                 <TextInput

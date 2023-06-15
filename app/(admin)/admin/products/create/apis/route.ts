@@ -1,9 +1,10 @@
 import { prisma } from "@/config/db";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        const categories = await prisma.categories.findMany()
+        const categories = await prisma.categories.findMany({ where: { parentCategory: null } })
         return NextResponse.json({ categories })
     } catch (e) {
         console.log(e)
@@ -42,6 +43,7 @@ export async function POST(req: NextRequest) {
             }
         })
         console.log(" Updated Or Created Successful 👍")
+        revalidatePath("/admin/products")
         return NextResponse.json({ msg: "ok" })
     } catch (e) {
         console.log(e)

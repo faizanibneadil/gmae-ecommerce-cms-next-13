@@ -1,6 +1,7 @@
 'use server'
 import { revalidatePath } from "next/cache";
 import { createCategory, deleteCategoryById, deleteProduct } from "./_mutations";
+import { getServerSession } from "next-auth";
 /**
  * 
  * @param values 
@@ -9,8 +10,9 @@ import { createCategory, deleteCategoryById, deleteProduct } from "./_mutations"
  * 
  */
 export async function createCategoryAction(values: any) {
-    await createCategory(values)
-    revalidatePath("/create/categories")
+    const session = await getServerSession()
+    await createCategory({ ...values, userId: session?.user.id })
+    revalidatePath("/admin/categories")
 }
 
 export async function deleteCategoryByIdAction(id: string) {

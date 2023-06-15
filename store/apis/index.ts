@@ -28,10 +28,17 @@ export const apis = createApi({
         }),
         editProductById: builder.query<void, string>({
             query: id => `/admin/products/${id}/apis`
+        }),
+        saveCategory: builder.mutation({
+            query: (values) => ({
+                url: `/admin/categories/create/apis`,
+                method: 'POST',
+                body: values,
+            }),
         })
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllCategoriesQuery, useSaveProductMutation, useEditProductByIdQuery } = apis
+export const { useGetAllCategoriesQuery, useSaveProductMutation, useEditProductByIdQuery, useSaveCategoryMutation } = apis
