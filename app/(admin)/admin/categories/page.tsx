@@ -2,6 +2,8 @@ import Categories from "./components/categories";
 import CategoryPageHeader from "./components/categoryPageHeader";
 import { prisma } from "@/config/db";
 
+export const revalidate = 60
+
 export default async function Page() {
   const categoriesList = await prisma.categories.findMany({
     include: {
