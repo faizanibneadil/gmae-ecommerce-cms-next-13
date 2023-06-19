@@ -1,4 +1,6 @@
 import { prisma, } from "@/config/db"
+import { getServerSession } from "next-auth"
+import { authOptions } from "./config/authOptions"
 
 export type TCategory = {
     image: string
@@ -6,31 +8,9 @@ export type TCategory = {
     categoryId: undefined
     userId: string
 }
-export async function createCategory(values: TCategory) {
-    let query: any = {
-        name: values.name,
-        image: values.image,
-        User: {
-            connect: {
-                id: values.userId
-            }
-        }
-    };
-    if (values.categoryId) {
-        query.parentCategory = {
-            connect: {
-                id: values.categoryId
-            }
-        }
-    }
-    try {
-        await prisma.categories.create({
-            data: query
-        })
-        console.log("Create Success 👍")
-    } catch (e) {
-        console.log(e)
-    }
+export async function createCategory() {
+    const session = await getServerSession(authOptions)
+    return console.log(session)
 }
 
 export async function deleteCategoryById(id: string) {

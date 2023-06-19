@@ -13,6 +13,7 @@ import * as yup from "yup";
 import Image from "next/image";
 import { redirect } from 'next/navigation'
 import { revalidatePath } from "next/cache";
+import { createCategoryAction } from "@/_actions";
 
 export default function CategoryForm({ data }: { data?: any }) {
   const imageLoader = ({ src }: { src: string }) => {
@@ -34,12 +35,7 @@ export default function CategoryForm({ data }: { data?: any }) {
         name: yup.string().required("Category Name is Required."),
         categoryId: yup.string().notRequired(),
       })}
-      onSubmit={(values, actions) => {
-        saveCategory(values)
-        actions.setSubmitting(false)
-        revalidatePath("/admin/categories")
-        redirect("/admin/categories")
-      }}
+      onSubmit={(values, actions) => createCategoryAction(values)}
     >
       {({ isSubmitting, setFieldValue, errors, values }) => (
         <Form className="space-y-2">
@@ -53,6 +49,7 @@ export default function CategoryForm({ data }: { data?: any }) {
               alt=""
               src={values.image}
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
           )}
           <TextInput

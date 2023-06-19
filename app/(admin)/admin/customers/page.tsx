@@ -19,6 +19,7 @@ export default async function Page() {
               alt=""
               src={`${customer?.image}`}
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
             <span className="truncate">{customer.name}</span>
           </span>

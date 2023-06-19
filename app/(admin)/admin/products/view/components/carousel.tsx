@@ -24,6 +24,7 @@ export default function Carousel({ images }: { images: any }) {
               height={100}
               className="w-full"
               loading="lazy"
+              referrerPolicy="no-referrer"
             />
           </SwiperSlide>
         ))}

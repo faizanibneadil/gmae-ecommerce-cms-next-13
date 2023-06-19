@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function Navigation() {
   return (
     <>
-      <div className="sticky top-0 z-50 grid grid-flow-row-dense grid-cols-2 shadow-md md:grid-row-1 md:grid-cols-4 bg-white/5 backdrop-blur">
+      <div className="sticky top-0 z-50 grid grid-flow-row-dense grid-cols-2 bg-white shadow-md md:grid-row-1 md:grid-cols-4">
         <div className="flex items-center justify-start p-2 pl-4 border-b-2 md:border-b-0">
           <Link href="/">
             <Image

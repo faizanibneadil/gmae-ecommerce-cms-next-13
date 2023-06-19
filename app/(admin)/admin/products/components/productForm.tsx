@@ -25,6 +25,7 @@ import {
   Select,
   SelectItem,
 } from "@tremor/react";
+import { createProductAction } from "@/_actions";
 
 const MyEditor = ({ field, form, ...props }: any) => {
   return (
@@ -52,11 +53,7 @@ export default function ProductForm({ data }: { data?: any }) {
       enableReinitialize={true}
       validationSchema={createProductSchema}
       initialValues={data ?? productFormInitialValues}
-      onSubmit={(values, actions) => {
-        saveProduct(values);
-        router.push(`/admin/products/${res.originalArgs.id}`);
-        actions.setSubmitting(false);
-      }}
+      onSubmit={(values, actions) => createProductAction(values)}
     >
       {({ isSubmitting, errors, setFieldValue, values }) => (
         <Form className="space-y-2">
@@ -259,7 +256,13 @@ export default function ProductForm({ data }: { data?: any }) {
               />
             )}
           />
-          <Button icon={Save} variant="primary" type="submit">
+          <Button
+            disabled={isSubmitting}
+            loading={isSubmitting}
+            icon={Save}
+            variant="primary"
+            type="submit"
+          >
             Save Product
           </Button>
         </Form>

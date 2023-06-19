@@ -9,7 +9,8 @@ const nextConfig = {
       "fakestoreapi.com",
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
-      "drive.google.com"
+      "drive.google.com",
+      "img.freepik.com",
     ],
     // loader: "custom",
     // loaderFile: ""

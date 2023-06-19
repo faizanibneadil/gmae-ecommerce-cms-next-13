@@ -6,7 +6,7 @@ import { useTransition } from "react";
 
 export default function DeleteButton({ id }: { id: string }) {
   const [isPending, startDeleting] = useTransition();
-  async function deleteCategory(id: string) {
+  async function deleteProduct(id: string) {
     startDeleting(async () => await deleteProductAction(id));
   }
   return (
@@ -17,7 +17,7 @@ export default function DeleteButton({ id }: { id: string }) {
       icon={Trash}
       loading={isPending}
       disabled={isPending}
-      onClick={() => deleteCategory(id)}
+      onClick={() => deleteProduct(id)}
     >
       Delete
     </Button>

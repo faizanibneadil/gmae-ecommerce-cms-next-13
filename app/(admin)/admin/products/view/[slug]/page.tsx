@@ -2,7 +2,8 @@ import { prisma } from "@/config/db";
 import Carousel from "../components/carousel";
 import Description from "../components/description";
 import { Badge } from "@tremor/react";
-
+import EditButton from "../../components/editButton";
+import DeleteButton from "../../components/deleteButton";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const product = await prisma.products.findUnique({
@@ -18,6 +19,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2">
           <Carousel images={product?.images} />
+          <div className="mt-4" />
+          <EditButton id={`${product?.id}`} />
+          <div className="mt-4" />
+          <DeleteButton id={`${product?.id}`}/>
         </div>
         <div className="w-full mt-6 md:w-1/2 md:px-4 md:mt-0">
           <h1 className="mb-4 font-bold text-md text-slate-950">
@@ -27,7 +32,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {attributes?.map((attribute: any) => (
               <>
                 <dt>{attribute?.name}</dt>
-                <dd><Badge size="md">{attribute?.value}</Badge></dd>
+                <dd>
+                  <Badge size="md">{attribute?.value}</Badge>
+                </dd>
               </>
             ))}
           </dl>

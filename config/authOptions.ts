@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
         async session(props) {
             // console.log("SESSION => ", props)
             props.session.user.id = props.token.sub
+            // console.log(props.session)
             return props.session
         },
     },

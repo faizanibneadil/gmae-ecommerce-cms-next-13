@@ -32,6 +32,7 @@ export default function ImagesForm({ images, actions }: any) {
                   alt=""
                   src={image.src}
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
               ) : (
                 <TextInput

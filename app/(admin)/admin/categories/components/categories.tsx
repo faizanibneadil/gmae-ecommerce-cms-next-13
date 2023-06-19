@@ -31,6 +31,7 @@ export default function Categories({
                   alt=""
                   src={`${category?.image}`}
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
                 <span className="truncate">{category.name}</span>
               </span>
@@ -53,6 +54,8 @@ export default function Categories({
                     height={30}
                     alt=""
                     src={`${item?.image}`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
                   />
                   <span className="truncate">{item.name}</span>
                 </span>

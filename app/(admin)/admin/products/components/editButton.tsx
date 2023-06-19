@@ -4,7 +4,7 @@ import { Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-export default function DeleteButton({ id }: { id: string }) {
+export default function EditButton({ id }: { id: string }) {
   const router = useRouter();
   const [isPending, startDeleting] = useTransition();
   return (
