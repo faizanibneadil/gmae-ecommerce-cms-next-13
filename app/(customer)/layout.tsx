@@ -1,15 +1,15 @@
 import { ReactNode } from "react";
 import Navigation from "./components/navigation";
 import Carousel from "./components/carousel";
+import { X } from "lucide-react";
+import { Card } from "@tremor/react";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <Navigation />
-      <main className="mx-auto md:max-w-4xl">
-        <Carousel />
-        {children}
-      </main>
+      <Carousel />
+      <main className="container mx-auto">{children}</main>
     </div>
   );
 }

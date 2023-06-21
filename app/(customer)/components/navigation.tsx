@@ -12,7 +12,7 @@ export default function Navigation() {
   return (
     <>
       <div className="sticky top-0 z-50 grid grid-flow-row-dense grid-cols-2 bg-white shadow-md md:grid-row-1 md:grid-cols-4">
-        <div className="flex items-center justify-start p-2 pl-4 border-b-2 md:border-b-0">
+        <div className="items-center justify-start hidden p-2 pl-4 border-b-2 md:flex md:border-b-0">
           <Link href="/">
             <Image
               alt="Brand Logo Image"
@@ -61,7 +61,7 @@ export default function Navigation() {
             </Link>
           </div>
         </div>
-        <div className="flex items-center justify-end p-2 pr-4 border-b-2 md:border-b-0">
+        <div className="items-center justify-end hidden p-2 pr-4 border-b-2 md:flex md:border-b-0">
           <Button size="xs" variant="light">
             login
           </Button>
