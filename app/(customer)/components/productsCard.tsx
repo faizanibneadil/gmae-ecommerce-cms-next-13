@@ -1,8 +1,8 @@
 "use client";
 
-import { Prisma, Products } from "@prisma/client";
-import { Button, Card, Icon } from "@tremor/react";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Prisma } from "@prisma/client";
+import { Icon } from "@tremor/react";
+import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -34,7 +34,6 @@ export default function ProductCard({
         <Icon
           icon={Heart}
           variant="solid"
-          tooltip="Add to favorite"
           color="rose"
           size="xs"
           className="absolute cursor-pointer top-2 right-2"
@@ -50,9 +49,8 @@ export default function ProductCard({
             <span className="text-sm font-medium">Rs: {product.salePrice}</span>
           </div>
           <Icon
-            icon={ShoppingBag}
+            icon={ShoppingCart}
             variant="solid"
-            tooltip="Add to cart"
             className="cursor-pointer"
           />
         </div>

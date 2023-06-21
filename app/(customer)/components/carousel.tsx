@@ -51,7 +51,7 @@ export default function Carousel() {
         loop={true}
         spaceBetween={0}
         slidesPerView={1}
-        className="h-[35vw]"
+        className="h-[40vw]"
         autoplay={{ delay: 2500, disableOnInteraction: false }}
       >
         {images?.map((image: any) => (
