@@ -1,10 +1,13 @@
 "use client";
 
+import { addToCart } from "@/store/cartSlice";
 import { Prisma } from "@prisma/client";
 import { Icon } from "@tremor/react";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 export default function ProductCard({
   product,
@@ -21,6 +24,9 @@ export default function ProductCard({
     return `https://drive.google.com/uc?export=view&id=${src}`;
   };
   const images: any = product.images;
+  const dispatch = useDispatch()
+  //cart
+  const addItem = useCallback((value:any) => dispatch(addToCart(value)), []);
   return (
     <div className="rounded-lg shadow-md">
       <div className="relative w-full h-28">
@@ -49,6 +55,13 @@ export default function ProductCard({
             <span className="text-sm font-medium">Rs: {product.salePrice}</span>
           </div>
           <Icon
+            onClick={() =>
+              addItem({
+                id: product.id,
+                name: product.title,
+                price: product.regularPrice,
+              })
+            }
             icon={ShoppingCart}
             variant="solid"
             className="cursor-pointer"

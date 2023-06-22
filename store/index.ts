@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './counterSlice'
+import cartSlice from './cartSlice'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { apis } from './apis'
 
 export const store = configureStore({
     reducer: {
-        counter: counterSlice,
+        cart: cartSlice,
         // Add the generated reducer as a specific top-level slice
         [apis.reducerPath]: apis.reducer,
     },
