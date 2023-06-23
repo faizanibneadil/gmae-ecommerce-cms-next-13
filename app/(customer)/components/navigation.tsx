@@ -1,10 +1,5 @@
 import { Button } from "@tremor/react";
-import {
-  LayoutGrid,
-  ShoppingBag,
-  Star,
-  Store,
-} from "lucide-react";
+import { LayoutGrid, ShoppingBag, Star, Store, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -57,6 +52,16 @@ export default function Navigation() {
               <ShoppingBag className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
                 My Cart
+              </span>
+            </Link>
+
+            <Link
+              href="/me"
+              className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
+            >
+              <User2 className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
+              <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
+                Me
               </span>
             </Link>
           </div>

@@ -4,7 +4,7 @@ import SellerProfile from "./components/sellerProfile";
 import { prisma } from "@/config/db";
 import ProductCard from "./components/productsCard";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 export const revalidate = 60;
 
@@ -13,6 +13,7 @@ const getCategoriesAndProducts = async () =>
     select: {
       id: true,
       name: true,
+      image: true,
       products: {
         select: {
           id: true,
@@ -42,20 +43,32 @@ export default async function Page() {
       {/* <DiscountBanner /> */}
       {/* <SellerProfile /> */}
       {categories?.map((category) => (
-        <section key={category.id} className="p-2 md:p-4">
-          <div className="relative flex items-center py-5">
-            <span className="flex-shrink mr-4 font-semibold truncate">
-              {category.name}.
-            </span>
-            <div className="flex-grow border-t border-gray-200"></div>
-            <Link href="#" className="flex-shrink ml-4 font-semibold">See all</Link>
-          </div>
-          <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-6">
-            {category?.products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </section>
+        <>
+          <section key={category.id} className="p-2 md:p-4">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center space-x-2 font-semibold truncate ">
+                <span className="relative w-8 h-8 rounded-full">
+                  <Image
+                    src={`https://drive.google.com/uc?export=view&id=${category.image}`}
+                    fill
+                    alt=""
+                    className="w-8 h-8 rounded-full"
+                  />
+                </span>
+                <span>{category.name}</span>
+              </span>
+              <Link href="#" className="font-semibold ">
+                See all
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-6">
+              {category?.products.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+          <div className="flex-grow border-t border-gray-200"></div>
+        </>
       ))}
     </div>
   );
