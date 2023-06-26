@@ -24,9 +24,9 @@ export default function ProductCard({
     return `https://drive.google.com/uc?export=view&id=${src}`;
   };
   const images: any = product.images;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   //cart
-  const addItem = useCallback((value:any) => dispatch(addToCart(value)), []);
+  const addItem = useCallback((value: any) => dispatch(addToCart(value)), []);
   return (
     <div className="rounded-lg shadow-md">
       <div className="relative w-full h-28">
@@ -55,13 +55,7 @@ export default function ProductCard({
             <span className="text-sm font-medium">Rs: {product.salePrice}</span>
           </div>
           <Icon
-            onClick={() =>
-              addItem({
-                id: product.id,
-                name: product.title,
-                price: product.regularPrice,
-              })
-            }
+            onClick={() => addItem(product)}
             icon={ShoppingCart}
             variant="solid"
             className="cursor-pointer"

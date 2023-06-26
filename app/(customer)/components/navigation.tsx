@@ -1,9 +1,13 @@
+"use client";
+import { RootState } from "@/store";
 import { Button } from "@tremor/react";
-import { LayoutGrid, ShoppingBag, Star, Store, User2 } from "lucide-react";
+import { LayoutGrid, ShoppingCart, Star, Store, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function Navigation() {
+  const cart = useSelector((state: RootState) => state.cart);
   return (
     <>
       <div className="sticky top-0 z-50 grid grid-flow-row-dense grid-cols-2 bg-white shadow-md md:grid-row-1 md:grid-cols-4">
@@ -20,14 +24,14 @@ export default function Navigation() {
         </div>
         <div className="flex items-center justify-center col-span-2 ">
           <div className="grid grid-flow-col overflow-x-scroll no-scrollbar auto-cols-max">
-            <button className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group">
+            <Link href="/" className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group">
               <Store className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
                 Shopping
               </span>
-            </button>
+            </Link>
             <Link
-              href="/admin/products"
+              href="/categories"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <LayoutGrid className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
@@ -36,7 +40,7 @@ export default function Navigation() {
               </span>
             </Link>
             <Link
-              href="/create"
+              href="/favorite"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
               <Star className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
@@ -46,12 +50,14 @@ export default function Navigation() {
             </Link>
 
             <Link
-              href="/create/user"
+              href="/cart"
               className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
             >
-              <ShoppingBag className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
+              <ShoppingCart className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                My Cart
+                {cart.items.length > 0
+                  ? `${cart.items.length} items`
+                  : `My Cart`}
               </span>
             </Link>
 
@@ -61,7 +67,7 @@ export default function Navigation() {
             >
               <User2 className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                Me
+                My Profile
               </span>
             </Link>
           </div>
