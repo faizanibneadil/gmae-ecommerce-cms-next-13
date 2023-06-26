@@ -6,8 +6,8 @@ export default async function Page() {
   return (
     <div className="max-w-3xl p-2 mx-auto mt-4">
       <div className="gap-2 space-y-2 columns-2 md:columns-3">
-        {categories.map((category) => (
-          <div className="relative h-48 rounded-md">
+        {categories.map((category, i) => (
+          <div key={i} className="relative h-48 rounded-md">
             <Image
               src={`https://drive.google.com/uc?export=view&id=${category.image}`}
               fill
