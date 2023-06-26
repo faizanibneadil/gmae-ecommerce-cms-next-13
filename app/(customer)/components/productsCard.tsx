@@ -49,10 +49,10 @@ export default function ProductCard({
         <h2 className="line-clamp-2">{product.title}</h2>
         <div className="flex justify-between mt-4 space-x-2">
           <div className="flex flex-col items-center text-left">
-            <span className="text-xs font-medium line-through">
+            <span className="text-xs font-medium line-through oldstyle-nums">
               Rs: {product.regularPrice}
             </span>
-            <span className="text-sm font-medium">Rs: {product.salePrice}</span>
+            <span className="text-sm font-medium oldstyle-nums">Rs: {product.salePrice}</span>
           </div>
           <Icon
             onClick={() => addItem(product)}

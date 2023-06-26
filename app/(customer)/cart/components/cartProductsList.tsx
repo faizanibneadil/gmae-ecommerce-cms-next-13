@@ -47,7 +47,7 @@ export default function CartProductsList() {
                     <p className="text-xs font-medium text-gray-900 md:text-sm line-clamp-3">
                       {item.title}
                     </p>
-                    <p className="text-sm text-gray-500 line-clamp-3">
+                    <p className="text-sm text-gray-500 line-clamp-3 oldstyle-nums">
                       Rs: {item.regularPrice} x Qty: {item.qty} = Subtotal:{" "}
                       {item.sub_total}, Discount: {item.discount}
                     </p>
