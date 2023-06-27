@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Home - gmae Mobile Accessories Enterprise",
   description: "Buy mobie Accessories here.",
+  metadataBase: new URL(process.env.BASE_URL as string),
 };
 
 export default async function RootLayout({
