@@ -23,7 +23,7 @@ export default async function Image() {
           justifyContent: "center",
         }}
       >
-        testing Image
+        Global Mobile Accessories Enterprize
       </div>
     ),
     {
