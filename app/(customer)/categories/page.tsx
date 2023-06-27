@@ -2,6 +2,8 @@ import { prisma } from "@/config/db";
 import Image from "next/image";
 import Link from "next/link";
 
+export const revalidate = 60
+
 export default async function Page() {
   const categories = await prisma.categories.findMany();
   return (
