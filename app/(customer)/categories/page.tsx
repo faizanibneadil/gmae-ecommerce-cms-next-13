@@ -1,5 +1,6 @@
 import { prisma } from "@/config/db";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page() {
   const categories = await prisma.categories.findMany();
@@ -8,15 +9,17 @@ export default async function Page() {
       <div className="gap-2 space-y-2 columns-2 md:columns-3">
         {categories.map((category, i) => (
           <div key={i} className="relative h-48 rounded-md">
-            <Image
-              src={`https://drive.google.com/uc?export=view&id=${category.image}`}
-              fill
-              className="object-cover rounded-md"
-              alt={`${category.name}`}
-            />
-            <div className="absolute inset-0 flex items-center justify-center text-lg text-center text-white rounded-md bg-gray-700/40">
-              {category.name}
-            </div>
+            <Link href={`/categories/${category.name?.split(" ").join("/")}`}>
+              <Image
+                src={`https://drive.google.com/uc?export=view&id=${category.image}`}
+                fill
+                className="object-cover rounded-md"
+                alt={`${category.name}`}
+              />
+              <div className="absolute inset-0 flex items-center justify-center text-lg text-center text-white rounded-md bg-gray-700/40">
+                {category.name}
+              </div>
+            </Link>
           </div>
         ))}
       </div>
