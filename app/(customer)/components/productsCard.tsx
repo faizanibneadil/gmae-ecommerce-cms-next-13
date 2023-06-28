@@ -20,8 +20,14 @@ export default function ProductCard({
     images: Prisma.JsonValue;
   };
 }) {
-  const imageLoader = ({ src }: { src: string }) => {
-    return `https://drive.google.com/uc?export=view&id=${src}`;
+  const imageLoader = ({
+    src,
+    width,
+  }: {
+    src: string;
+    width: number;
+  }) => {
+    return `https://drive.google.com/thumbnail?id=${src}&sz=w${width}`;
   };
   const images: any = product.images;
   const dispatch = useDispatch();
@@ -33,6 +39,7 @@ export default function ProductCard({
         <Image
           loader={imageLoader}
           className="object-contain"
+          // placeholder="blur"
           fill
           alt=""
           src={images[0].src}
@@ -52,7 +59,9 @@ export default function ProductCard({
             <span className="text-xs font-medium line-through oldstyle-nums">
               Rs: {product.regularPrice}
             </span>
-            <span className="text-sm font-medium oldstyle-nums">Rs: {product.salePrice}</span>
+            <span className="text-sm font-medium oldstyle-nums">
+              Rs: {product.salePrice}
+            </span>
           </div>
           <Icon
             onClick={() => addItem(product)}

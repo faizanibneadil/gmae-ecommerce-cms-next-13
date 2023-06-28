@@ -7,10 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Carousel from "./components/carousel";
 
-export const revalidate = 60;
+export const revalidate = 120;
 
-const getCategoriesAndProducts = async () =>
-  await prisma.categories.findMany({
+const getCategoriesAndProducts = async () => {
+  const query = await prisma.categories.findMany({
     select: {
       id: true,
       name: true,
@@ -19,23 +19,24 @@ const getCategoriesAndProducts = async () =>
         select: {
           id: true,
           title: true,
+          images: true,
           regularPrice: true,
           salePrice: true,
-          images: true,
         },
         take: 6,
       },
-      subCategory: {
-        select: { id: true, name: true },
-        where: { products: { some: { id: {} } } },
-      },
     },
     where: {
-      parentCategoryId: null,
-      products: { some: { id: {} } },
+      products: {
+        some: {
+          id: {},
+        },
+      },
     },
     take: 8,
   });
+  return query;
+};
 
 export default async function Page() {
   const categories = await getCategoriesAndProducts();
@@ -52,7 +53,7 @@ export default async function Page() {
                 <span className="flex items-center space-x-2 font-semibold truncate ">
                   <span className="relative w-8 h-8 rounded-full">
                     <Image
-                      src={`https://drive.google.com/uc?export=view&id=${category.image}`}
+                      src={`https://drive.google.com/thumbnail?id=${category.image}&sz=w64-h64`}
                       fill
                       alt=""
                       className="w-8 h-8 rounded-full"
