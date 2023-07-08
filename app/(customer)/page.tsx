@@ -6,6 +6,8 @@ import ProductCard from "./components/productsCard";
 import Link from "next/link";
 import Image from "next/image";
 import Carousel from "./components/carousel";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/authOptions";
 
 export const revalidate = 120;
 
@@ -40,6 +42,7 @@ const getCategoriesAndProducts = async () => {
 
 export default async function Page() {
   const categories = await getCategoriesAndProducts();
+  const session = await getServerSession(authOptions);
   return (
     <div>
       {/* <DiscountBanner /> */}
@@ -61,13 +64,20 @@ export default async function Page() {
                   </span>
                   <span>{category.name}</span>
                 </span>
-                <Link href="#" className="font-semibold ">
+                <Link
+                  href={`/categories/${category.name?.split(" ").join("/")}`}
+                  className="font-semibold "
+                >
                   See all &rarr;
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-6">
                 {category?.products.map((p, pIdx) => (
-                  <ProductCard key={pIdx} product={p} />
+                  <ProductCard
+                    userId={session?.user.id}
+                    key={pIdx}
+                    product={p}
+                  />
                 ))}
               </div>
             </section>

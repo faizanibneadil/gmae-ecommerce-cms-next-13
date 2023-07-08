@@ -1,5 +1,6 @@
 "use client";
 
+import { addToFavorite } from "@/_actions";
 import { addToCart } from "@/store/cartSlice";
 import { Prisma } from "@prisma/client";
 import { Icon } from "@tremor/react";
@@ -11,6 +12,7 @@ import { useDispatch } from "react-redux";
 
 export default function ProductCard({
   product,
+  userId,
 }: {
   product: {
     id: string;
@@ -19,14 +21,9 @@ export default function ProductCard({
     salePrice: number;
     images: Prisma.JsonValue;
   };
+  userId?: string;
 }) {
-  const imageLoader = ({
-    src,
-    width,
-  }: {
-    src: string;
-    width: number;
-  }) => {
+  const imageLoader = ({ src, width }: { src: string; width: number }) => {
     return `https://drive.google.com/thumbnail?id=${src}&sz=w${width}`;
   };
   const images: any = product.images;
@@ -39,12 +36,12 @@ export default function ProductCard({
         <Image
           loader={imageLoader}
           className="object-contain"
-          // placeholder="blur"
           fill
           alt=""
           src={images[0].src}
         />
         <Icon
+          onClick={() => addToFavorite(product.id, userId)}
           icon={Heart}
           variant="solid"
           color="rose"

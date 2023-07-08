@@ -13,9 +13,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     },
   });
   return (
-    <div className="container mx-auto mt-4">
+    <div className="max-w-3xl mx-auto mt-4">
       <div className="flex items-center space-x-2">
-        {category[0].subCategory?.map((sub, i) => (
+        {category[0]?.subCategory?.map((sub, i) => (
           <Button
             key={i}
             size="xs"
@@ -27,8 +27,8 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         ))}
       </div>
       <div>
-        <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-6">
-          {category[0].products?.map((p, i) => (
+        <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
+          {category[0]?.products?.map((p, i) => (
             <ProductCard key={i} product={p} />
           ))}
         </div>
