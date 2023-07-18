@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Navigation from "./components/navigation";
+import Navigation from "./_components/navigation";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

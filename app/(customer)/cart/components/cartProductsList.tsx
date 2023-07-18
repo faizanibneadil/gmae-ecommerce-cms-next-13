@@ -29,11 +29,11 @@ export default function CartProductsList() {
           className="divide-y divide-gray-200 dark:divide-gray-700"
         >
           {cart.items.map((item, idx) => {
-            const images: any = item.images;
+            // const images: any = item.images;
             return (
               <li key={idx} className="py-3 sm:py-4">
                 <div className="flex items-center space-x-4">
-                  <div className="relative self-start flex-shrink-0">
+                  {/* <div className="relative self-start flex-shrink-0">
                     <Image
                       loader={imageLoader}
                       className="object-fill w-8 h-8 rounded-full"
@@ -42,7 +42,7 @@ export default function CartProductsList() {
                       alt=""
                       src={images[0].src}
                     />
-                  </div>
+                  </div> */}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-medium text-gray-900 md:text-sm line-clamp-3">
                       {item.title}

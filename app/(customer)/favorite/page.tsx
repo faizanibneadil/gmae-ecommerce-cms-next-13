@@ -1,7 +1,7 @@
 import { authOptions } from "@/config/authOptions";
 import { prisma } from "@/config/db";
 import { getServerSession } from "next-auth";
-import ProductCard from "../components/productsCard";
+import ProductCard from "../_components/productsCard";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -21,11 +21,11 @@ export default async function Page() {
   });
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
+      {/* <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
         {products.map((p, pIdx) => (
           <ProductCard userId={session?.user.id} key={pIdx} product={p} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

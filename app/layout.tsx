@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Providers from "../providers/poviders";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

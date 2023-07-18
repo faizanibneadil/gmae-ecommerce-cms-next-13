@@ -28,51 +28,51 @@ const cartSlice = createSlice({
     addToCart: (state: CartState, action: PayloadAction<Products>) => {
       const newItem = action.payload;
       const existingItem = state.items.find(item => item.id === newItem.id);
-      if (existingItem) {
-        existingItem.qty += 1
-        existingItem.sub_total = +existingItem.regularPrice * +existingItem.qty
-        existingItem.discount = (+existingItem.regularPrice - +existingItem.salePrice) * +existingItem.qty
-        state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0)
-        state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0)
-        state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0)
-        state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0)
-      } else {
-        state.items.push({
-          ...newItem,
-          discount: (newItem.regularPrice - newItem.salePrice) * 1,
-          qty: 1,
-          sub_total: newItem.regularPrice * 1
-        });
-        state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0)
-        state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0)
-        state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0)
-        state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0)
-      }
+      // if (existingItem) {
+      //   existingItem.qty += 1
+      //   existingItem.sub_total = +existingItem.regularPrice * +existingItem.qty
+      //   existingItem.discount = (+existingItem.regularPrice - +existingItem.salePrice) * +existingItem.qty
+      //   state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0)
+      //   state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0)
+      //   state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0)
+      //   state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0)
+      // } else {
+      //   state.items.push({
+      //     ...newItem,
+      //     discount: (newItem.regularPrice - newItem.salePrice) * 1,
+      //     qty: 1,
+      //     sub_total: newItem.regularPrice * 1
+      //   });
+      //   state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0)
+      //   state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0)
+      //   state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0)
+      //   state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0)
+      // }
     },
     removeToCart: (state: CartState, action: PayloadAction<{ id: string }>) => {
       const id = action.payload.id;
       const existingItemIndex = state.items.findIndex(item => item.id === id);
 
-      if (existingItemIndex !== -1) {
-        const existingItem = state.items[existingItemIndex];
+      // if (existingItemIndex !== -1) {
+      //   const existingItem = state.items[existingItemIndex];
 
-        if (existingItem.qty > 1) {
-          existingItem.qty -= 1;
-          existingItem.sub_total = +existingItem.regularPrice * +existingItem.qty;
-          existingItem.discount = (+existingItem.regularPrice - +existingItem.salePrice) * +existingItem.qty;
+      //   if (existingItem.qty > 1) {
+      //     existingItem.qty -= 1;
+      //     existingItem.sub_total = +existingItem.regularPrice * +existingItem.qty;
+      //     existingItem.discount = (+existingItem.regularPrice - +existingItem.salePrice) * +existingItem.qty;
 
-          state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0);
-          state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0);
-          state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0);
-          state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0);
-        } else {
-          state.items.splice(existingItemIndex, 1);
-          state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0);
-          state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0);
-          state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0);
-          state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0);
-        }
-      }
+      //     state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0);
+      //     state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0);
+      //     state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0);
+      //     state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0);
+      //   } else {
+      //     state.items.splice(existingItemIndex, 1);
+      //     state.total_qty = state.items.reduce((pre: any, nxt: any) => pre + nxt.qty, 0);
+      //     state.discount = state.items.reduce((pre: any, nxt: any) => pre + nxt.discount, 0);
+      //     state.sub_total = state.items.reduce((pre: any, nxt: any) => pre + nxt.sub_total, 0);
+      //     state.total = state.items.reduce((pre: any, nxt: any) => pre + nxt.regularPrice * nxt.qty, 0);
+      //   }
+      // }
     }
   },
 });

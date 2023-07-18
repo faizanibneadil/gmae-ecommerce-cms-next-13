@@ -11,7 +11,8 @@ export default function AuthButton() {
       loading={status === "loading"}
       onClick={session ? () => signOut() : () => signIn("google")}
       size="xs"
-      variant="light"
+      variant="primary"
+      className="w-full"
     >
       {session ? `Logout` : `login`}
     </Button>
