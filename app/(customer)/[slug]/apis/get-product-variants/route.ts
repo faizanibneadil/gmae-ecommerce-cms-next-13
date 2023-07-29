@@ -3,27 +3,27 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, ctx: { params: { slug: string } }) {
     try {
-        const searchText = await prisma.products.findUnique({ where: { slug: ctx.params.slug }, select: { title: true } })
-        const alsoAvailableIn = await prisma.products.findMany({
+        const [variants] = await prisma.products.findMany({
             select: {
-                id: true,
-                title: true,
-                slug: true,
-                images: {
+                variants: {
                     select: {
                         id: true,
-                        src: true
-                    },
-                    take: 1
+                        title: true,
+                        slug: true,
+                        images: {
+                            select: {
+                                id: true,
+                                src: true
+                            }
+                        }
+                    }
                 }
             },
             where: {
-                title: {
-                    search: searchText?.title?.split(" ").join(' | ')
-                }
-            },
+                slug: ctx.params.slug
+            }
         })
-        return NextResponse.json({ variants: alsoAvailableIn })
+        return NextResponse.json({ productVariants: variants.variants })
     } catch (e) {
         console.log(e)
     }

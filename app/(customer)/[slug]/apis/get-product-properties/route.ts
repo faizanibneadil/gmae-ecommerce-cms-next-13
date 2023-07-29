@@ -5,6 +5,7 @@ export async function GET(req: NextRequest, ctx: { params: { slug: string } }) {
     try {
         const properties = await prisma.products.findUnique({
             select: {
+                id:true,
                 title: true,
                 description: true,
                 regularPrice: true,

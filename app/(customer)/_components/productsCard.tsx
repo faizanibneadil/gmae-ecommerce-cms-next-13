@@ -5,12 +5,7 @@ import { Icon } from "@tremor/react";
 import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { CategoriesAndProductTypes } from "../_queries";
 
-type CategoryAndProduct = CategoriesAndProductTypes["categoriesAndProducts"];
-type Category = CategoryAndProduct[number];
-type Product = Category["Products"][number];
-type Image = Category["images"];
 
 interface Props {
   product: {
@@ -32,7 +27,7 @@ export default function ProductCard({ product, userId }: Props) {
           className="object-contain"
           fill
           alt=""
-          src={`https://lh3.googleusercontent.com/d/${product.images[0].src}=s220`}
+          src={`https://lh3.googleusercontent.com/d/${product?.images[0]?.src}=s220`}
         />
         <Icon
           onClick={() => addToFavorite(product.id, userId)}

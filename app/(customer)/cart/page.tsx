@@ -1,9 +1,57 @@
-import CartProductsList from "./components/cartProductsList";
+import { getServerSession } from "next-auth";
+import { getCartItems } from "./_queries";
+import { authOptions } from "@/config/authOptions";
+import Image from "next/image";
+import { Button } from "@tremor/react";
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  const { cart } = await getCartItems(session?.user.id);
   return (
     <div className="max-w-4xl mx-auto my-6">
-      <CartProductsList />
+      {cart?.items.map((item) => {
+        const key = item.products?.id;
+        const image = item.products?.images[0].src;
+        const name = item.products?.title;
+        const qty = item.quantity;
+        const regularPrice = item.products?.regularPrice;
+        const salePrice = item?.products?.salePrice;
+        const discount = Number(regularPrice) - Number(salePrice);
+        const subTotal =
+          Number(qty) * Number(salePrice) ?? Number(regularPrice);
+        return (
+          <div key={key} className="grid grid-cols-12 gap-2">
+            <div className="col-span-2">
+              <div className="relative h-20">
+                <Image
+                  src={`https://lh3.googleusercontent.com/d/${image}=s420`}
+                  alt=""
+                  fill
+                  className="object-contain w-full"
+                />
+              </div>
+            </div>
+            <div className="col-span-10">
+              <h2 className="font-semibold line-clamp-2">{name}</h2>
+              <div className="flex flex-col justify-between md:flex-row item-center">
+                <p className="text-sm">Quantity: {qty}</p>
+                <p className="text-sm">Price: {regularPrice}</p>
+                <p className="text-sm">Discount: {discount}</p>
+                <p className="text-sm">Sub Total: {subTotal}</p>
+              </div>
+              <div className="flex space-x-2">
+                <Button color="green" size="xs">
+                  +
+                </Button>
+                <Button size="xs">-</Button>
+                <Button color="rose" size="xs">
+                  x
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

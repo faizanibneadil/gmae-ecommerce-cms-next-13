@@ -10,7 +10,7 @@ interface Props {
 
 const Page = async ({ searchParams }: Props) => {
   const { categories } = await getCategories();
-  return !!categories.length ? (
+  return !!categories?.length ? (
     <div>
       <Title>Listing - Categories.</Title>
       {categories.map((category) => (

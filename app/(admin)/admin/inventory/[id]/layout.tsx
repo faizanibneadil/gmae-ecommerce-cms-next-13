@@ -5,6 +5,8 @@ interface Props {
   images: ReactNode;
   attributesForm: ReactNode;
   imagesGadget: ReactNode;
+  variants: ReactNode;
+  relatedProducts: ReactNode;
 }
 
 const Layout = ({
@@ -12,6 +14,8 @@ const Layout = ({
   attributesForm,
   images,
   imagesGadget,
+  relatedProducts,
+  variants,
 }: Props) => {
   return (
     <div className="max-w-3xl mx-auto">
@@ -19,6 +23,8 @@ const Layout = ({
       {images}
       {children}
       {attributesForm}
+      {variants}
+      {relatedProducts}
     </div>
   );
 };

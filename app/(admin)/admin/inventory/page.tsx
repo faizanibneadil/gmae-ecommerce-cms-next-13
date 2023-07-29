@@ -19,7 +19,12 @@ const getAllProducts = cache(async () => {
   return res;
 });
 
-const Page = async () => {
+interface Props {
+  searchParams: { [key: string]: string };
+  params: { id: string };
+}
+
+const Page = async ({ params }: Props) => {
   const products = await getAllProducts();
   return (
     <div>

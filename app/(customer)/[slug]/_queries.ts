@@ -2,6 +2,7 @@ import { cache } from "react";
 
 type ProductProperties = {
     properties: {
+        id: string
         title: string | null;
         description: string | null;
         regularPrice: number | null;

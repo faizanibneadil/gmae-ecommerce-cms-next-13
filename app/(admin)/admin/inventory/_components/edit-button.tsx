@@ -13,8 +13,7 @@ const EditButton: FC<Props> = ({ id }) => {
   return (
     <Button
       size="xs"
-      className="w-full"
-      variant="secondary"
+      className="w-full m-0 justify-self-stretch"
       icon={Edit}
       loading={isPending}
       disabled={isPending}

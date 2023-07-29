@@ -37,3 +37,9 @@ export const createAttributesSchema = z.object({
     name: z.string(),
     value: z.string()
 })
+
+export const updateDeliveryLocationSchema = z.object({
+    locationId: z.string(),
+    location: z.string(),
+    LocationRate: z.coerce.number()
+})

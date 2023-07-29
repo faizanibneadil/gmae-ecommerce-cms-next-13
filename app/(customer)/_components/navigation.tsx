@@ -5,6 +5,7 @@ import { LayoutGrid, ShoppingCart, Star, Store, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import Authenticate from "./authenticate";
 
 export default function Navigation() {
   const cart = useSelector((state: RootState) => state.cart);
@@ -24,7 +25,10 @@ export default function Navigation() {
         </div>
         <div className="flex items-center justify-center col-span-2 ">
           <div className="grid grid-flow-col overflow-x-scroll no-scrollbar auto-cols-max">
-            <Link href="/" className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group">
+            <Link
+              href="/"
+              className="inline-flex flex-col items-center justify-center p-2 hover:bg-gray-300 group"
+            >
               <Store className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
                 Shopping
@@ -73,9 +77,7 @@ export default function Navigation() {
           </div>
         </div>
         <div className="items-center justify-end hidden p-2 pr-4 border-b-2 md:flex md:border-b-0">
-          <Button size="xs" variant="light">
-            login
-          </Button>
+          <Authenticate />
         </div>
       </div>
     </>

@@ -14,13 +14,13 @@ const ProductsImagesListItem: FC<Props> = ({ image }) => {
   //   return `https://drive.google.com/thumbnail?id=${src}&sz=w120`;
   // };
   return (
-    <div key={image.id} className="relative w-10 h-10">
+    <div key={image.id} className="relative w-12 h-12">
       <Image
         // loader={imageLoader}
         alt=""
         fill
         src={`https://drive.google.com/thumbnail?id=${image.src}&sz=w120`}
-        className="object-cover rounded-full shadow-lg ring-1 ring-white"
+        className="object-cover"
       />
     </div>
   );

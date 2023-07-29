@@ -2,14 +2,18 @@ import { List, ListItem } from "@tremor/react";
 import React from "react";
 import { getProductAttributes } from "./_queries";
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+
 interface Props {
   params: { slug: string };
   searchParams: { [key: string]: string };
 }
 
 const Page = async ({ params }: Props) => {
+  await wait(8000)
   const { attributes } = await getProductAttributes(params.slug);
-  return (
+  return !!attributes?.length ? (
     <div className="space-y-2">
       <div className="font-semibold text-md">Attributes</div>
 
@@ -23,7 +27,7 @@ const Page = async ({ params }: Props) => {
         ))}
       </List>
     </div>
-  );
+  ) : null;
 };
 
 export default Page;

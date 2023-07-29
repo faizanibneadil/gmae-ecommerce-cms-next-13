@@ -1,4 +1,4 @@
-import { FC, memo, useMemo } from "react";
+import { FC, memo } from "react";
 import ImagesListItem from "./images-list-item";
 
 interface Props {
@@ -10,10 +10,9 @@ interface Props {
 }
 
 const ImagesList: FC<Props> = ({ images, categoryId }) => {
-  const memoizedImages = useMemo(() => images, [categoryId]);
   return (
     <div className="gap-x-2 gap-y-2 columns-3 md:columns-8">
-      {memoizedImages.map((image, index) => (
+      {images?.map((image, index) => (
         <ImagesListItem
           key={image.id}
           image={image}

@@ -1,8 +1,9 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAttributesSchema, createCategorySchema, createImagesSchema, createProductSchema } from "./_schemas";
+import { createAttributesSchema, createCategorySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
+import { Prisma } from "@prisma/client";
 
 export async function createCategoryAction(formData: FormData) {
     const form = Object.fromEntries(formData)
@@ -138,6 +139,28 @@ export async function connectImageToProductAction({ imageId, productId }: { imag
     }
 }
 
+export async function connectVariantAction({ variantId, productId }: { variantId: string, productId?: string }) {
+    try {
+        await prisma.products.update({
+            data: {
+                variants: {
+                    connect: {
+                        id: variantId
+                    }
+                }
+            },
+            where: {
+                id: productId
+            }
+        })
+        revalidateTag("admin-product-variants")
+        console.log("Successfully connected variant 👍")
+    } catch (e) {
+        console.log("Something went wrong when connecting image to production 👎")
+        console.log(e)
+    }
+}
+
 export async function connectImageToCategoryAction({ imageId, categoryId }: { imageId: string, categoryId: string }) {
     try {
         await prisma.images.update({
@@ -220,9 +243,52 @@ export async function initializeNewInventory() {
 }
 
 export async function initializeNewCategory() {
-    const { id } = await prisma.categories.create({ data: { name: "Category Placeholder Name", images: { connect: { id: "0730a5ac-1b1a-4d25-85ad-530e1b016ee5" } } }, select: { id: true } })
+    const { id } = await prisma.categories.create({ data: {}, select: { id: true } })
     revalidateTag("parent-categories")
     redirect(`/admin/categories?id=${id}`)
+}
+
+export async function addNewDeliveryLocation() {
+    try {
+        await prisma.deliveryLocations.create({ data: {} })
+        revalidateTag("locations")
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export async function updateDeliveryLocationAction(formData: FormData) {
+    const form = Object.fromEntries(formData.entries())
+    const values = updateDeliveryLocationSchema.parse(form)
+    try {
+        await prisma.deliveryLocations.update({
+            data: {
+                location: values.location,
+                rate: values.LocationRate
+            },
+            where: {
+                id: values.locationId
+            }
+        })
+        revalidateTag("locations")
+        console.log("Location has been successfully updated.👍")
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export async function deleteDeliveryLocation({ locationId }: { locationId: string }) {
+    try {
+        await prisma.deliveryLocations.delete({
+            where: {
+                id: locationId
+            }
+        })
+        revalidateTag("locations")
+        console.log("Location has been successfully deleted.👍")
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export async function addToFavorite(productId: string, userId?: string) {
@@ -265,5 +331,36 @@ export async function addToFavorite(productId: string, userId?: string) {
     } catch (e) {
         console.log(e)
         console.log("Something went wrong when adding to favorites 👎")
+    }
+}
+
+interface AddToCartTypes {
+    userId: string | undefined
+    productId: string | undefined
+}
+
+export async function addToCart({ userId, productId }: AddToCartTypes) {
+    try {
+        // update product quantity if product is existed in cart item
+        const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
+        await prisma.cart.upsert({
+            create: {
+                user: { connect: { id: userId } },
+                items: { create: { quantity: 1, products: { connect: { id: productId } } } }
+            },
+            update: {
+                items: {
+                    upsert: {
+                        create: { quantity: 1, products: { connect: { id: productId } } },
+                        update: { quantity: { increment: 1 } },
+                        where: { id: !!item.length ? item[0].id : "add-new-item-to-cart" }
+                    }
+                }
+            },
+            where: { userId }
+        })
+        revalidateTag("user-cart")
+    } catch (e) {
+        console.log(e)
     }
 }
