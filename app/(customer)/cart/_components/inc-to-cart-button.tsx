@@ -1,8 +1,9 @@
 "use client";
 import { addToCart } from "@/_actions";
 import { Icon } from "@tremor/react";
-import { Loader, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { FC, memo, useTransition } from "react";
+import Spin from "../../../_components/loading-spinner";
 
 interface Props {
   productId: string | undefined;
@@ -15,9 +16,10 @@ const IncrementToCart: FC<Props> = ({ productId, userId }) => {
   return (
     <Icon
       onClick={action}
-      icon={isIncrementing ? Loader : Plus}
+      icon={isIncrementing ? Spin : Plus}
       variant="solid"
       tooltip="Increment Quantity"
+      className="cursor-pointer"
     />
   );
 };

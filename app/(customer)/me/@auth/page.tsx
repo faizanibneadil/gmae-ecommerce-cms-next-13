@@ -1,4 +1,4 @@
-import AuthButton from "@/app/components/auth";
+import AuthButton from "@/app/_components/auth";
 
 export default function Page() {
   return (

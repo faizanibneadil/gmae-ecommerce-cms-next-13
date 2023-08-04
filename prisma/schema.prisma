@@ -8,9 +8,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
 model Example {
@@ -96,6 +96,7 @@ model Categories {
   slug                 String?      @unique
   order                Int?         @default(0)
   displayOnLandingPage Boolean?     @default(false)
+  isPublished          Boolean?     @default(false)
   parentCategoryId     String?
   parentCategory       Categories?  @relation("subCategory", fields: [parentCategoryId], references: [id])
   subCategory          Categories[] @relation("subCategory")

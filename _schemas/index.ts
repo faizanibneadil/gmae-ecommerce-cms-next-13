@@ -1,11 +1,21 @@
+import { prisma } from "@/config/db";
 import z from "zod"
 
 export const createCategorySchema = z.object({
     id: z.string({ required_error: "ID is required." }),
-    name: z.string({ required_error: "Category Name is required." }),
-    slug: z.string({ required_error: "Category slug is required." }),
-    order: z.coerce.number(),
-    categoryId: z.string()
+    name: z.string().trim().min(1, "Minimum 1 correctors are required.").max(40, "Maximum 40 correctors are allowed."),
+    slug: z.string().trim().toLowerCase().transform(value => value.replace(/[^\w\s-]/g, "").replace(/\s+/g, " ").trim().replace(/\s+/g, "-")).refine(async (val) => {
+        const slug = await prisma.categories.findUnique({ where: { slug: val }, select: { slug: true } })
+        if (slug?.slug) {
+            return false
+        } else {
+            return true
+        }
+    }, "Slug is already existed."),
+    order: z.coerce.number().nonnegative("0 Or Positive numbers only allowed. Ex: 1,2,3 ... 4"),
+    categoryId: z.string(),
+    isPublished: z.coerce.boolean(),
+    displayOnLandingPage: z.coerce.boolean()
 })
 
 export const createProductSchema = z.object({

@@ -1,9 +1,8 @@
 import React from "react";
 import { getProductVariants } from "./_queries";
-import ProductCard from "../../_components/productsCard";
+import ProductCard from "../../../_components/productsCard";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 
 interface Props {
   params: { slug: string };
@@ -11,7 +10,7 @@ interface Props {
 }
 
 const Page = async ({ params }: Props) => {
-  await wait(9000)
+  await wait(9000);
   const { relatedProducts } = await getProductVariants(params.slug);
   return relatedProducts?.length ? (
     <div className="space-y-2">

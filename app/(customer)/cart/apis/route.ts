@@ -37,8 +37,9 @@ export async function GET(req: NextRequest) {
                 userId: userId?.toString()
             }
         })
-        return NextResponse.json({ cart })
+        return NextResponse.json({ cart }, { status: 200 })
     } catch (e) {
         console.log(e)
+        return NextResponse.json({}, { status: 400 })
     }
 }

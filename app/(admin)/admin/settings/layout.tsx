@@ -15,7 +15,7 @@ const Layout = ({ children, deliveryLocations }: Props) => (
   <AccordionList className="max-w-4xl mx-auto">
     <Accordion defaultOpen>
       <AccordionHeader>Delivery Locations</AccordionHeader>
-      <AccordionBody className="p-0">{deliveryLocations}</AccordionBody>
+      <AccordionBody>{deliveryLocations}</AccordionBody>
     </Accordion>
     <Accordion>
       <AccordionHeader>More Settings.</AccordionHeader>

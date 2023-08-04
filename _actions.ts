@@ -3,68 +3,38 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
 import { createAttributesSchema, createCategorySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
-import { Prisma } from "@prisma/client";
 
 export async function createCategoryAction(formData: FormData) {
-    const form = Object.fromEntries(formData)
-    const { id, categoryId, ...values } = createCategorySchema.parse(form)
-    let query = Object.create({});
-    query.create = Object.assign(Object.create({}), { ...values });
-    query.update = Object.assign(Object.create({}), { ...values });
-    query.where = Object.assign(Object.create({}), { id: id });
-    if (categoryId === 'undefined') {
-        query.update = Object.assign(Object.create({}), { ...values, parentCategory: { disconnect: true } });
-    } else if (categoryId) {
-        query.create = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
-        query.update = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
-    }
-    try {
-        await prisma.categories.upsert(query)
-        revalidateTag("parent-categories")
-        console.log("Create Or Updated Successfully 👍")
-    } catch (e) {
-        console.log("Something went wrong when Creating Or Updating with this error 👎")
-        console.log(e)
-    }
-}
-
-export async function disconnectSubCategory({ subCategoryId, categoryId }: { subCategoryId?: string, categoryId?: string }) {
-    if (subCategoryId && categoryId) {
+    const form = Object.fromEntries(formData.entries())
+    const asd = await createCategorySchema.safeParseAsync(form)
+    if (!asd.success) {
+        return { error: asd.error.format() }
+    } else {
+        const { id, categoryId, ...values } = asd.data
+        let query = Object.create({});
+        query.create = Object.assign(Object.create({}), { ...values });
+        query.update = Object.assign(Object.create({}), { ...values });
+        query.where = Object.assign(Object.create({}), { id: id });
+        if (!categoryId || categoryId === 'undefined') {
+            query.update = Object.assign(Object.create({}), { ...values, parentCategory: { disconnect: true } });
+        } else {
+            query.create = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
+            query.update = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
+        }
         try {
-            await prisma.categories.update({
-                data: {
-                    subCategory: {
-                        disconnect: {
-                            id: subCategoryId
-                        }
-                    }
-                },
-                where: {
-                    id: categoryId
-                }
-            })
-            revalidateTag("parent-categories")
+            await prisma.categories.upsert(query)
+            revalidatePath("/admin/categories")
+            console.log("Create Or Updated Successfully 👍")
         } catch (e) {
-            console.log(`
-                ==================================
-                ERROR : When disconnecting sub category
-                ==================================
-            `)
+            console.log("Something went wrong when Creating Or Updating with this error 👎")
             console.log(e)
         }
-    } else {
-        return console.log(`
-        ==================================
-        ERROR : When disconnecting sub category
-        CategoryId and SubCategoryId is
-        ==================================
-    `);
     }
 }
 
 export async function deleteCategoryByIdAction(id: string) {
-    // await deleteCategoryById(id)
-    revalidateTag("parent-categories")
+    await prisma.categories.delete({ where: { id } })
+    revalidatePath("/admin/categories")
 }
 
 export async function deleteProductAction(id: string) {
@@ -175,7 +145,7 @@ export async function connectImageToCategoryAction({ imageId, categoryId }: { im
                 id: imageId
             }
         })
-        revalidateTag("parent-categories")
+        revalidatePath("/admin/categories")
         console.log("Successfully connected image with product 👍")
     } catch (e) {
         console.log("Something went wrong when connecting image to production 👎")
@@ -244,8 +214,8 @@ export async function initializeNewInventory() {
 
 export async function initializeNewCategory() {
     const { id } = await prisma.categories.create({ data: {}, select: { id: true } })
-    revalidateTag("parent-categories")
-    redirect(`/admin/categories?id=${id}`)
+    revalidatePath("/admin/categories")
+    return id
 }
 
 export async function addNewDeliveryLocation() {
@@ -359,6 +329,59 @@ export async function addToCart({ userId, productId }: AddToCartTypes) {
             },
             where: { userId }
         })
+        revalidateTag("user-cart")
+    } catch (e) {
+        console.log(e)
+    }
+}
+export async function removeToCart({ userId, productId }: AddToCartTypes) {
+    try {
+        // update product quantity if product is existed in cart item
+        const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
+        await prisma.cart.update({
+            data: {
+                items: {
+                    delete: {
+                        id: item[0].id
+                    }
+                }
+            },
+            where: { userId }
+        })
+        revalidateTag("user-cart")
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+export async function decrementToCart({ userId, productId }: AddToCartTypes) {
+    try {
+        // update product quantity if product is existed in cart item
+        const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
+        if (Number(item[0]?.quantity) <= 1) {
+            await prisma.cart.update({
+                data: {
+                    items: {
+                        delete: {
+                            id: item[0].id
+                        }
+                    }
+                },
+                where: { userId }
+            })
+        } else {
+            await prisma.cart.update({
+                data: {
+                    items: {
+                        update: {
+                            data: { quantity: { decrement: 1 } },
+                            where: { id: item[0].id }
+                        }
+                    }
+                },
+                where: { userId }
+            })
+        }
         revalidateTag("user-cart")
     } catch (e) {
         console.log(e)

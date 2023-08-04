@@ -21,7 +21,7 @@ export default async function Page() {
         const salePrice = item?.products?.salePrice;
         const discount = Number(regularPrice) - Number(salePrice);
         const subTotal =
-          Number(qty) * Number(salePrice) ?? Number(regularPrice);
+          Number(qty) * Number(regularPrice) ?? Number(salePrice);
         return (
           <div key={key} className="grid grid-cols-12 gap-2">
             <div className="col-span-2">
@@ -44,8 +44,8 @@ export default async function Page() {
               </div>
               <div className="flex mt-4 space-x-2">
                 <IncrementToCart productId={id} userId={session?.user.id} />
-                <DecrementToCart />
-                <RemoveToCart />
+                <DecrementToCart productId={id} userId={session?.user.id} />
+                <RemoveToCart productId={id} userId={session?.user.id} />
               </div>
             </div>
           </div>
