@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { getImages } from "./_queries";
 import { Images } from "@prisma/client";
 import Link from "next/link";
+import { cache } from "react";
+import { prisma } from "@/config/db";
+
+const getImages = cache(async () => {
+  const images = await prisma.images.findMany();
+  return images;
+});
 
 const Page = async () => {
-  const { images } = await getImages();
+  const images = await getImages();
   return (
-    <div className="gap-x-2 gap-y-2 columns-4 md:columns-8">
+    <div className="gap-x-2 gap-y-2 columns-3 md:columns-8">
       {images.map((image: Images) => (
         <Link key={image.id} href={`/admin/images?id=${image.id}`} replace>
           <Image
