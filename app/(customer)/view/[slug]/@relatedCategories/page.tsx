@@ -1,19 +1,38 @@
-import React from "react";
-import { getProductRelatedCategories } from "./_queries";
+import React, { cache } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
+import { prisma } from "@/config/db";
 
 interface Props {
   params: { slug: string };
   searchParams: { [key: string]: string };
 }
 
+const getCategories = cache(async (slug: string) => {
+  const relatedCategories = await prisma.categories.findMany({
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      images: {
+        select: {
+          id: true,
+          src: true,
+        },
+      },
+    },
+    where: {
+      name: {
+        search: slug.split("-").join(" | "),
+      },
+    },
+    take: 6,
+  });
+  return relatedCategories;
+});
+
 const Page = async ({ params }: Props) => {
-  await wait(7000)
-  const { relatedCategories } = await getProductRelatedCategories(params.slug);
+  const relatedCategories = await getCategories(params.slug);
   return relatedCategories?.length ? (
     <div className="space-y-2">
       <div className="font-semibold text-md">More Categories.</div>
@@ -35,9 +54,7 @@ const Page = async ({ params }: Props) => {
         ))}
       </div>
     </div>
-  ) : (
-    <p></p>
-  );
+  ) : null;
 };
 
 export default Page;

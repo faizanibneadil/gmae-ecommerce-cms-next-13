@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ConnectImage from "./connect-image";
-
+import { use } from "react";
 type Image = {
   id: string;
   src: string | null;

@@ -1,6 +1,3 @@
-import DiscountBanner from "./_components/discountBanner";
-import Products from "./_components/products";
-import SellerProfile from "./_components/sellerProfile";
 import { prisma } from "@/config/db";
 import ProductCard from "./_components/productsCard";
 import Link from "next/link";
@@ -8,20 +5,52 @@ import Image from "next/image";
 import Carousel from "./_components/carousel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
-import { getCategoriesAndProductsQuery } from "./_queries";
+import { cache } from "react";
 
-// export const revalidate = 120;
+export const revalidate = 600;
+
+const getCategoriesAndProducts = cache(async () => {
+  const categoriesAndProducts = await prisma.categories.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      images: { select: { src: true } },
+      Products: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          images: { select: { src: true }, take: 1 },
+        },
+        take: 6,
+      },
+    },
+    where: {
+      Products: { some: { id: {} } },
+      isPublished: true,
+      displayOnLandingPage: true,
+    },
+    take: 8,
+    orderBy: { order: "asc" },
+  });
+  return categoriesAndProducts;
+});
 
 export default async function Page() {
-  const { categoriesAndProducts } = await getCategoriesAndProductsQuery()
+  const data = await getCategoriesAndProducts();
   const session = await getServerSession(authOptions);
   return (
     <div>
       <Carousel />
       <div className="container mx-auto">
-        {categoriesAndProducts?.map((category) => (
+        {data?.map((category) => (
           <>
-            <section key={category.id} className="p-2 md:p-4">
+            <section
+              aria-labelledby={category?.name?.toString()}
+              key={category.id}
+              className="p-2 md:p-4"
+            >
               <div className="flex items-center justify-between">
                 <span className="flex items-center space-x-2 font-semibold truncate ">
                   <span className="relative w-8 h-8 rounded-full">

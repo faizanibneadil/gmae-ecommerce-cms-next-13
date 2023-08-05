@@ -6,7 +6,6 @@ import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 interface Props {
   product: {
     id: string;
@@ -21,7 +20,7 @@ interface Props {
 
 export default function ProductCard({ product, userId }: Props) {
   return (
-    <Link href={`/${product.slug}`} className="rounded-lg shadow-md">
+    <Link href={`/view/${product.slug}`} className="rounded-lg shadow-md">
       <div className="relative w-full h-32">
         <Image
           className="object-contain"

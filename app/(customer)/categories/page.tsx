@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategories } from "./_queries";
 import { prisma } from "@/config/db";
+import { cache } from "react";
 
-const Page = async () => {
-  // const { categories } = await getCategories();
+export const revalidate = 600;
+
+const getCategories = cache(async () => {
   const categories = await prisma.categories.findMany({
     select: {
       id: true,
@@ -17,7 +18,16 @@ const Page = async () => {
         },
       },
     },
+    where: {
+      Products: { some: { id: {} } },
+      isPublished: true,
+    },
   });
+  return categories;
+});
+
+const Page = async () => {
+  const categories = await getCategories();
   return !!categories?.length ? (
     <div className="max-w-3xl p-2 mx-auto mt-4">
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3">

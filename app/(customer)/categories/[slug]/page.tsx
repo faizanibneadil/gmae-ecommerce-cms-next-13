@@ -1,12 +1,50 @@
-import { Button } from "@tremor/react";
 import ProductCard from "../../_components/productsCard";
-import { getCategoryAndProductsBySlug } from "./_queries";
 import Link from "next/link";
+import { cache } from "react";
+import { prisma } from "@/config/db";
+
+const getCategory = cache(async (slug: string) => {
+  const category = await prisma.categories.findUnique({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      images: {
+        select: {
+          id: true,
+          src: true,
+        },
+      },
+      subCategory: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+      Products: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          images: {
+            select: {
+              src: true,
+            },
+            take: 1,
+          },
+        },
+      },
+    },
+    where: {
+      slug: slug,
+    },
+  });
+  return category;
+});
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { category } = await getCategoryAndProductsBySlug({
-    slug: params.slug,
-  });
+  const category = await getCategory(params.slug);
   return (
     <div className="max-w-3xl mx-auto mt-4">
       <div className="flex items-center space-x-2">

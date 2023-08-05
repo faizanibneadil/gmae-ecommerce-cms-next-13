@@ -9,12 +9,12 @@ import "swiper/css/free-mode";
 import "swiper/css/thumbs";
 
 type Props = {
-  images:
-    | {
-        id: string;
-        src: string | null;
-      }[]
-    | undefined;
+  images: {
+    images: {
+      id: string;
+      src: string | null;
+    }[];
+  } | null;
 };
 
 const ImagesSlider: FC<Props> = ({ images }) => {
@@ -30,7 +30,7 @@ const ImagesSlider: FC<Props> = ({ images }) => {
         slidesPerView={1}
         className="flex items-center justify-center w-full h-80"
       >
-        {images?.map((image: any) => (
+        {images?.images.map((image: any) => (
           <SwiperSlide key={image.id}>
             <ImagesSliderItem src={image.src} />
           </SwiperSlide>
@@ -47,7 +47,7 @@ const ImagesSlider: FC<Props> = ({ images }) => {
         className="h-20"
       >
         <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5">
-          {images?.map((image: any) => (
+          {images?.images.map((image: any) => (
             <SwiperSlide key={image.id}>
               <ImagesSliderItem src={image.src} />
             </SwiperSlide>

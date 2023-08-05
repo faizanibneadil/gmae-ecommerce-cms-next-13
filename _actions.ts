@@ -6,11 +6,11 @@ import { redirect } from "next/navigation";
 
 export async function createCategoryAction(formData: FormData) {
     const form = Object.fromEntries(formData.entries())
-    const asd = await createCategorySchema.safeParseAsync(form)
-    if (!asd.success) {
-        return { error: asd.error.format() }
+    const res = await createCategorySchema.safeParseAsync(form)
+    if (!res.success) {
+        return { error: res.error.format() }
     } else {
-        const { id, categoryId, ...values } = asd.data
+        const { id, categoryId, ...values } = res.data
         let query = Object.create({});
         query.create = Object.assign(Object.create({}), { ...values });
         query.update = Object.assign(Object.create({}), { ...values });

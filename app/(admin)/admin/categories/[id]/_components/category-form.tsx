@@ -1,15 +1,8 @@
 "use client";
 import { createCategoryAction } from "@/_actions";
-import {
-  Button,
-  Select,
-  SelectItem,
-  TextInput,
-  NumberInput,
-} from "@tremor/react";
+import { Button, Select, SelectItem, TextInput } from "@tremor/react";
 import { useRef, useState, useTransition } from "react";
-import { Check, Hash, Save, TextCursor, Type } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Hash, Save, TextCursor, Type } from "lucide-react";
 import Image from "next/image";
 
 type TCategories = {
@@ -36,17 +29,21 @@ interface Props {
 
 const CategoryForm: React.FC<Props> = ({ editCategoryId, categories }) => {
   const category = categories.find((c) => c.id === editCategoryId);
-  const ref = useRef<HTMLFormElement>(null);
 
-  const [categoryIds, setCategoryIds] = useState(
-    category?.parentCategory?.id.toString()
-  );
-  const [isPending, startTransition] = useTransition();
-  const [isPublish, setIsPublished] = useState(category?.isPublished);
-  const [isLandingPage, setIsLandingPage] = useState(
-    category?.displayOnLandingPage
-  );
+  // variables
+  const parentCategoryId = category?.parentCategory?.id.toString();
+  const isPublished = category?.isPublished;
+  const displayOnLandingPage = category?.displayOnLandingPage;
+
+  // States
+  const [categoryIds, setCategoryIds] = useState(parentCategoryId);
+  const [isPublish, setIsPublished] = useState(isPublished);
+  const [isLandingPage, setIsLandingPage] = useState(displayOnLandingPage);
+
+  // refs, error and transitions
+  const ref = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<any>();
+  const [isPending, startTransition] = useTransition();
 
   // server action
   const action = async (formData: FormData) => {

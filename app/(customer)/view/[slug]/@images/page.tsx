@@ -1,16 +1,31 @@
+import { cache } from "react";
 import ImagesSlider from "./_components/images-slider";
-import { getProductImages } from "./_queries";
-
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { prisma } from "@/config/db";
 
 interface Props {
   params: { slug: string };
   searchParams: { [key: string]: string };
 }
 
+const getImages = cache(async (slug: string) => {
+  const productImages = await prisma.products.findUnique({
+    select: {
+      images: {
+        select: {
+          id: true,
+          src: true,
+        },
+      },
+    },
+    where: {
+      slug: slug,
+    },
+  });
+  return productImages;
+});
+
 const Page = async ({ params }: Props) => {
-  await wait(4000);
-  const { images } = await getProductImages(params.slug);
+  const images = await getImages(params.slug);
   return (
     <div className="flex flex-col space-y-2">
       <ImagesSlider images={images} />
