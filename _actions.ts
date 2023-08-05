@@ -38,8 +38,8 @@ export async function deleteCategoryByIdAction(id: string) {
 }
 
 export async function deleteProductAction(id: string) {
-    // await deleteProduct(id)
-    revalidatePath("/admin/products")
+    await prisma.products.delete({ where: { id } })
+    revalidatePath("/admin/inventory")
 }
 
 export async function createProductAction(formData: any) {
@@ -209,7 +209,7 @@ export async function createAttributesAction(formData: FormData) {
 
 export async function initializeNewInventory() {
     const { id } = await prisma.products.create({ data: {}, select: { id: true } })
-    redirect(`/admin/inventory/${id}`)
+    return id
 }
 
 export async function initializeNewCategory() {

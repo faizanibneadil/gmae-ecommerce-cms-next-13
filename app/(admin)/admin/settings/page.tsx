@@ -1,3 +1,5 @@
-const Page = () => <p>More Settings.</p>;
+const Page = () => {
+  return <p>More Settings.</p>;
+};
 
 export default Page;

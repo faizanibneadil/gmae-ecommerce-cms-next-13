@@ -25,6 +25,9 @@ model CartItem {
   productId String?
   Cart      Cart?     @relation(fields: [cartId], references: [id])
   cartId    String?
+
+  @@index([productId])
+  @@index([cartId])
 }
 
 model Cart {
@@ -32,6 +35,8 @@ model Cart {
   user   User?      @relation(fields: [userId], references: [id])
   userId String?    @unique
   items  CartItem[]
+
+  @@index([userId])
 }
 
 model DeliveryLocations {
@@ -41,11 +46,13 @@ model DeliveryLocations {
 }
 
 model Attributes {
-  id         String   @id @default(uuid())
-  name       String
-  value      String
-  product    Products @relation(fields: [productsId], references: [id])
-  productsId String
+  id        String   @id @default(uuid())
+  name      String
+  value     String
+  product   Products @relation(fields: [productId], references: [id])
+  productId String
+
+  @@index([productId])
 }
 
 model Favorites {
@@ -53,6 +60,9 @@ model Favorites {
   productId String[]
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?  @unique
+
+  @@index([productId])
+  @@index([userId])
 }
 
 model Images {
@@ -62,6 +72,9 @@ model Images {
   altText    String?
   Products   Products[]
   Categories Categories[]
+
+  @@index([src])
+  @@index([searchText])
 }
 
 model Products {
@@ -79,14 +92,20 @@ model Products {
   stock          Int?         @default(0)
   ytVideosIds    String[]
   variants       Products[]   @relation("variants")
-  Products       Products?    @relation("variants", fields: [productsId], references: [id])
-  productsId     String?
+  Products       Products?    @relation("variants", fields: [productId], references: [id])
+  productId      String?
   createdAt      DateTime?    @default(now())
   updatedAt      DateTime?    @updatedAt
   images         Images[]
   Categories     Categories[]
   Attributes     Attributes[]
   CartItem       CartItem[]
+
+  @@index([slug])
+  @@index([isPublished])
+  @@index([isReviewEnable])
+  @@index([ytVideosIds])
+  @@index([productId])
 }
 
 model Categories {
@@ -104,6 +123,12 @@ model Categories {
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
   imageId              String?
+
+  @@index([slug])
+  @@index([displayOnLandingPage])
+  @@index([isPublished])
+  @@index([imageId])
+  @@index([parentCategoryId])
 }
 
 // Next-Auth

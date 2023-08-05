@@ -1,21 +1,25 @@
 "use client";
 import { initializeNewInventory } from "@/_actions";
-import { Button } from "@tremor/react";
+import { Button, Icon } from "@tremor/react";
 import { Plus } from "lucide-react";
 import { useTransition } from "react";
+import Spin from "../../../../_components/loading-spinner";
+import { useRouter } from "next/navigation";
 
 export default function InitializeNewInventory() {
+  const { replace } = useRouter();
   const [isPending, startTransition] = useTransition();
-  const initialize = () => startTransition(() => initializeNewInventory());
+
+  const initialize = () => {
+    return startTransition(async () => {
+      const id = await initializeNewInventory();
+      return replace(`/admin/inventory/${id}`);
+    });
+  };
+
   return (
-    <Button
-      loading={isPending}
-      onClick={() => initialize()}
-      variant="primary"
-      icon={Plus}
-      className="pr-1.5 md:pr-2.5"
-    >
-      <span className="hidden md:block">Create Inventory</span>
+    <Button variant="light" onClick={initialize} disabled={isPending}>
+      <Icon variant="shadow" icon={isPending ? Spin : Plus} />
     </Button>
   );
 }

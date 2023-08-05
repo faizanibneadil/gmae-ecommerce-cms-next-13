@@ -1,26 +1,21 @@
 "use client";
-import { Button } from "@tremor/react";
-import { Edit } from "lucide-react";
+import { EditIcon } from "@/app/_components/icons";
+import { Button, Icon } from "@tremor/react";
 import { useRouter } from "next/navigation";
-import { FC, memo, useTransition } from "react";
+import { memo, useTransition } from "react";
+import Spin from "../../../../_components/loading-spinner";
 
 interface Props {
   id: string;
 }
-const EditButton: FC<Props> = ({ id }) => {
+const EditProduct: React.FC<Props> = ({ id }) => {
   const router = useRouter();
   const [isPending, startOpen] = useTransition();
+  const edit = () => startOpen(() => router.replace(`/admin/inventory/${id}`));
   return (
-    <Button
-      size="xs"
-      className="w-full m-0 justify-self-stretch"
-      icon={Edit}
-      loading={isPending}
-      disabled={isPending}
-      onClick={() => startOpen(() => router.replace(`/admin/inventory/${id}`))}
-    >
-      Edit
+    <Button variant="light" size="xs" onClick={edit} disabled={isPending}>
+      <Icon variant="shadow" size="xs" icon={isPending ? Spin : EditIcon} />
     </Button>
   );
 };
-export default memo(EditButton);
+export default memo(EditProduct);

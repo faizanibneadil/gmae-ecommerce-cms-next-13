@@ -1,25 +1,29 @@
 "use client";
 import { deleteProductAction } from "@/_actions";
-import { Button } from "@tremor/react";
+import { Button, Icon } from "@tremor/react";
 import { Trash } from "lucide-react";
 import { useTransition } from "react";
+import Spin from "../../../../_components/loading-spinner";
 
-export default function DeleteButton({ id }: { id: string }) {
+export default function DeleteProduct({ id }: { id: string }) {
   const [isPending, startDeleting] = useTransition();
-  async function deleteProduct(id: string) {
-    startDeleting(async () => await deleteProductAction(id));
-  }
+  const deleteProduct = () => {
+    return startDeleting(async () => await deleteProductAction(id));
+  };
+
   return (
     <Button
+      variant="light"
       size="xs"
-      className="w-full"
-      variant="secondary"
-      icon={Trash}
-      loading={isPending}
+      onClick={deleteProduct}
       disabled={isPending}
-      onClick={() => deleteProduct(id)}
     >
-      Delete
+      <Icon
+        color="rose"
+        size="xs"
+        variant="shadow"
+        icon={isPending ? Spin : Trash}
+      />
     </Button>
   );
 }

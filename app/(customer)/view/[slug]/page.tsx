@@ -5,6 +5,7 @@ import BuyNowButton from "./_components/buy-now-button";
 import { authOptions } from "@/config/authOptions";
 import { cache } from "react";
 import { prisma } from "@/config/db";
+import { priceFormatter } from "@/lib/utils";
 
 interface Props {
   params: { slug: string };
@@ -34,6 +35,10 @@ const Page = async ({ params }: Props) => {
     <div className="flex flex-col space-y-2">
       <div className="text-lg font-semibold">{properties?.title}</div>
       <div className="text-md">{properties?.description}</div>
+      <div className={`text-lg font-semibold ${properties?.salePrice && `line-through`}`}>
+        {priceFormatter.format(Number(properties?.regularPrice))}
+      </div>
+      {properties?.salePrice && (<div className="text-lg font-semibold">{priceFormatter.format(Number(properties?.salePrice))}</div>)}
 
       <div className="max-w-lg">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
