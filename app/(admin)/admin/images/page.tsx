@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { Images } from "@prisma/client";
 import Link from "next/link";
-import { cache } from "react";
+import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 
 const getImages = cache(async () => {
@@ -9,11 +8,11 @@ const getImages = cache(async () => {
   return images;
 });
 
-const Page = async () => {
-  const images = await getImages();
+const Page = () => {
+  const images = use(getImages());
   return (
     <div className="gap-x-2 gap-y-2 columns-3 md:columns-8">
-      {images.map((image: Images) => (
+      {images.map((image) => (
         <Link key={image.id} href={`/admin/images?id=${image.id}`} replace>
           <Image
             key={image.id}
@@ -29,4 +28,5 @@ const Page = async () => {
   );
 };
 
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

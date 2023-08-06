@@ -5,7 +5,7 @@ import Image from "next/image";
 import Carousel from "./_components/carousel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
-import { cache } from "react";
+import { cache, memo, use } from "react";
 
 export const revalidate = 600;
 
@@ -37,14 +37,19 @@ const getCategoriesAndProducts = cache(async () => {
   return categoriesAndProducts;
 });
 
-export default async function Page() {
-  const data = await getCategoriesAndProducts();
-  const session = await getServerSession(authOptions);
+interface Props {
+  searchParams: { [key: string]: string };
+  params: {};
+}
+
+const Page: React.FC<Props> = () => {
+  const categories = use(getCategoriesAndProducts());
+  const session = use(getServerSession(authOptions));
   return (
     <div>
       <Carousel />
       <div className="container mx-auto">
-        {data?.map((category) => (
+        {categories?.map((category) => (
           <>
             <section
               aria-labelledby={category?.name?.toString()}
@@ -86,4 +91,7 @@ export default async function Page() {
       </div>
     </div>
   );
-}
+};
+
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

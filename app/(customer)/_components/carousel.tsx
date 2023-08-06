@@ -3,11 +3,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
-import { Icon } from "@tremor/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 
-export default function Carousel() {
+const Carousel = () => {
   const ref = useRef<any>();
   const images: any = [
     {
@@ -68,4 +66,7 @@ export default function Carousel() {
       </Swiper>
     </div>
   );
-}
+};
+
+const MemoCarousel = memo(Carousel);
+export default MemoCarousel;

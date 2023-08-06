@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import InitializeNewInventory from "./_components/initialize-new-inventory";
 import RefreshPage from "./_components/refresh-button";
@@ -38,8 +38,8 @@ interface Props {
   params: { id: string };
 }
 
-const Page = async ({ params }: Props) => {
-  const products = await getAllProducts();
+const Page = ({ params }: Props) => {
+  const products = use(getAllProducts());
   return !!products?.length ? (
     <div>
       <div className="flex justify-end mb-4 space-x-2">
@@ -86,4 +86,6 @@ const Page = async ({ params }: Props) => {
     notFound()
   );
 };
+
+const MemoizedPage = memo(Page);
 export default Page;

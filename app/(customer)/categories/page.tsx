@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/config/db";
-import { cache } from "react";
+import { cache, memo, use } from "react";
 
 export const revalidate = 600;
 
@@ -26,8 +26,8 @@ const getCategories = cache(async () => {
   return categories;
 });
 
-const Page = async () => {
-  const categories = await getCategories();
+const Page = () => {
+  const categories = use(getCategories());
   return !!categories?.length ? (
     <div className="max-w-3xl p-2 mx-auto mt-4">
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
@@ -52,4 +52,5 @@ const Page = async () => {
     <p>Categories Not Found</p>
   );
 };
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

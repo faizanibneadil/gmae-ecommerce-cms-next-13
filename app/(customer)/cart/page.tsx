@@ -1,16 +1,59 @@
 import { getServerSession } from "next-auth";
-import { getCartItems } from "./_queries";
 import { authOptions } from "@/config/authOptions";
 import Image from "next/image";
 import IncrementToCart from "./_components/inc-to-cart-button";
 import DecrementToCart from "./_components/dec-to-cart";
 import RemoveToCart from "./_components/remove-to-cart";
+import { cache, memo, use } from "react";
+import { prisma } from "@/config/db";
+import { notFound } from "next/navigation";
 
-export default async function Page() {
-  const session = await getServerSession(authOptions);
-  const { cart } = await getCartItems(session?.user.id);
-  return (
-    <div className="max-w-4xl mx-auto my-6">
+interface Props {
+  searchParams: { [key: string]: string };
+  params: {};
+}
+
+const getItems = cache(async (userId: string | undefined) => {
+  const cart = await prisma.cart.findUnique({
+    select: {
+      _count: {
+        select: {
+          items: true,
+        },
+      },
+      items: {
+        select: {
+          quantity: true,
+          products: {
+            select: {
+              id: true,
+              title: true,
+              regularPrice: true,
+              salePrice: true,
+              images: {
+                select: {
+                  id: true,
+                  src: true,
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+      },
+    },
+    where: {
+      userId: userId?.toString(),
+    },
+  });
+  return cart;
+});
+
+const Page: React.FC<Props> = () => {
+  const session = use(getServerSession(authOptions));
+  const cart = use(getItems(session?.user.id));
+  return !!cart?.items.length ? (
+    <div className="my-6">
       {cart?.items.map((item) => {
         const id = item.products?.id;
         const key = item.products?.id;
@@ -52,5 +95,10 @@ export default async function Page() {
         );
       })}
     </div>
+  ) : (
+    notFound()
   );
-}
+};
+
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
-// import { getCategories } from "./_queries";
-import { cache } from "react";
+import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import InitializeNewCategory from "./_components/initialize-new-category";
 import {
@@ -34,8 +33,8 @@ const getCategories = cache(async () => {
   return categories;
 });
 
-const Page = async () => {
-  const categories = await getCategories();
+const Page = () => {
+  const categories = use(getCategories());
   return categories?.length ? (
     <div>
       <div className="flex justify-end mb-4 space-x-2">
@@ -92,5 +91,5 @@ const Page = async () => {
     notFound()
   );
 };
-
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;
