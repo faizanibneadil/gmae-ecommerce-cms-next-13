@@ -8,13 +8,22 @@ import Spin from "../../../_components/loading-spinner";
 interface Props {
   productId: string | undefined;
   userId: string | undefined;
+  slug: string | null | undefined;
 }
 
 interface Props {}
 
-const DecrementToCart: FC<Props> = ({ productId, userId }) => {
-  const [isDecrementing, Decrement] = useTransition();
-  const action = () => Decrement(() => decrementToCart({ productId, userId }));
+const DecrementToCart: FC<Props> = ({ productId, userId, slug }) => {
+  const [isDecrementing, decrement] = useTransition();
+  const action = () => {
+    return decrement(() => {
+      return decrementToCart({
+        productId,
+        userId,
+        slug,
+      });
+    });
+  };
   return (
     <Icon
       onClick={action}

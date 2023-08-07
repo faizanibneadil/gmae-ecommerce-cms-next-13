@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Check,
   Edit,
   Eye,
   Globe,
@@ -21,6 +22,8 @@ export const EditIcon = (props: LucideProps) => <Edit {...props} />;
 export const XCircleIcon = (props: LucideProps) => <XCircle {...props} />;
 export const TrashIcon = (props: LucideProps) => <Trash {...props} />;
 export const RefreshIcon = (props: LucideProps) => <RefreshCw {...props} />;
+export const CheckIcon = (props: LucideProps) => <Check {...props} />;
+export const NoIcon = () => null;
 export const Spin = (props: LucideProps) => (
   <Loader className="w-4 h-4 animate-spin`" />
 );

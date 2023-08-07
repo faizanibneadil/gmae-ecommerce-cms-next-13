@@ -1,4 +1,4 @@
-import React, { cache } from "react";
+import { cache, memo, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/config/db";
@@ -31,8 +31,8 @@ const getCategories = cache(async (slug: string) => {
   return relatedCategories;
 });
 
-const Page = async ({ params }: Props) => {
-  const relatedCategories = await getCategories(params.slug);
+const Page: React.FC<Props> = ({ params }) => {
+  const relatedCategories = use(getCategories(params.slug));
   return relatedCategories?.length ? (
     <div className="space-y-2">
       <div className="font-semibold text-md">More Categories.</div>
@@ -57,4 +57,5 @@ const Page = async ({ params }: Props) => {
   ) : null;
 };
 
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

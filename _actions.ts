@@ -307,9 +307,10 @@ export async function addToFavorite(productId: string, userId?: string) {
 interface AddToCartTypes {
     userId: string | undefined
     productId: string | undefined
+    slug: string | null | undefined
 }
 
-export async function addToCart({ userId, productId }: AddToCartTypes) {
+export async function addToCart({ userId, productId, slug }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -329,12 +330,12 @@ export async function addToCart({ userId, productId }: AddToCartTypes) {
             },
             where: { userId }
         })
-        revalidateTag("user-cart")
+        revalidatePath(`/view/${slug}`)
     } catch (e) {
         console.log(e)
     }
 }
-export async function removeToCart({ userId, productId }: AddToCartTypes) {
+export async function removeToCart({ userId, productId, slug }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -348,13 +349,13 @@ export async function removeToCart({ userId, productId }: AddToCartTypes) {
             },
             where: { userId }
         })
-        revalidateTag("user-cart")
+        revalidatePath(`/view/${slug}`)
     } catch (e) {
         console.log(e)
     }
 }
 
-export async function decrementToCart({ userId, productId }: AddToCartTypes) {
+export async function decrementToCart({ userId, productId, slug }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -382,7 +383,7 @@ export async function decrementToCart({ userId, productId }: AddToCartTypes) {
                 where: { userId }
             })
         }
-        revalidateTag("user-cart")
+        revalidatePath(`/view/${slug}`)
     } catch (e) {
         console.log(e)
     }

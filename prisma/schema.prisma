@@ -49,7 +49,7 @@ model Attributes {
   id        String   @id @default(uuid())
   name      String
   value     String
-  product   Products @relation(fields: [productId], references: [id])
+  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 
   @@index([productId])
@@ -82,18 +82,17 @@ model Products {
   title          String?
   slug           String?      @unique
   description    String?
-  regularPrice   Int?         @default(0)
-  salePrice      Int?         @default(0)
-  purchasePrice  Int?         @default(0)
-  purchaseLimit  Int?         @default(0)
+  regularPrice   Int? // @default(0)
+  salePrice      Int? // @default(0)
+  purchasePrice  Int? // @default(0)
+  purchaseLimit  Int? // @default(0)
   isTrackStock   Boolean?     @default(false)
   isReviewEnable Boolean?     @default(true)
   isPublished    Boolean?     @default(false)
-  stock          Int?         @default(0)
+  stock          Int? // @default(0)
   ytVideosIds    String[]
+  variantBy      Products[]   @relation("variants")
   variants       Products[]   @relation("variants")
-  Products       Products?    @relation("variants", fields: [productId], references: [id])
-  productId      String?
   createdAt      DateTime?    @default(now())
   updatedAt      DateTime?    @updatedAt
   images         Images[]
@@ -105,7 +104,6 @@ model Products {
   @@index([isPublished])
   @@index([isReviewEnable])
   @@index([ytVideosIds])
-  @@index([productId])
 }
 
 model Categories {

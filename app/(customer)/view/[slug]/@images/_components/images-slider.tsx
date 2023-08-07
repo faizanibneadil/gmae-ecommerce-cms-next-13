@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, memo, useState } from "react";
+import { memo, useState } from "react";
 import { A11y, FreeMode, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ImagesSliderItem from "./images-slider-item";
@@ -17,8 +17,8 @@ type Props = {
   } | null;
 };
 
-const ImagesSlider: FC<Props> = ({ images }) => {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+const ImagesSlider: React.FC<Props> = ({ images }) => {
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   return (
     <div>
       <Swiper
@@ -38,7 +38,7 @@ const ImagesSlider: FC<Props> = ({ images }) => {
       </Swiper>
       <Swiper
         // @ts-ignore
-        onSwiper={setThumbsSwiper}
+        onSwiper={(swiper) => setThumbsSwiper(swiper)}
         spaceBetween={10}
         slidesPerView={5}
         freeMode={true}
@@ -58,4 +58,5 @@ const ImagesSlider: FC<Props> = ({ images }) => {
   );
 };
 
-export default memo(ImagesSlider);
+const MemoizedSlid = memo(ImagesSlider);
+export default MemoizedSlid;

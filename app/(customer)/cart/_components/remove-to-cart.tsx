@@ -8,11 +8,20 @@ import { removeToCart } from "@/_actions";
 interface Props {
   productId: string | undefined;
   userId: string | undefined;
+  slug: string | null | undefined;
 }
 
-const RemoveToCart: FC<Props> = ({ productId, userId }) => {
-  const [isDecrementing, Decrement] = useTransition();
-  const action = () => Decrement(() => removeToCart({ productId, userId }));
+const RemoveToCart: FC<Props> = ({ productId, userId, slug }) => {
+  const [isDecrementing, decrement] = useTransition();
+  const action = () => {
+    return decrement(() => {
+      return removeToCart({
+        productId,
+        userId,
+        slug,
+      });
+    });
+  };
   return (
     <Icon
       onClick={action}

@@ -20,9 +20,6 @@ export async function GET(req: NextRequest, ctx: { params: { id: string } }) {
                 title: {
                     search: searchText?.title?.split(" ").join(' | '),
                 },
-                id: {
-                    not: ctx.params.id
-                }
             },
         })
         return NextResponse.json({ relatedProducts: alsoAvailableIn })

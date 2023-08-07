@@ -1,8 +1,8 @@
 "use client";
 
 import { addToFavorite } from "@/_actions";
-import { Icon } from "@tremor/react";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Badge, Icon } from "@tremor/react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,10 +15,15 @@ interface Props {
       src: string | null;
     }[];
   };
+  attributes?: {
+    id: string;
+    name: string | null;
+    value: string | null;
+  }[];
   userId?: string;
 }
 
-export default function ProductCard({ product, userId }: Props) {
+export default function ProductCard({ product, attributes, userId }: Props) {
   return (
     <Link href={`/view/${product.slug}`} className="rounded-lg shadow-md">
       <div className="relative w-full h-32">
@@ -39,19 +44,15 @@ export default function ProductCard({ product, userId }: Props) {
       </div>
       <div className="p-2 mt-2">
         <h2 className="line-clamp-2">{product.title}</h2>
-        {/* <div className="flex items-center justify-between mt-4 space-x-2">
-          <div className="flex flex-col items-center text-left">
-            <span className="text-xs font-medium line-through oldstyle-nums">
-              Rs: {product.regularPrice}
-            </span>
-            <span className="text-sm font-medium oldstyle-nums">
-              Rs: {product.salePrice}
-            </span>
+        {!!attributes?.length ? (
+          <div className="space-x-0.5">
+            {attributes?.map((attr) => (
+              <Badge size="xs" key={attr.id} tooltip={attr.name?.toString()}>
+                {attr.value}
+              </Badge>
+            ))}
           </div>
-          <Button variant="primary" className="p-2 font-bold">
-            <ShoppingCart className="w-4 h-4" />
-          </Button>
-        </div> */}
+        ) : null}
       </div>
     </Link>
   );

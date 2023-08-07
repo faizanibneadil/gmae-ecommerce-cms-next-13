@@ -8,11 +8,20 @@ import Spin from "../../../_components/loading-spinner";
 interface Props {
   productId: string | undefined;
   userId: string | undefined;
+  slug: string | null | undefined;
 }
 
-const IncrementToCart: FC<Props> = ({ productId, userId }) => {
-  const [isIncrementing, Increment] = useTransition();
-  const action = () => Increment(() => addToCart({ productId, userId }));
+const IncrementToCart: FC<Props> = ({ productId, userId, slug }) => {
+  const [isIncrementing, increment] = useTransition();
+  const action = () => {
+    return increment(() => {
+      return addToCart({
+        productId,
+        userId,
+        slug,
+      });
+    });
+  };
   return (
     <Icon
       onClick={action}

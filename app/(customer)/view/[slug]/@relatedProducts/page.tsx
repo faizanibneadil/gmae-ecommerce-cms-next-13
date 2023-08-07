@@ -1,4 +1,4 @@
-import React, { cache } from "react";
+import { cache, memo, use } from "react";
 import ProductCard from "../../../_components/productsCard";
 import { prisma } from "@/config/db";
 
@@ -7,40 +7,35 @@ interface Props {
   searchParams: { [key: string]: string };
 }
 
-const getRelatedProducts = cache(async (slug: string) => {
-  const searchText = await prisma.products.findUnique({
-    where: { slug: slug },
-    select: { title: true },
-  });
-  const alsoAvailableIn = await prisma.products.findMany({
+const getProducts = cache(async (slug: string) => {
+  const products = await prisma.products.findMany({
     select: {
       id: true,
-      title: true,
       slug: true,
+      title: true,
       images: {
         select: {
-          id: true,
           src: true,
         },
         take: 1,
       },
     },
     where: {
-      title: {
-        search: searchText?.title?.split(" ").join(" | "),
+      slug: {
+        search: slug.split("-").join(" | "),
       },
     },
   });
-  return alsoAvailableIn;
+  return !!products.length ? products : [];
 });
 
-const Page = async ({ params }: Props) => {
-  const relatedProducts = await getRelatedProducts(params.slug);
-  return relatedProducts?.length ? (
+const Page: React.FC<Props> = ({ params }) => {
+  const products = use(getProducts(params.slug));
+  return !!products?.length ? (
     <div className="space-y-2">
-      <div className="font-semibold text-md">More Products.</div>
+      <div className="font-semibold text-md">Related Products:</div>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
-        {relatedProducts?.map((product) => (
+        {products?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -48,4 +43,5 @@ const Page = async ({ params }: Props) => {
   ) : null;
 };
 
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

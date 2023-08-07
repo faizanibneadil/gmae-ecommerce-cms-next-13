@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { cache, memo, use } from "react";
 import ImagesSlider from "./_components/images-slider";
 import { prisma } from "@/config/db";
 
@@ -24,8 +24,8 @@ const getImages = cache(async (slug: string) => {
   return productImages;
 });
 
-const Page = async ({ params }: Props) => {
-  const images = await getImages(params.slug);
+const Page: React.FC<Props> = ({ params }) => {
+  const images = use(getImages(params.slug));
   return (
     <div className="flex flex-col space-y-2">
       <ImagesSlider images={images} />
@@ -33,4 +33,5 @@ const Page = async ({ params }: Props) => {
   );
 };
 
-export default Page;
+const MemoizedPage = memo(Page);
+export default MemoizedPage;

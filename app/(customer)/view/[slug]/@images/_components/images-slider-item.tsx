@@ -5,7 +5,7 @@ type Props = {
   src: string | null;
 };
 
-const ImagesSliderItem = ({ src }: Props) => {
+const ImagesSliderItem: React.FC<Props> = ({ src }) => {
   return (
     <Image
       src={`https://lh3.googleusercontent.com/d/${src}=s820`}
@@ -16,4 +16,5 @@ const ImagesSliderItem = ({ src }: Props) => {
   );
 };
 
-export default memo(ImagesSliderItem);
+const memoizedSlider = memo(ImagesSliderItem);
+export default memoizedSlider;
