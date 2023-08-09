@@ -6,7 +6,7 @@ import { authOptions } from "@/config/authOptions";
 import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { priceFormatter } from "@/lib/utils";
-import { Badge } from "@tremor/react";
+import { Badge, List, ListItem } from "@tremor/react";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -61,14 +61,14 @@ const Page: React.FC<Props> = ({ params }) => {
       )}
 
       <div className="flex space-x-0.5 flex-wrap space-y-0.5">
-        {properties?.Attributes.map((attribute) => (
-          <Badge size="md" key={attribute.id}>
-            <Badge color="orange" size="xs" className="capitalize">
-              {attribute.name}
-            </Badge>
-            <span className="ml-1 capitalize">{attribute.value}</span>
-          </Badge>
-        ))}
+        <List>
+          {properties?.Attributes.map((attribute) => (
+            <ListItem key={attribute.id}>
+              <span>{attribute.name}</span>
+              <span>{attribute.value}</span>
+            </ListItem>
+          ))}
+        </List>
       </div>
 
       <div className="max-w-lg">

@@ -45,7 +45,6 @@ export async function deleteProductAction(id: string) {
 export async function createProductAction(formData: any) {
     const form = Object.fromEntries(formData)
     const { id, categories, ...values } = createProductSchema.parse(form)
-    console.log(values)
     let query = Object.create({});
     query.data = Object.assign(Object.create({}), { ...values });
     query.where = Object.assign(Object.create({}), { id: id });

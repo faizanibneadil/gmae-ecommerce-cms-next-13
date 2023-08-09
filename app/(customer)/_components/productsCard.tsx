@@ -1,7 +1,7 @@
 "use client";
 
 import { addToFavorite } from "@/_actions";
-import { Badge, Icon } from "@tremor/react";
+import { Badge, Icon, List, ListItem } from "@tremor/react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,14 +44,20 @@ export default function ProductCard({ product, attributes, userId }: Props) {
       </div>
       <div className="p-2 mt-2">
         <h2 className="line-clamp-2">{product.title}</h2>
+
         {!!attributes?.length ? (
-          <div className="space-x-0.5">
-            {attributes?.map((attr) => (
-              <Badge size="xs" key={attr.id} tooltip={attr.name?.toString()}>
-                {attr.value}
-              </Badge>
+          <List className="self-end mt-1">
+            {attributes?.map((attribute) => (
+              <ListItem className="py-0.5" key={attribute.id}>
+                <span className="text-xs truncate line-clamp-1">
+                  {attribute.name}
+                </span>
+                <span className="text-xs truncate line-clamp-1">
+                  {attribute.value}
+                </span>
+              </ListItem>
             ))}
-          </div>
+          </List>
         ) : null}
       </div>
     </Link>
