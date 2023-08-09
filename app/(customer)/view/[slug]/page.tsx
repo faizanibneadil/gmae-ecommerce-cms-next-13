@@ -16,50 +16,33 @@ interface Props {
   searchParams: { [key: string]: string };
 }
 
-const getProperties = cache(
-  async ({ slug, userId }: { slug: string; userId: string | undefined }) => {
-    const properties = await prisma.products.findUnique({
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        description: true,
-        regularPrice: true,
-        salePrice: true,
-        Attributes: {
-          select: {
-            id: true,
-            name: true,
-            value: true,
-          },
-        },
-        CartItem: {
-          select: {
-            quantity: true,
-          },
-          where: {
-            products: { slug },
-            Cart: {
-              user: {
-                id: userId,
-              },
-            },
-          },
+const getProperties = cache(async ({ slug }: { slug: string }) => {
+  const properties = await prisma.products.findUnique({
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      regularPrice: true,
+      salePrice: true,
+      Attributes: {
+        select: {
+          id: true,
+          name: true,
+          value: true,
         },
       },
-      where: {
-        slug: slug,
-      },
-    });
-    return properties;
-  }
-);
+    },
+    where: {
+      slug: slug,
+    },
+  });
+  return properties;
+});
 
 const Page: React.FC<Props> = ({ params }) => {
   const session = use(getServerSession(authOptions));
-  const properties = use(
-    getProperties({ slug: params.slug, userId: session?.user.id })
-  );
+  const properties = use(getProperties({ slug: params.slug }));
   return (
     <div className="flex flex-col space-y-2">
       <div className="text-lg font-semibold">{properties?.title}</div>
@@ -92,7 +75,6 @@ const Page: React.FC<Props> = ({ params }) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <AddToCartButton
             slug={properties?.slug}
-            quantity={properties?.CartItem[0]?.quantity}
             session={session}
             productId={properties?.id}
           />

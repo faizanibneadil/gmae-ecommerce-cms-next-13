@@ -1,32 +1,9 @@
-import { FC, ReactNode } from "react";
-
 interface Props {
-  children: ReactNode;
-  images: ReactNode;
-  attributesForm: ReactNode;
-  imagesGadget: ReactNode;
-  variants: ReactNode;
-  relatedProducts: ReactNode;
+  children: React.ReactNode;
 }
 
-const Layout = ({
-  children,
-  attributesForm,
-  images,
-  imagesGadget,
-  relatedProducts,
-  variants,
-}: Props) => {
-  return (
-    <div className="max-w-3xl mx-auto">
-      {imagesGadget}
-      {images}
-      {children}
-      {attributesForm}
-      {variants}
-      {relatedProducts}
-    </div>
-  );
+const Layout: React.FC<Props> = ({ children }) => {
+  return <div className="max-w-3xl mx-auto">{children}</div>;
 };
 
 export default Layout;

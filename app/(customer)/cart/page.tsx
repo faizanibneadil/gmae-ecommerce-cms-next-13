@@ -28,7 +28,6 @@ const getItems = cache(async (userId: string | undefined) => {
             select: {
               id: true,
               title: true,
-              slug: true,
               regularPrice: true,
               salePrice: true,
               images: {
@@ -58,13 +57,13 @@ const Page: React.FC<Props> = () => {
       {cart?.items.map((item) => {
         const id = item.products?.id;
         const key = item.products?.id;
-        const slug = item.products?.slug;
         const image = item.products?.images[0].src;
         const name = item.products?.title;
         const qty = item.quantity;
         const regularPrice = item.products?.regularPrice;
         const salePrice = item?.products?.salePrice;
-        const discount = Number(regularPrice) - Number(salePrice);
+        const discount =
+          Number(qty) * (Number(regularPrice) - Number(salePrice));
         const subTotal =
           Number(qty) * Number(regularPrice) ?? Number(salePrice);
         return (
@@ -88,21 +87,9 @@ const Page: React.FC<Props> = () => {
                 <p className="text-sm">Sub Total: {subTotal}</p>
               </div>
               <div className="flex mt-4 space-x-2">
-                <IncrementToCart
-                  slug={slug}
-                  productId={id}
-                  userId={session?.user.id}
-                />
-                <DecrementToCart
-                  slug={slug}
-                  productId={id}
-                  userId={session?.user.id}
-                />
-                <RemoveToCart
-                  slug={slug}
-                  productId={id}
-                  userId={session?.user.id}
-                />
+                <IncrementToCart productId={id} userId={session?.user.id} />
+                <DecrementToCart productId={id} userId={session?.user.id} />
+                <RemoveToCart productId={id} userId={session?.user.id} />
               </div>
             </div>
           </div>

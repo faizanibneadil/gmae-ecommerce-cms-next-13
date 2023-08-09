@@ -23,11 +23,12 @@ const getCategoriesAndProducts = cache(async () => {
           slug: true,
           images: { select: { src: true }, take: 1 },
         },
+        where: { isFeatured: true, isPublished: true },
         take: 6,
       },
     },
     where: {
-      Products: { some: { id: {} } },
+      Products: { some: { isFeatured: true, isPublished: true } },
       isPublished: true,
       displayOnLandingPage: true,
     },

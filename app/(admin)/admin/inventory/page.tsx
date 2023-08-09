@@ -88,4 +88,4 @@ const Page = ({ params }: Props) => {
 };
 
 const MemoizedPage = memo(Page);
-export default Page;
+export default MemoizedPage;

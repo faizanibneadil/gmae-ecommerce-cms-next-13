@@ -19,7 +19,7 @@ const getCategories = cache(async () => {
       },
     },
     where: {
-      Products: { some: { id: {} } },
+      Products: { some: { isPublished: true } },
       isPublished: true,
     },
   });

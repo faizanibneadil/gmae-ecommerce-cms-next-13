@@ -23,6 +23,7 @@ export const createProductSchema = z.object({
     isTrackStock: z.coerce.boolean().default(false),
     isReviewEnable: z.coerce.boolean().default(false),
     isPublished: z.coerce.boolean().default(false),
+    isFeatured: z.coerce.boolean().default(false),
     categories: z.string().optional()
 })
 

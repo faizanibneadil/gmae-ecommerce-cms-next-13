@@ -45,11 +45,12 @@ export async function deleteProductAction(id: string) {
 export async function createProductAction(formData: any) {
     const form = Object.fromEntries(formData)
     const { id, categories, ...values } = createProductSchema.parse(form)
+    console.log(values)
     let query = Object.create({});
-    query.data = Object.assign(Object.create({}), { ...values });;
+    query.data = Object.assign(Object.create({}), { ...values });
     query.where = Object.assign(Object.create({}), { id: id });
     if (categories) {
-        query.data = Object.assign(Object.create({}), { ...values, Categories: { connect: categories?.split(",").map(c => ({ id: c })) } });
+        query.data = Object.assign(Object.create({}), { ...values, Categories: { set: categories?.split(",").map(c => ({ id: c })) } });
     }
     try {
         await prisma.products.update(query)
@@ -101,7 +102,7 @@ export async function connectImageToProductAction({ imageId, productId }: { imag
                 id: imageId
             }
         })
-        revalidateTag("product-form-images")
+        revalidatePath(`admin/inventory/${productId}`)
         console.log("Successfully connected image with product 👍")
     } catch (e) {
         console.log("Something went wrong when connecting image to production 👎")
@@ -115,6 +116,28 @@ export async function connectVariantAction({ variantId, productId }: { variantId
             data: {
                 variants: {
                     connect: {
+                        id: variantId
+                    }
+                }
+            },
+            where: {
+                id: productId
+            }
+        })
+        revalidateTag("admin-product-variants")
+        console.log("Successfully connected variant 👍")
+    } catch (e) {
+        console.log("Something went wrong when connecting image to production 👎")
+        console.log(e)
+    }
+}
+
+export async function disconnectVariantAction({ variantId, productId }: { variantId: string, productId?: string }) {
+    try {
+        await prisma.products.update({
+            data: {
+                variants: {
+                    disconnect: {
                         id: variantId
                     }
                 }
@@ -167,7 +190,7 @@ export async function disconnectImageToProductAction({ imageId, productId }: { i
                 id: imageId
             }
         })
-        revalidateTag("product-form-images")
+        revalidatePath(`admin/inventory/${productId}`)
         console.log("Successfully connected image with product 👍")
     } catch (e) {
         console.log("Something went wrong when connecting image to production 👎")
@@ -216,6 +239,29 @@ export async function initializeNewCategory() {
     const { id } = await prisma.categories.create({ data: {}, select: { id: true } })
     revalidatePath("/admin/categories")
     return id
+}
+
+export async function initAttribute({ productId }: { productId: string }) {
+    await prisma.attributes.create({
+        data: {
+            product: {
+                connect: {
+                    id: productId
+                }
+            }
+        }
+    })
+}
+
+export async function deleteAttribute({ productId, attributeId }: { productId: string, attributeId: string }) {
+    await prisma.attributes.delete({
+        where: {
+            product: {
+                id: productId
+            },
+            id: attributeId
+        }
+    })
 }
 
 export async function addNewDeliveryLocation() {
@@ -307,10 +353,9 @@ export async function addToFavorite(productId: string, userId?: string) {
 interface AddToCartTypes {
     userId: string | undefined
     productId: string | undefined
-    slug: string | null | undefined
 }
 
-export async function addToCart({ userId, productId, slug }: AddToCartTypes) {
+export async function addToCart({ userId, productId }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -330,12 +375,12 @@ export async function addToCart({ userId, productId, slug }: AddToCartTypes) {
             },
             where: { userId }
         })
-        revalidatePath(`/view/${slug}`)
+        revalidatePath(`/cart`)
     } catch (e) {
         console.log(e)
     }
 }
-export async function removeToCart({ userId, productId, slug }: AddToCartTypes) {
+export async function removeToCart({ userId, productId }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -349,13 +394,13 @@ export async function removeToCart({ userId, productId, slug }: AddToCartTypes) 
             },
             where: { userId }
         })
-        revalidatePath(`/view/${slug}`)
+        revalidatePath(`/cart`)
     } catch (e) {
         console.log(e)
     }
 }
 
-export async function decrementToCart({ userId, productId, slug }: AddToCartTypes) {
+export async function decrementToCart({ userId, productId }: AddToCartTypes) {
     try {
         // update product quantity if product is existed in cart item
         const item = await prisma.cartItem.findMany({ where: { products: { id: productId }, Cart: { user: { id: userId } } } })
@@ -383,7 +428,7 @@ export async function decrementToCart({ userId, productId, slug }: AddToCartType
                 where: { userId }
             })
         }
-        revalidatePath(`/view/${slug}`)
+        revalidatePath(`/cart`)
     } catch (e) {
         console.log(e)
     }

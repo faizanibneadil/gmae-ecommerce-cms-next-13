@@ -10,18 +10,16 @@ import { memo, useTransition } from "react";
 type Props = {
   session: Session | null;
   productId: string | undefined;
-  quantity: number | null | undefined;
   slug: string | null | undefined;
 };
 
-const AddToCartButton = ({ session, productId, quantity, slug }: Props) => {
+const AddToCartButton = ({ session, productId, slug }: Props) => {
   const [isPending, startTransition] = useTransition();
   const action = () => {
     return startTransition(() => {
       return addToCart({
         userId: session?.user.id,
         productId: productId,
-        slug: slug,
       });
     });
   };
@@ -33,14 +31,7 @@ const AddToCartButton = ({ session, productId, quantity, slug }: Props) => {
       onClick={session ? action : auth}
       icon={ShoppingCart}
     >
-      {quantity ? (
-        <div className="space-x-2">
-          <span>Add one more</span>
-          <Badge size="xs">{quantity}</Badge>
-        </div>
-      ) : (
-        `Add To Cart`
-      )}
+      Add To Cart
     </Button>
   );
 };

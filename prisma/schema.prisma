@@ -46,11 +46,11 @@ model DeliveryLocations {
 }
 
 model Attributes {
-  id        String   @id @default(uuid())
-  name      String
-  value     String
-  product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
+  id        String    @id @default(uuid())
+  name      String?
+  value     String?
+  product   Products? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String?
 
   @@index([productId])
 }
@@ -89,6 +89,7 @@ model Products {
   isTrackStock   Boolean?     @default(false)
   isReviewEnable Boolean?     @default(true)
   isPublished    Boolean?     @default(false)
+  isFeatured     Boolean?     @default(false)
   stock          Int? // @default(0)
   ytVideosIds    String[]
   variantBy      Products[]   @relation("variants")
@@ -102,6 +103,7 @@ model Products {
 
   @@index([slug])
   @@index([isPublished])
+  @@index([isFeatured])
   @@index([isReviewEnable])
   @@index([ytVideosIds])
 }
