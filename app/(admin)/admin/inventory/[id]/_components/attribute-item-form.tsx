@@ -42,17 +42,19 @@ const AttributeItemForm: React.FC<Props> = ({ props }) => {
     <form action={action} className="flex items-center w-full p-1">
       <input name="productId" type="hidden" value={props.productId} />
       <input name="attrId" type="hidden" value={props.attribute.id} />
-      <div className="flex flex-col md:flex-row gap-1.5">
+      <div className="flex space-x-1.5 flex-1">
         <TextInput
+          className="p-0 m-0"
           defaultValue={props?.attribute?.name?.toString()}
           name="name"
         />
         <TextInput
+          className="p-0 m-0"
           defaultValue={props?.attribute?.value?.toString()}
           name="value"
         />
       </div>
-      <div className="flex flex-col items-center justify-items-end gap-1.5 md:flex-row">
+      <div className="flex items-center space-x-0.5">
         <Button type="submit" variant="light" color="indigo" className="ml-0.5">
           <Icon
             icon={isPending ? Spin : CheckIcon}

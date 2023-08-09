@@ -1,7 +1,15 @@
 "use client";
 
 import { PlusIcon } from "@/app/_components/icons";
-import { Button, Icon, Title } from "@tremor/react";
+import {
+  Button,
+  Icon,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Title,
+} from "@tremor/react";
 import AttributeItemForm from "./attribute-item-form";
 import { useTransition } from "react";
 import { initAttribute } from "@/_actions";
@@ -39,14 +47,20 @@ const AttributesForm: React.FC<Props> = ({ props }) => {
           <Icon icon={initializing ? Spin : PlusIcon} variant="shadow" />
         </Button>
       </div>
-      <div className="divide-y">
-        {props?.attributes?.map((attribute) => (
-          <AttributeItemForm
-            key={attribute.id}
-            props={{ productId: props.productId, attribute }}
-          />
-        ))}
-      </div>
+      <Table>
+        <TableBody>
+          {props?.attributes?.map((attribute) => (
+            <TableRow key={attribute.id}>
+              <TableCell className="p-0.5">
+                <AttributeItemForm
+                  key={attribute.id}
+                  props={{ productId: props.productId, attribute }}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

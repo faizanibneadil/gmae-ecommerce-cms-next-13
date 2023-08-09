@@ -49,12 +49,9 @@ export default function ProductCard({ product, attributes, userId }: Props) {
           <List className="self-end mt-1">
             {attributes?.map((attribute) => (
               <ListItem className="py-0.5" key={attribute.id}>
-                <span className="text-xs truncate line-clamp-1">
-                  {attribute.name}
-                </span>
-                <span className="text-xs truncate line-clamp-1">
-                  {attribute.value}
-                </span>
+                <span className="text-xs">{attribute.name}</span>
+                <span className="mx-1.5" />
+                <span className="text-xs truncate">{attribute.value}</span>
               </ListItem>
             ))}
           </List>
