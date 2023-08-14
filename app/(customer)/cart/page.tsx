@@ -7,6 +7,8 @@ import RemoveToCart from "./_components/remove-to-cart";
 import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { notFound } from "next/navigation";
+import { Button } from "@tremor/react";
+import Link from "next/link";
 
 interface Props {
   searchParams: { [key: string]: string };
@@ -65,9 +67,9 @@ const Page: React.FC<Props> = () => {
         const discount =
           Number(qty) * (Number(regularPrice) - Number(salePrice));
         const subTotal =
-          Number(qty) * Number(regularPrice) ?? Number(salePrice);
+          Number(qty) * Number(salePrice) ?? Number(regularPrice);
         return (
-          <div key={key} className="grid grid-cols-12 gap-2">
+          <div key={key} className="grid grid-cols-12 gap-2 my-2 divide-y">
             <div className="col-span-2">
               <div className="relative h-20">
                 <Image
@@ -86,7 +88,7 @@ const Page: React.FC<Props> = () => {
                 <p className="text-sm">Discount: {discount}</p>
                 <p className="text-sm">Sub Total: {subTotal}</p>
               </div>
-              <div className="flex mt-4 space-x-2">
+              <div className="flex mt-2 space-x-2">
                 <IncrementToCart productId={id} userId={session?.user.id} />
                 <DecrementToCart productId={id} userId={session?.user.id} />
                 <RemoveToCart productId={id} userId={session?.user.id} />
@@ -95,6 +97,31 @@ const Page: React.FC<Props> = () => {
           </div>
         );
       })}
+
+      <div className="mt-4 text-right">
+        <p className="font-semibold text-md">
+          Discount:{" "}
+          {cart.items?.reduce(
+            (p, n) =>
+              p +
+              Number(n?.quantity) * Number(n?.products?.regularPrice) -
+              Number(n?.products?.salePrice),
+            0
+          )}
+        </p>
+        <p className="font-semibold text-md">
+          SubTotal:{" "}
+          {cart.items?.reduce(
+            (p, n) =>
+              p + Number(n?.quantity) * Number(n?.products?.salePrice) ??
+              Number(n?.products?.regularPrice),
+            0
+          )}
+        </p>
+        <Link href="/cart/checkout">
+          <Button className="w-40 mt-4">Checkout</Button>
+        </Link>
+      </div>
     </div>
   ) : (
     notFound()

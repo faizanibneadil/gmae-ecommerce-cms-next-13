@@ -6,7 +6,7 @@ import { authOptions } from "@/config/authOptions";
 import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { priceFormatter } from "@/lib/utils";
-import { Badge, List, ListItem } from "@tremor/react";
+import { List, ListItem } from "@tremor/react";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -78,7 +78,9 @@ const Page: React.FC<Props> = ({ params }) => {
             session={session}
             productId={properties?.id}
           />
-          <AddToFavoriteButton />
+          <AddToFavoriteButton
+            props={{ productId: properties?.id, userId: session?.user.id }}
+          />
           <BuyNowButton />
         </div>
       </div>

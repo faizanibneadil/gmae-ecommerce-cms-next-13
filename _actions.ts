@@ -306,7 +306,15 @@ export async function deleteDeliveryLocation({ locationId }: { locationId: strin
     }
 }
 
-export async function addToFavorite(productId: string, userId?: string) {
+interface AddToFavoriteProps {
+    productId: string | undefined,
+    userId: string | undefined
+}
+export async function addToFavorite({ productId, userId }: AddToFavoriteProps) {
+    if (!productId && !userId) {
+        return;
+    }
+
     try {
         const favorite = await prisma.favorites.findUnique({
             where: {
@@ -316,7 +324,7 @@ export async function addToFavorite(productId: string, userId?: string) {
 
         if (favorite) {
             const { productId: db_productIds } = favorite;
-            const updatedProductIds = db_productIds.includes(productId)
+            const updatedProductIds = db_productIds.includes(`${productId}`)
                 ? db_productIds.filter((id) => id !== productId)
                 : [...db_productIds, productId];
 
@@ -325,14 +333,14 @@ export async function addToFavorite(productId: string, userId?: string) {
                     userId: userId,
                 },
                 data: {
-                    productId: updatedProductIds,
+                    productId: updatedProductIds as [],
                 },
             });
             console.log("Successfully updated & added to favorites 👍")
         } else {
             await prisma.favorites.create({
                 data: {
-                    productId: [productId],
+                    productId: [productId as string],
                     User: {
                         connect: {
                             id: userId,

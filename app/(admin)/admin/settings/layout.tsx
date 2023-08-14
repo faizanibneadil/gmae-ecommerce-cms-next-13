@@ -1,9 +1,3 @@
-import {
-  AccordionList,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from "@tremor/react";
 import { ReactNode } from "react";
 
 interface Props {
@@ -12,16 +6,10 @@ interface Props {
 }
 
 const Layout = ({ children, deliveryLocations }: Props) => (
-  <AccordionList className="max-w-4xl mx-auto">
-    <Accordion defaultOpen>
-      <AccordionHeader>Delivery Locations</AccordionHeader>
-      <AccordionBody>{deliveryLocations}</AccordionBody>
-    </Accordion>
-    <Accordion>
-      <AccordionHeader>More Settings.</AccordionHeader>
-      <AccordionBody>{children}</AccordionBody>
-    </Accordion>
-  </AccordionList>
+  <div className="max-w-4xl mx-auto">
+    {deliveryLocations}
+    {children}
+  </div>
 );
 
 export default Layout;

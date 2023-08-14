@@ -34,7 +34,7 @@ export default function ProductCard({ product, attributes, userId }: Props) {
           src={`https://lh3.googleusercontent.com/d/${product?.images[0]?.src}=s220`}
         />
         <Icon
-          onClick={() => addToFavorite(product.id, userId)}
+          onClick={() => addToFavorite({productId: product?.id, userId})}
           icon={Heart}
           variant="solid"
           color="rose"
