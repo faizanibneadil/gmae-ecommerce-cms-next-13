@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const session = use(getServerSession());
   return (
     <div className="flex">
-      <div className="fixed top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-screen space-y-2 bg-white border border-r">
+      <div className="sticky top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-[100vh] space-y-2 bg-white p-1 md:px-3 border border-r">
         <Link href="/" className="mt-2">
           <Image
             alt="Brand Logo Image"
@@ -55,7 +55,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           `login`
         )}
       </div>
-      <div className="flex-auto ml-10">{children}</div>
+      <div className="flex-auto">{children}</div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
+import { useSelectedLayoutSegments } from "next/navigation";
 
 const DeliveriesRoute: React.FC<{}> = () => {
   const { push } = useRouter();
@@ -14,7 +15,11 @@ const DeliveriesRoute: React.FC<{}> = () => {
     <Button variant="light" disabled={going}>
       <Icon
         onClick={go}
-        variant="shadow"
+        variant={
+          useSelectedLayoutSegments().includes("deliveries")
+            ? "shadow"
+            : undefined
+        }
         tooltip="Deliveries"
         size="md"
         icon={going ? Spin : Truck}
