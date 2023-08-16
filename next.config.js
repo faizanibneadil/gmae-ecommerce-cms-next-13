@@ -12,8 +12,6 @@ const nextConfig = {
       "drive.google.com",
       "img.freepik.com",
     ],
-    // loader: "custom",
-    // loaderFile: ""
   },
   experimental: {
     serverActions: true,
