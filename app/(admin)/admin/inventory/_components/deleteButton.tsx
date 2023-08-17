@@ -21,7 +21,8 @@ export default function DeleteProduct({ id }: { id: string }) {
       <Icon
         color="rose"
         size="xs"
-        variant="shadow"
+        className="p-0"
+        variant="simple"
         icon={isPending ? Spin : Trash}
       />
     </Button>

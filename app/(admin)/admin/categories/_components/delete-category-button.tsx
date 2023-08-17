@@ -13,7 +13,8 @@ export default function DeleteCategory({ id }: { id: string }) {
       <Icon
         color="rose"
         size="xs"
-        variant="shadow"
+        variant="simple"
+        className="p-0"
         icon={isPending ? Spin : Trash}
       />
     </Button>

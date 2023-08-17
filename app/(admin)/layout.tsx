@@ -12,14 +12,16 @@ import SettingsRoute from "./_components/settings-route-btn";
 import Link from "next/link";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
+import { Button } from "@tremor/react";
+import AuthButton from "./_components/authButton";
 
 export const dynamic = "force-dynamic";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const session = use(getServerSession());
-  return (
-    <div className="flex">
-      <div className="sticky top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-[100vh] space-y-2 bg-white p-1 md:px-3 border border-r">
+  return session ? (
+    <div className="">
+      <div className="fixed top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-[100vh] space-y-2 bg-white p-1 md:px-3 border-r">
         <Link href="/" className="mt-2">
           <Image
             alt="Brand Logo Image"
@@ -41,21 +43,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <UsersRoute />
           <SettingsRoute />
         </div>
-        {session ? (
-          <Link href="/admin/me" className="pb-2">
-            <Image
-              alt="Brand Logo Image"
-              width={100}
-              height={75}
-              className="w-8 rounded-full"
-              src={`${session?.user.image}`}
-            />
-          </Link>
-        ) : (
-          `login`
-        )}
+
+        <Link href="/admin/me" className="pb-2">
+          <Image
+            alt="Brand Logo Image"
+            width={100}
+            height={75}
+            className="w-8 rounded-full"
+            src={`${session?.user.image}`}
+          />
+        </Link>
       </div>
-      <div className="flex-auto">{children}</div>
+      <div className="md:ml-[4.2rem] ml-[3.2rem] mr-1">{children}</div>
+    </div>
+  ) : (
+    <div className="w-screen h-screen">
+      <div className="flex items-center justify-center">
+        <AuthButton />
+      </div>
     </div>
   );
 }

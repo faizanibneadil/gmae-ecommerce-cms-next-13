@@ -4,11 +4,14 @@ import { prisma } from "@/config/db";
 import InitializeNewCategory from "./_components/initialize-new-category";
 import {
   Badge,
+  Card,
+  Icon,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Text,
+  Title,
 } from "@tremor/react";
 import Image from "next/image";
 import EditCategory from "./_components/edit-category-button";
@@ -37,55 +40,71 @@ const Page = () => {
   const categories = use(getCategories());
   return categories?.length ? (
     <div>
-      <div className="flex justify-end mb-4 space-x-2">
-        <InitializeNewCategory />
-        <RefreshPage />
+      <div className="flex items-center justify-between p-2 border-b">
+        <div>
+          <Title>Categories</Title>
+          <Text>Manage store categories.</Text>
+        </div>
+        <div className="flex justify-end space-x-2">
+          <InitializeNewCategory />
+          <RefreshPage />
+        </div>
       </div>
-      <Table>
-        <TableBody>
-          {categories?.map((category) => (
-            <TableRow key={category.id}>
-              <TableCell className="relative">
-                <Image
-                  alt=""
-                  fill
-                  sizes="100vw"
-                  className="object-contain"
-                  src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
-                />
-              </TableCell>
-              <TableCell className="flex">
-                <Text>
-                  {category.order} - {category.name}
-                </Text>
-              </TableCell>
-              <TableCell className="space-x-1">
-                <Badge
-                  icon={category.isPublished ? PublicIcon : EyeIcon}
-                  className="pr-0 bg-transparent"
-                  color={category.isPublished ? `green` : `rose`}
-                  tooltip={category.isPublished ? `Published` : `Private`}
-                />
-                {category.displayOnLandingPage && (
-                  <Badge
-                    className="pr-0 bg-transparent"
-                    color="fuchsia"
-                    icon={LayoutIcon}
-                    tooltip="Display On Landing Page"
-                  />
-                )}
-                {category.parentCategory?.name && (
-                  <Badge>{category.parentCategory?.name}</Badge>
-                )}
-              </TableCell>
-              <TableCell className="space-x-1">
-                <EditCategory id={category.id} />
-                <DeleteCategory id={category.id} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Card className="p-0 mt-4 rounded-none">
+        <div className="flow-root">
+          <ul
+            role="list"
+            className="divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            {categories?.map((category) => (
+              <li className="px-3 py-1" key={category.id}>
+                <div className="flex items-center space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="relative w-8 h-8 rounded-full shadow-lg">
+                      <Image
+                        alt=""
+                        fill
+                        sizes="100vw"
+                        className="object-contain rounded-full"
+                        src={`https://lh3.googleusercontent.com/d/${category.images?.src}=s220`}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {category.name}
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <Icon
+                        size="xs"
+                        icon={category.isPublished ? PublicIcon : EyeIcon}
+                        variant="simple"
+                        className="p-0"
+                        color={category.isPublished ? `green` : `rose`}
+                        tooltip={category.isPublished ? `Published` : `Private`}
+                      />
+                      {category.displayOnLandingPage && (
+                        <Icon
+                          size="xs"
+                          className="p-0"
+                          color="fuchsia"
+                          icon={LayoutIcon}
+                          tooltip="Display On Landing Page"
+                        />
+                      )}
+                      {category.parentCategory?.name && (
+                        <Badge size="xs">{category.parentCategory?.name}</Badge>
+                      )}
+                      <EditCategory id={category.id} />
+                      <DeleteCategory id={category.id} />
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Card>
     </div>
   ) : (
     notFound()

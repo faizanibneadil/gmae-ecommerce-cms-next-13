@@ -11,7 +11,7 @@ export default function EditCategory({ id }: { id: string }) {
   const edit = () => goTo(() => replace(`/admin/categories/${id}`));
   return (
     <Button variant="light" size="xs" onClick={edit} disabled={isPending}>
-      <Icon variant="shadow" size="xs" icon={isPending ? Spin : EditIcon} />
+      <Icon variant="simple" className="p-0" size="xs" icon={isPending ? Spin : EditIcon} />
     </Button>
   );
 }

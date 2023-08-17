@@ -14,7 +14,12 @@ const EditProduct: React.FC<Props> = ({ id }) => {
   const edit = () => startOpen(() => router.replace(`/admin/inventory/${id}`));
   return (
     <Button variant="light" size="xs" onClick={edit} disabled={isPending}>
-      <Icon variant="shadow" size="xs" icon={isPending ? Spin : EditIcon} />
+      <Icon
+        variant="simple"
+        className="p-0"
+        size="xs"
+        icon={isPending ? Spin : EditIcon}
+      />
     </Button>
   );
 };

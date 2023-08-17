@@ -14,16 +14,13 @@ const DashboardRoute: React.FC<{}> = () => {
   const { push } = useRouter();
   const [going, goto] = useTransition();
   const go = () => goto(() => push("/admin"));
-  console.log(useSelectedLayoutSegments());
   return (
     <Button variant="light" disabled={going}>
       <Icon
         className="rounded-none"
         onClick={go}
         variant={
-          useSelectedLayoutSegments().includes("dashboard")
-            ? "shadow"
-            : undefined
+          useSelectedLayoutSegments().includes("admin") ? "solid" : undefined
         }
         tooltip="Dashboard"
         size="md"
