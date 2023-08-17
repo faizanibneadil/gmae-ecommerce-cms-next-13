@@ -2,13 +2,7 @@ import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import InitializeNewInventory from "./_components/initialize-new-inventory";
 import RefreshPage from "./_components/refresh-button";
-import {
-  Card,
-  Icon,
-  ProgressBar,
-  Text,
-  Title,
-} from "@tremor/react";
+import { Card, Icon, ProgressBar, Text, Title } from "@tremor/react";
 import Image from "next/image";
 import EditProduct from "./_components/edit-button";
 import { notFound } from "next/navigation";
@@ -52,7 +46,7 @@ const Page = ({ params }: Props) => {
           <RefreshPage />
         </div>
       </div>
-      <Card className="p-0 mt-4 rounded-none">
+      <Card className="max-w-4xl p-0 mx-auto mt-4 rounded-none">
         <div className="flow-root">
           <ul
             role="list"
@@ -92,7 +86,7 @@ const Page = ({ params }: Props) => {
                           <ProgressBar
                             tooltip={p.stock?.toString()}
                             value={Number(p.stock)}
-                            color="teal"
+                            color={Number(p.stock) > 50 ? "green" : "rose"}
                             className="w-20"
                           />
                           <EditProduct id={p.id} />

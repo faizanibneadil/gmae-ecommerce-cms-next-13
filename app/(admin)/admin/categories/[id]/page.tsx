@@ -2,6 +2,8 @@ import { cache } from "react";
 import CategoryForm from "./_components/category-form";
 import { prisma } from "@/config/db";
 import RelateImages from "./_components/related-images";
+import { Text, Title } from "@tremor/react";
+import GoBack from "./_components/back-route-btn";
 
 interface Props {
   params: { id: string };
@@ -41,8 +43,19 @@ const Page: React.FC<Props> = async ({ params }) => {
   const images = await getImages(searchText?.name);
   return (
     <>
-      <RelateImages images={images} editCategoryId={params.id} />
-      <CategoryForm categories={categories} editCategoryId={params.id} />
+      <div className="flex items-center justify-between p-2 border-b">
+        <div className="flex justify-end space-x-2">
+          <GoBack />
+        </div>
+        <div className="text-right">
+          <Title>Update Category</Title>
+          <Text>Manage categories and images.</Text>
+        </div>
+      </div>
+      <div className="max-w-2xl mx-auto">
+        <RelateImages images={images} editCategoryId={params.id} />
+        <CategoryForm categories={categories} editCategoryId={params.id} />
+      </div>
     </>
   );
 };

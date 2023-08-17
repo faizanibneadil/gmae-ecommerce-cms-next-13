@@ -7,8 +7,17 @@ import RemoveToCart from "./_components/remove-to-cart";
 import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { notFound } from "next/navigation";
-import { Button } from "@tremor/react";
+import {
+  Button,
+  Card,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  TextInput,
+} from "@tremor/react";
 import Link from "next/link";
+import { priceFormatter } from "@/lib/utils";
 
 interface Props {
   searchParams: { [key: string]: string };
@@ -51,80 +60,148 @@ const getItems = cache(async (userId: string | undefined) => {
   return cart;
 });
 
+const getLocations = cache(async () => {
+  const locations = await prisma.deliveryLocations.findMany();
+  return locations;
+});
+
 const Page: React.FC<Props> = () => {
+  const locations = use(getLocations());
   const session = use(getServerSession(authOptions));
   const cart = use(getItems(session?.user.id));
-  return !!cart?.items.length ? (
-    <div className="my-6">
-      {cart?.items.map((item) => {
-        const id = item.products?.id;
-        const key = item.products?.id;
-        const image = item.products?.images[0].src;
-        const name = item.products?.title;
-        const qty = item.quantity;
-        const regularPrice = item.products?.regularPrice;
-        const salePrice = item?.products?.salePrice;
-        const discount =
-          Number(qty) * (Number(regularPrice) - Number(salePrice));
-        const subTotal =
-          Number(qty) * Number(salePrice) ?? Number(regularPrice);
-        return (
-          <div key={key} className="grid grid-cols-12 gap-2 my-2 divide-y">
-            <div className="col-span-2">
-              <div className="relative h-20">
-                <Image
-                  src={`https://lh3.googleusercontent.com/d/${image}=s420`}
-                  alt=""
-                  fill
-                  className="object-contain w-full"
-                />
-              </div>
-            </div>
-            <div className="col-span-10">
-              <h2 className="font-semibold line-clamp-2">{name}</h2>
-              <div className="flex flex-col justify-between md:flex-row item-center">
-                <p className="text-sm">Quantity: {qty}</p>
-                <p className="text-sm">Price: {regularPrice}</p>
-                <p className="text-sm">Discount: {discount}</p>
-                <p className="text-sm">Sub Total: {subTotal}</p>
-              </div>
-              <div className="flex mt-2 space-x-2">
-                <IncrementToCart productId={id} userId={session?.user.id} />
-                <DecrementToCart productId={id} userId={session?.user.id} />
-                <RemoveToCart productId={id} userId={session?.user.id} />
-              </div>
-            </div>
+  const discount = cart?.items?.reduce((p, n) => {
+    const qty = Number(n?.quantity);
+    const rp = Number(n?.products?.regularPrice);
+    const sp = Number(n?.products?.salePrice);
+    const disc = p + qty * rp - sp;
+    return disc;
+  }, 0);
+  const subtotal = cart?.items?.reduce((p, n) => {
+    const qty = Number(n?.quantity);
+    const sp = Number(n?.products?.salePrice);
+    const rp = Number(n?.products?.regularPrice);
+    const sub = p + qty * sp ?? rp;
+    return sub;
+  }, 0);
+  return (
+    <div className="grid grid-cols-1 gap-2 my-4 md:grid-cols-2">
+      <div>
+        <Text>My Cart.</Text>
+        <Card className="w-full p-0 mx-auto rounded-none">
+          <div className="flow-root">
+            <ul
+              role="list"
+              className="divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              {!!cart?.items?.length
+                ? cart?.items.map((item) => {
+                    const id = item.products?.id;
+                    const key = item.products?.id;
+                    const image = item.products?.images[0].src;
+                    const name = item.products?.title;
+                    const qty = Number(item.quantity);
+                    const regularPrice = Number(item.products?.regularPrice);
+                    const salePrice = Number(item?.products?.salePrice);
+                    const discount = qty * (regularPrice - salePrice);
+                    const subTotal = qty * salePrice ?? regularPrice;
+                    return (
+                      <li className="px-3 py-1" key={id}>
+                        <div className="flex items-center space-x-4">
+                          <div className="flex-shrink-0">
+                            <div className="relative w-8 h-8 rounded-full shadow-lg">
+                              <Image
+                                key={image}
+                                alt=""
+                                fill
+                                sizes="100vw"
+                                className="object-contain rounded-full"
+                                src={`https://lh3.googleusercontent.com/d/${image}=s220`}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-medium text-gray-900 line-clamp-3">
+                                {qty} x {name}
+                              </p>
+                              <p className="text-sm font-medium text-gray-900">
+                                {priceFormatter.format(
+                                  salePrice ?? regularPrice
+                                )}
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <p className="text-xs">Discount: {discount}</p>
+                                <p className="text-xs">Sub Total: {subTotal}</p>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <IncrementToCart
+                                  productId={id}
+                                  userId={session?.user.id}
+                                />
+                                <DecrementToCart
+                                  productId={id}
+                                  userId={session?.user.id}
+                                />
+                                <RemoveToCart
+                                  productId={id}
+                                  userId={session?.user.id}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+                : notFound()}
+            </ul>
           </div>
-        );
-      })}
-
-      <div className="mt-4 text-right">
-        <p className="font-semibold text-md">
-          Discount:{" "}
-          {cart.items?.reduce(
-            (p, n) =>
-              p +
-              Number(n?.quantity) * Number(n?.products?.regularPrice) -
-              Number(n?.products?.salePrice),
-            0
-          )}
-        </p>
-        <p className="font-semibold text-md">
-          SubTotal:{" "}
-          {cart.items?.reduce(
-            (p, n) =>
-              p + Number(n?.quantity) * Number(n?.products?.salePrice) ??
-              Number(n?.products?.regularPrice),
-            0
-          )}
-        </p>
-        <Link href="/cart/checkout">
-          <Button className="w-40 mt-4">Checkout</Button>
-        </Link>
+        </Card>
+        <Card className="w-full p-0 mx-auto mt-2 rounded-none">
+          <List className="px-2">
+            <ListItem>
+              <span>Discount:</span>
+              <span>{discount}</span>
+            </ListItem>
+            <ListItem>
+              <span>Delivery Charges:</span>
+              <span>0</span>
+            </ListItem>
+            <ListItem>
+              <span>Subtotal:</span>
+              <span>{subtotal}</span>
+            </ListItem>
+          </List>
+        </Card>
+      </div>
+      <div>
+        <form className="flex flex-col space-y-2">
+          <div>
+            <Text>Receiver Name.</Text>
+            <TextInput name="name" type="text" />
+          </div>
+          <div>
+            <Text>Receiver Email.</Text>
+            <TextInput name="email" type="email" />
+          </div>
+          <div>
+            <Text>Receiver Address.</Text>
+            <TextInput name="address" type="text" />
+          </div>
+          <div>
+            <select>
+              <option>Choose any one location.</option>
+              {locations?.map((loc) => (
+                <option key={loc.id}>{loc.location}</option>
+              ))}
+            </select>
+          </div>
+          <Button type="submit">Place Order</Button>
+        </form>
       </div>
     </div>
-  ) : (
-    notFound()
   );
 };
 

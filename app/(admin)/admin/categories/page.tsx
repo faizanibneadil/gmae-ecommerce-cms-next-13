@@ -50,7 +50,7 @@ const Page = () => {
           <RefreshPage />
         </div>
       </div>
-      <Card className="p-0 mt-4 rounded-none">
+      <Card className="max-w-2xl p-0 mx-auto mt-4 rounded-none">
         <div className="flow-root">
           <ul
             role="list"

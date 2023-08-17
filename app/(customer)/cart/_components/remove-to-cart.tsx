@@ -27,6 +27,7 @@ const RemoveToCart: FC<Props> = ({ productId, userId }) => {
       variant="solid"
       className="cursor-pointer"
       color="rose"
+      size="xs"
       tooltip="Remove To Cart"
     />
   );

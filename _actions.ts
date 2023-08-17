@@ -240,6 +240,11 @@ export async function initializeNewCategory() {
     return id
 }
 
+export async function initImage() {
+    const { id } = await prisma.images.create({ data: {}, select: { id: true } })
+    return id
+}
+
 export async function initAttribute({ productId }: { productId: string }) {
     await prisma.attributes.create({
         data: {

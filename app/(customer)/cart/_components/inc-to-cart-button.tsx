@@ -25,6 +25,7 @@ const IncrementToCart: FC<Props> = ({ productId, userId }) => {
       onClick={action}
       icon={isIncrementing ? Spin : Plus}
       variant="solid"
+      size="xs"
       tooltip="Increment Quantity"
       className="cursor-pointer"
     />

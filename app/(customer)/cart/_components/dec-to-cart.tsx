@@ -27,6 +27,7 @@ const DecrementToCart: FC<Props> = ({ productId, userId }) => {
       onClick={action}
       icon={isDecrementing ? Spin : Minus}
       variant="solid"
+      size="xs"
       tooltip="Decrement Quantity"
       className="cursor-pointer"
     />

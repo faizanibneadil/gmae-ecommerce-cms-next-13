@@ -1,17 +1,9 @@
-import { ReactNode } from "react";
-
 type Props = {
-  children: ReactNode;
-  form: ReactNode;
+  children: React.ReactNode;
 };
 
-const Layout = ({ children, form }: Props) => {
-  return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-2">{form}</div>
-      <div>{children}</div>
-    </div>
-  );
+const Layout: React.FC<Props> = ({ children }) => {
+  return <div className="">{children}</div>;
 };
 
 export default Layout;

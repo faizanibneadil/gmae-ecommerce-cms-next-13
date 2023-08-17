@@ -3,7 +3,7 @@ interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  return <div className="max-w-3xl mx-auto">{children}</div>;
+  return <div className="">{children}</div>;
 };
 
 export default Layout;

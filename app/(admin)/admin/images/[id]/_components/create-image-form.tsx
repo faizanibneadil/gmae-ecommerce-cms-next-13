@@ -5,7 +5,7 @@ import { Images } from "@prisma/client";
 import { Button, TextInput } from "@tremor/react";
 import { Image, Save, Search, Text } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef, useTransition } from "react";
+import { useTransition } from "react";
 
 interface Props {
   id: string;
@@ -13,16 +13,14 @@ interface Props {
 }
 
 const CreateImageForm = ({ id, image }: Props) => {
-  const ref = useRef<HTMLFormElement>(null);
   const { replace } = useRouter();
   const [isPending, startTransition] = useTransition();
   const action = (formData: FormData) => {
     startTransition(() => createImageAction(formData));
-    ref.current?.reset();
     replace("/admin/images");
   };
   return (
-    <form ref={ref} action={action} className="flex flex-col w-full gap-2 mt-4">
+    <form action={action} className="flex flex-col w-full gap-2 mt-4">
       <input type="hidden" name="id" value={image?.id} />
       <TextInput
         defaultValue={image?.src as string}
