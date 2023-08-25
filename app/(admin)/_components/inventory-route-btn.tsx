@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Icon } from "@tremor/react";
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, Package } from "lucide-react";
 import Spin from "@/app/_components/loading-spinner";
 import { useTransition } from "react";
 import { useRouter, useSelectedLayoutSegments } from "next/navigation";
@@ -21,7 +21,7 @@ const InventoryRoute: React.FC<{}> = () => {
         }
         tooltip="Inventory"
         size="md"
-        icon={going ? Spin : LayoutGrid}
+        icon={going ? Spin : Package}
       />
     </Button>
   );

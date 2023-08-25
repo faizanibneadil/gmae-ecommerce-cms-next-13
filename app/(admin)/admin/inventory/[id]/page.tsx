@@ -8,6 +8,7 @@ import { PlusIcon } from "@/app/_components/icons";
 import AttributesForm from "./_components/attributes-form";
 import VariantsLists from "./_components/variants-lists";
 import GoBack from "./_components/back-route-btn";
+import PageHeader from "@/app/(admin)/_components/page-header";
 
 interface Props {
   params: { id: string };
@@ -29,30 +30,18 @@ const getProperties = cache(async (id: string) => {
   return properties;
 });
 
-const getAttributes = cache(async (id: string) => {
-  const attributes = await prisma.attributes.findMany({
-    where: { product: { id } },
-  });
-  return attributes;
-});
-
 const Page: React.FC<Props> = ({ params, searchParams }) => {
   const categories = use(getCategories());
   const properties = use(getProperties(params.id));
-  const attributes = use(getAttributes(params.id));
   return (
     <div>
-      <div className="flex items-center justify-between p-2 border-b">
-        <div className="flex justify-end space-x-2">
-          <GoBack />
-        </div>
-        <div className="text-right">
-          <Title>Update Product</Title>
-          <Text>Manage product and images.</Text>
-        </div>
-      </div>
+      <PageHeader
+        backRoute="/admin/inventory"
+        enableBackButton={true}
+        pageDescription="Update Product and there properties."
+        pageHeading="Update Product"
+      />
       <div className="max-w-2xl mx-auto">
-        <Images props={{ productId: params.id }} />
         <PropertiesForm
           props={{
             productId: params.id,
@@ -60,20 +49,6 @@ const Page: React.FC<Props> = ({ params, searchParams }) => {
             properties,
           }}
         />
-        <AttributesForm
-          props={{
-            productId: params.id,
-            attributes,
-          }}
-        />
-        <VariantsLists props={{ productId: params.id }} />
-        <Link
-          href={`/admin/inventory/${params?.id}/variants?query=${properties?.title}`}
-        >
-          <Button icon={PlusIcon} className="w-full mt-2" variant="secondary">
-            Add Variants
-          </Button>
-        </Link>
       </div>
     </div>
   );

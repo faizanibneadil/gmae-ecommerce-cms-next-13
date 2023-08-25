@@ -25,6 +25,7 @@ const getProperties = cache(async ({ slug }: { slug: string }) => {
       description: true,
       regularPrice: true,
       salePrice: true,
+      purchaseLimit: true,
       Attributes: {
         select: {
           id: true,
@@ -32,6 +33,7 @@ const getProperties = cache(async ({ slug }: { slug: string }) => {
           value: true,
         },
       },
+      images: { select: { src: true }, take: 1 },
     },
     where: {
       slug: slug,
@@ -76,7 +78,7 @@ const Page: React.FC<Props> = ({ params }) => {
           <AddToCartButton
             slug={properties?.slug}
             session={session}
-            productId={properties?.id}
+            product={properties}
           />
           <AddToFavoriteButton
             props={{ productId: properties?.id, userId: session?.user.id }}

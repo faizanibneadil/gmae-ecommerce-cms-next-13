@@ -48,8 +48,6 @@ const CreateInventoryForm: FC<Props> = ({ props }) => {
 
   return (
     <form action={action}>
-      <Title>Add Product Properties.</Title>
-
       <input name="id" type="hidden" value={props.productId} />
       <div className="mt-2 space-y-2">
         <TextInput

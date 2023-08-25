@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { cache, memo, use } from "react";
 import Thumbnails from "./_components/thumbnail";
 import Link from "next/link";
-import { Button } from "@tremor/react";
+import { Button, Card, Text, Title } from "@tremor/react";
+import GoBack from "../_components/back-route-btn";
+import PageHeader from "@/app/(admin)/_components/page-header";
+import Image from "next/image";
 
 interface Props {
   params: { id: string };
@@ -11,7 +14,14 @@ interface Props {
 
 const getImages = cache(async (id: string) => {
   const images = await prisma.images.findMany({
-    select: { id: true, src: true },
+    select: {
+      id: true,
+      src: true,
+      Products: {
+        select: { id: true },
+        where: { id },
+      },
+    },
   });
   return images;
 });
@@ -20,16 +30,18 @@ const Page: React.FC<Props> = ({ params }) => {
   const images = use(getImages(params.id));
   return !!images?.length ? (
     <div>
-      <Link href={`/admin/inventory/${params.id}`} prefetch={false}>
-        <Button>Back to product</Button>
-      </Link>
-      <div className="mt-4 gap-x-2 gap-y-2 columns-3 md:columns-8">
-        {images?.map((image) => (
-          <Thumbnails
-            key={image.id}
-            props={{ image, productId: params?.id, isGallery: true }}
-          />
-        ))}
+      <PageHeader
+        backRoute={`/admin/inventory/${params?.id}`}
+        enableBackButton={true}
+        pageDescription="Update Product images."
+        pageHeading="Update Images"
+      />
+      <div className="max-w-4xl mx-auto mt-4">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-8">
+          {images?.map((image) => (
+            <Thumbnails key={image.id} image={image} connectProductId={params.id} />
+          ))}
+        </div>
       </div>
     </div>
   ) : (

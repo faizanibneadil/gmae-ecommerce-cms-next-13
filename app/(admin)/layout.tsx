@@ -12,8 +12,17 @@ import SettingsRoute from "./_components/settings-route-btn";
 import Link from "next/link";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
-import { Button } from "@tremor/react";
 import AuthButton from "./_components/authButton";
+import AdminLogin from "./_components/authButton";
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  ScrollArea,
+  Tooltip,
+} from "@radix-ui/themes";
+import { PlusIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const session = use(getServerSession());
   return session ? (
     <div className="">
-      <div className="fixed top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-[100vh] space-y-2 bg-white p-1 md:px-3 border-r">
+      <div className="fixed top-0 bottom-0 left-0 z-50 flex flex-col items-center justify-between h-full p-1 space-y-2 bg-white border-r md:px-3">
         <Link href="/" className="mt-2">
           <Image
             alt="Brand Logo Image"
@@ -57,10 +66,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="md:ml-[4.2rem] ml-[3.2rem] mr-1">{children}</div>
     </div>
   ) : (
-    <div className="w-screen h-screen">
-      <div className="flex items-center justify-center">
-        <AuthButton />
-      </div>
-    </div>
+    <AdminLogin />
   );
 }

@@ -8,6 +8,7 @@ import EditProduct from "./_components/edit-button";
 import { notFound } from "next/navigation";
 import { EyeIcon, PublicIcon } from "@/app/_components/icons";
 import DeleteProduct from "./_components/deleteButton";
+import PageHeader from "../../_components/page-header";
 
 const getAllProducts = cache(async () => {
   const res = await prisma.products.findMany({
@@ -36,16 +37,12 @@ const Page = ({ params }: Props) => {
   const products = use(getAllProducts());
   return (
     <div>
-      <div className="flex items-center justify-between p-2 border-b">
-        <div>
-          <Title>Inventory</Title>
-          <Text>Manage your store inventory.</Text>
-        </div>
-        <div className="flex justify-end space-x-2">
-          <InitializeNewInventory />
-          <RefreshPage />
-        </div>
-      </div>
+      <PageHeader
+        backRoute=""
+        enableBackButton={false}
+        pageDescription="Manage your store inventory."
+        pageHeading="Inventory"
+      />
       <Card className="max-w-4xl p-0 mx-auto mt-4 rounded-none">
         <div className="flow-root">
           <ul

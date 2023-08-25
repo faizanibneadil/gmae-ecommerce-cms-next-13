@@ -18,8 +18,10 @@ const getImages = cache(async (id: string) => {
   return images;
 });
 
-const Images: React.FC<Props> = ({ props }) => {
-  const images = use(getImages(props.productId));
+const Images: React.FC<{
+  productId: string;
+}> = ({ productId }) => {
+  const images = use(getImages(productId));
   return (
     <div>
       <Title>Product Images</Title>
@@ -27,11 +29,9 @@ const Images: React.FC<Props> = ({ props }) => {
         {images?.map((image) => (
           <Thumbnails
             key={image.id}
-            props={{
-              image,
-              productId: props?.productId,
-              isGallery: false,
-            }}
+            // @ts-ignore
+            image={image}
+            connectProductId={productId}
           />
         ))}
         <AddImagesButton />

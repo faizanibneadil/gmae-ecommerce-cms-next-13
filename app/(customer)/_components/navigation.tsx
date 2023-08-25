@@ -1,14 +1,10 @@
 "use client";
-import { RootState } from "@/store";
-import { Button } from "@tremor/react";
 import { LayoutGrid, ShoppingCart, Star, Store, User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import Authenticate from "./authenticate";
 
 export default function Navigation() {
-  const cart = useSelector((state: RootState) => state.cart);
   return (
     <>
       <div className="sticky top-0 z-50 grid grid-flow-row-dense grid-cols-2 bg-white shadow-md md:grid-row-1 md:grid-cols-4">
@@ -59,9 +55,7 @@ export default function Navigation() {
             >
               <ShoppingCart className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600" />
               <span className="text-xs text-gray-500 truncate dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                {cart.items.length > 0
-                  ? `${cart.items.length} items`
-                  : `My Cart`}
+                My Cart
               </span>
             </Link>
 

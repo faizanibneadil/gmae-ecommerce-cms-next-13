@@ -7,16 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 const Layout: React.FC<Props> = ({ params, children }) => {
-  return (
-    <div>
-      <Link href={`/admin/inventory/${params.id}`} prefetch={false}>
-        <Icon icon={MoveLeftIcon} variant="shadow">
-          Back to product
-        </Icon>
-      </Link>
-      <div className="mt-2">{children}</div>
-    </div>
-  );
+  return <div className="mt-2">{children}</div>;
 };
 
 export default Layout;

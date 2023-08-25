@@ -5,43 +5,37 @@ import {
   disconnectImageToProductAction,
 } from "@/_actions";
 import Image from "next/image";
+import ConnectImage from "./connect-button";
+import DisconnectImage from "./disconnect-button";
+import { Card } from "@tremor/react";
 
-interface Props {
-  props: {
-    image: {
+const Thumbnails: React.FC<{
+  connectProductId: string;
+  image: {
+    src: string | null;
+    Products: {
       id: string;
-      src: string | null;
-    };
-    productId: string;
-    isGallery: boolean;
+    }[];
+    id: string;
   };
-}
-
-const Thumbnails: React.FC<Props> = ({ props }) => {
+}> = ({ image, connectProductId }) => {
   return (
-    <Image
-      onClick={
-        props.isGallery
-          ? () => {
-              return connectImageToProductAction({
-                imageId: props.image.id,
-                productId: props.productId,
-              });
-            }
-          : () => {
-              return disconnectImageToProductAction({
-                imageId: props.image.id,
-                productId: props.productId,
-              });
-            }
-      }
-      key={props.image.id}
-      alt=""
-      width={200}
-      height={200}
-      src={`https://lh3.googleusercontent.com/d/${props.image.src}=s220`}
-      className="object-contain w-full h-20 mb-2 rounded-md"
-    />
+    <div className="flex flex-col space-y-1">
+      <Card className="relative w-full h-32">
+        <Image
+          fill
+          sizes="100vh"
+          src={`https://lh3.googleusercontent.com/d/${image.src}=s220`}
+          alt=""
+          className="object-contain w-full h-20 mb-2 rounded-md"
+        />
+      </Card>
+      {image?.Products[0]?.id ? (
+        <DisconnectImage imageId={image.id} productId={image.Products[0]?.id} />
+      ) : (
+        <ConnectImage imageId={image.id} productId={connectProductId} />
+      )}
+    </div>
   );
 };
 
