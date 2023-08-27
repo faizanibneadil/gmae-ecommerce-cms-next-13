@@ -6,20 +6,17 @@ import { useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
 
 interface Props {
-  props: {
-    productId: string;
-    variantId: string;
-  };
+  props: {};
 }
 
-const ConnectVariant: React.FC<Props> = ({ props }) => {
+const ConnectVariant: React.FC<{
+  productId: string;
+  variantId: string;
+}> = ({ productId, variantId }) => {
   const [connecting, startConnect] = useTransition();
   const connect = () => {
     return startConnect(() => {
-      return connectVariantAction({
-        variantId: props.variantId,
-        productId: props.productId,
-      });
+      return connectVariantAction({ variantId, productId });
     });
   };
   return (

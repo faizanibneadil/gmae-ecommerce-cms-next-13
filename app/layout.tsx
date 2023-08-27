@@ -4,7 +4,7 @@ import "@radix-ui/themes/styles.css";
 import { Inter } from "next/font/google";
 import Providers from "../providers/poviders";
 import { Toaster } from "react-hot-toast";
-import { Theme } from "@radix-ui/themes";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +22,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <Theme>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Providers>{children}</Providers>
           <Toaster />
-        </Theme>
+        </ThemeProvider>
       </body>
     </html>
   );

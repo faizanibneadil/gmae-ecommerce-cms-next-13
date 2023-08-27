@@ -6,28 +6,22 @@ import { useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
 import { useRouter } from "next/navigation";
 
-interface Props {
-  props: {
-    productId: string;
-    variantId: string;
-  };
-}
-
-const DisconnectVariant: React.FC<Props> = ({ props }) => {
+const DisconnectVariant: React.FC<{
+  productId: string;
+  variantId: string;
+}> = ({ productId, variantId }) => {
   const { refresh } = useRouter();
   const [disConnecting, startDisconnect] = useTransition();
   const connect = () => {
     return startDisconnect(() => {
-      disconnectVariantAction({
-        variantId: props.variantId,
-        productId: props.productId,
-      });
+      disconnectVariantAction({ variantId, productId });
       return refresh();
     });
   };
   return (
     <Button onClick={connect} variant="light">
       <Icon
+        color="rose"
         icon={disConnecting ? Spin : UnPlugIcon}
         tooltip="Disconnect"
         variant="shadow"
