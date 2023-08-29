@@ -1,7 +1,8 @@
 "use client";
 
 import { initAttribute } from "@/_actions";
-import { Button, Card } from "@tremor/react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useParams, useRouter } from "next/navigation";
 import { memo, useTransition } from "react";
 
@@ -16,10 +17,8 @@ const NewAttribute: React.FC<{}> = memo(() => {
     });
   };
   return (
-    <Button variant="light" disabled={initializing} onClick={init}>
-      <Card className="flex items-center justify-center w-full h-20">
-        {initializing ? `Adding ...` : `Add New Attribute`}
-      </Card>
+    <Button variant="outline" disabled={initializing} onClick={init}>
+      {initializing ? `Adding ...` : `Add New Attribute`}
     </Button>
   );
 });

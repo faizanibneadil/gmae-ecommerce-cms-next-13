@@ -24,7 +24,6 @@ export const createProductSchema = z.object({
     isReviewEnable: z.coerce.boolean().default(false),
     isPublished: z.coerce.boolean().default(false),
     isFeatured: z.coerce.boolean().default(false),
-    categories: z.string().optional()
 })
 
 export const createImagesSchema = z.object({

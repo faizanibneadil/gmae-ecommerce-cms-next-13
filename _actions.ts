@@ -42,17 +42,13 @@ export async function deleteProductAction(id: string) {
     revalidatePath("/admin/inventory")
 }
 
-export async function createProductAction(formData: any) {
-    const form = Object.fromEntries(formData)
-    const { id, categories, ...values } = createProductSchema.parse(form)
-    let query = Object.create({});
-    query.data = Object.assign(Object.create({}), { ...values });
-    query.where = Object.assign(Object.create({}), { id: id });
-    if (categories) {
-        query.data = Object.assign(Object.create({}), { ...values, Categories: { set: categories?.split(",").map(c => ({ id: c })) } });
-    }
+export async function createProductAction(values: any) {
+    const { id, ...otherValues } = createProductSchema.parse(values)
     try {
-        await prisma.products.update(query)
+        await prisma.products.update({
+            data: { ...otherValues },
+            where: { id }
+        })
         revalidatePath(`/admin/inventory/${id}`)
         console.log("Updated Successfully 👍")
     } catch (e) {
@@ -190,7 +186,27 @@ export async function disconnectImageToProductAction({ imageId, productId }: { i
             }
         })
         revalidatePath(`admin/inventory/${productId}`)
-        console.log("Successfully connected image with product 👍")
+        console.log("Successfully connected category with product 👍")
+    } catch (e) {
+        console.log("Something went wrong when connecting image to production 👎")
+        console.log(e)
+    }
+}
+
+export async function connectCategories({ categoriesIds, productId }: { categoriesIds: string[], productId: string }) {
+    try {
+        await prisma.products.update({
+            data: {
+                Categories: {
+                    set: categoriesIds?.map(p => ({ id: p }))
+                }
+            },
+            where: {
+                id: productId
+            }
+        })
+        revalidatePath(`/admin/inventory/${productId}/categories`)
+        console.log("Successfully updated product categories 👍")
     } catch (e) {
         console.log("Something went wrong when connecting image to production 👎")
         console.log(e)
@@ -445,3 +461,4 @@ export async function decrementToCart({ userId, productId }: AddToCartTypes) {
         console.log(e)
     }
 }
+

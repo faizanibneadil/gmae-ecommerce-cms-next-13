@@ -6,7 +6,7 @@ interface Props {
 }
 
 const Spin: FC<Props> = ({ className }) => (
-  <Loader className={`${className} w-2 h-2 animate-spin`} />
+  <Loader className={`${className} animate-spin`} />
 );
 
 export default memo(Spin);

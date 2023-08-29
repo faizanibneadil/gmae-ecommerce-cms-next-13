@@ -17,21 +17,11 @@ const Page: React.FC<{
 }> = ({ params }) => {
   const attributes = use(getAttributes(params.id));
   return (
-    <div>
-      <PageHeader
-        backRoute={`/admin/inventory/${params?.id}`}
-        enableBackButton={true}
-        pageDescription="Add product Attributes."
-        pageHeading="Attributes"
-      />
-      <div className="max-w-2xl mx-auto mt-4">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-          <NewAttribute />
-          {attributes?.map((a) => (
-            <AttributeItemForm key={a.id} attribute={a} />
-          ))}
-        </div>
-      </div>
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+      <NewAttribute />
+      {attributes?.map((a) => (
+        <AttributeItemForm key={a.id} attribute={a} />
+      ))}
     </div>
   );
 };

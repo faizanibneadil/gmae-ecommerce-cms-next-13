@@ -2,10 +2,12 @@
 
 import { createAttributesAction, deleteAttribute } from "@/_actions";
 import { CheckIcon, TrashIcon } from "@/app/_components/icons";
-import { Button, Card, Icon, TextInput } from "@tremor/react";
 import { useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
 import { useParams, useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type TAttribute = {
   id: string;
@@ -43,43 +45,28 @@ const AttributeItemForm: React.FC<{
       >
         <input name="productId" type="hidden" value={productId} />
         <input name="attrId" type="hidden" value={attribute.id} />
-        <TextInput
-          className="p-0 m-0"
-          defaultValue={attribute?.name?.toString()}
-          name="name"
-        />
-        <TextInput
-          className="p-0 m-0"
-          defaultValue={attribute?.value?.toString()}
-          name="value"
-        />
+        <Input defaultValue={attribute?.name?.toString()} name="name" />
+        <Input defaultValue={attribute?.value?.toString()} name="value" />
         <div className="flex items-center space-x-0.5">
-          <Button
-            type="submit"
-            variant="light"
-            color="indigo"
-            className="ml-0.5"
-          >
-            <Icon
-              icon={isPending ? Spin : CheckIcon}
-              color="green"
-              variant="shadow"
-              size="sm"
-            />
+          <Button type="submit" variant="outline">
+            {isPending ? (
+              <Spin className="w-4 h-4" />
+            ) : (
+              <div className="flex flex-row items-center space-x-2">
+                <CheckIcon className="w-4 h-4" />
+                <p>Save</p>
+              </div>
+            )}
           </Button>
-          <Button
-            onClick={del}
-            type="button"
-            variant="light"
-            color="rose"
-            className="ml-0.5"
-          >
-            <Icon
-              icon={isDeleting ? Spin : TrashIcon}
-              color="rose"
-              variant="shadow"
-              size="sm"
-            />
+          <Button onClick={del} type="button" variant="destructive">
+            {isDeleting ? (
+              <Spin className="w-4 h-4" />
+            ) : (
+              <div className="flex flex-row items-center space-x-2">
+                <TrashIcon className="w-4 h-4" />
+                <p>Delete</p>
+              </div>
+            )}
           </Button>
         </div>
       </form>
