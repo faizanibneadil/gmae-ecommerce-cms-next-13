@@ -35,13 +35,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Spin from "@/app/_components/loading-spinner";
+import { initializeNewInventory } from "@/_actions";
 
 const menu = [{ name: "Dashboard", route: "Dashboard" }];
 
 const Menu = memo(() => {
-  const [pending, startTransition] = useTransition();
   const { replace } = useRouter();
+  const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+
+  const initInventory = () => {
+    return startTransition(async () => {
+      const id = await initializeNewInventory();
+      return replace(`/admin/inventory/${id}`);
+    });
+  };
 
   const route = (path: string) => {
     return startTransition(() => {
@@ -89,7 +97,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Inventory</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={initInventory}>
               <PackagePlus className="w-4 h-4 mr-2" />
               <span>Add Inventory</span>
             </DropdownMenuItem>

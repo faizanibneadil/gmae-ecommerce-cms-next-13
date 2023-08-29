@@ -58,10 +58,6 @@ const CategoriesForm: React.FC<{
           name="categories"
           render={() => (
             <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-base">Categories</FormLabel>
-                <FormDescription>Select the categories.</FormDescription>
-              </div>
               {categories.map((c) => (
                 <FormField
                   key={c.id}

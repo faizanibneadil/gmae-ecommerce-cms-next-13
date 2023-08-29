@@ -11,7 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Eye,
+  Globe,
   ImagePlus,
+  Layout,
   List,
   ListChecks,
   MoreHorizontal,
@@ -23,7 +26,11 @@ import { useRouter } from "next/navigation";
 import { memo, useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
 
-const MoreOptions: React.FC<{ id: string }> = memo(({ id }) => {
+const MoreOptions: React.FC<{
+  id: string;
+  isFeatured: boolean | null;
+  isPublished: boolean | null;
+}> = memo(({ id, isFeatured, isPublished }) => {
   const [pending, startTransition] = useTransition();
   const { replace } = useRouter();
   const route = (path: string) => {
@@ -35,32 +42,42 @@ const MoreOptions: React.FC<{ id: string }> = memo(({ id }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={pending}>
-          {pending ? <Spin /> : <MoreHorizontal />}
+          {pending ? <Spin /> : `Options`}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Edit Product</DropdownMenuLabel>
+      <DropdownMenuContent className="w-56" loop>
+        <DropdownMenuLabel className="flex items-center justify-between">
+          <p>Edit Product</p>
+          <div className="flex items-center justify-center space-x-2">
+            {isPublished ? (
+              <Eye className="w-4 h-4" />
+            ) : (
+              <Globe className="w-4 h-4" />
+            )}
+            {isFeatured && <Layout className="w-4 h-4" />}
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => route(`/${id}`)}>
             <Pencil className="w-4 h-4 mr-2" />
-            <span>Edit</span>
+            <span>Edit Properties</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <ListChecks className="w-4 h-4 mr-2" />
-            <span>Add Categories</span>
+            <span>Edit Categories</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => route(`/${id}/images`)}>
             <ImagePlus className="w-4 h-4 mr-2" />
-            <span>Add Images</span>
+            <span>Edit Images</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => route(`/${id}/variants`)}>
             <PackagePlus className="w-4 h-4 mr-2" />
-            <span>Add Variants</span>
+            <span>Edit Variants</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => route(`/${id}/variants`)}>
             <List className="w-4 h-4 mr-2" />
-            <span>Add Attributes</span>
+            <span>Edit Attributes</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => route(`/${id}/seo`)}>
             <PackageSearch className="w-4 h-4 mr-2" />
