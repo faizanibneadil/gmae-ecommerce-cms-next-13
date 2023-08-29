@@ -44,6 +44,7 @@ const Menu = memo(() => {
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
+  // create empty inventory
   const initInventory = () => {
     return startTransition(async () => {
       const id = await initializeNewInventory();
