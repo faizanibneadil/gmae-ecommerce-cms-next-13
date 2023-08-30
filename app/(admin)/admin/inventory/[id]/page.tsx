@@ -14,6 +14,10 @@ const getProperties = cache(async (id: string) => {
       purchasePrice: true,
       purchaseLimit: true,
       stock: true,
+      isFeatured: true,
+      isPublished: true,
+      isReviewEnable: true,
+      isTrackStock: true,
     },
     where: { id },
   });

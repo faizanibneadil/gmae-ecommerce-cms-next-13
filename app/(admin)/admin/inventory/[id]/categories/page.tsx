@@ -24,7 +24,7 @@ const Page: React.FC<{
 }> = memo(({ params }) => {
   const categories = use(getCategories(params.id));
   return (
-    <div className="">
+    <div className="mt-4">
       <CategoriesForm categories={categories} />
     </div>
   );

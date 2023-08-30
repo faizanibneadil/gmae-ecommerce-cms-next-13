@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import InitializeNewInventory from "./_components/initialize-new-inventory";
 
 export default function NotFound() {
   return (

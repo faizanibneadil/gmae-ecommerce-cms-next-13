@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 type TProperties = {
   id: string;
@@ -26,6 +27,10 @@ type TProperties = {
   purchasePrice: number | null;
   purchaseLimit: number | null;
   stock: number | null;
+  isPublished: boolean | null;
+  isFeatured: boolean | null;
+  isReviewEnable: boolean | null;
+  isTrackStock: boolean | null;
 } | null;
 
 const CreateInventoryForm: React.FC<{
@@ -42,6 +47,10 @@ const CreateInventoryForm: React.FC<{
       purchasePrice: properties?.purchasePrice?.toFixed(),
       purchaseLimit: properties?.purchaseLimit?.toFixed(),
       stock: properties?.stock?.toFixed(),
+      isPublished: properties?.isPublished?.valueOf(),
+      isFeatured: properties?.isFeatured?.valueOf(),
+      isReviewEnable: properties?.isReviewEnable?.valueOf(),
+      isTrackStock: properties?.isTrackStock?.valueOf(),
     },
   });
   const [isPending, startTransition] = useTransition();
@@ -182,6 +191,87 @@ const CreateInventoryForm: React.FC<{
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="isPublished"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Publish</FormLabel>
+                <FormDescription>
+                  Make this product visible on website
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isFeatured"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Featured</FormLabel>
+                <FormDescription>
+                  Make this product Featured for display on landing page
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isReviewEnable"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Enable Reviews</FormLabel>
+                <FormDescription>display reviews for public</FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isTrackStock"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">
+                  Enable Tracking Stock
+                </FormLabel>
+                <FormDescription>
+                  Enable this will minus quantity in product on each sale is
+                  successful.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <Button type="submit" variant="outline" className="w-full">
           {isPending ? <Spin /> : `Save`}
         </Button>

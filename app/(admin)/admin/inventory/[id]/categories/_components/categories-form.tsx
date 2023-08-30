@@ -31,9 +31,6 @@ type TCategories = {
 const CategoriesForm: React.FC<{
   categories: TCategories[];
 }> = memo(({ categories }) => {
-  console.log(
-    categories.filter((c) => c.Products.length != 0).map((c) => c.id)
-  );
   const productId = useParams()?.id as string;
   const [pending, startTransition] = useTransition();
   const form = useForm({
