@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { memo, useTransition } from "react";
 import { useParams } from "next/navigation";
-import { connectCategories } from "@/_actions";
+import { connectCategories, connectSubCategories } from "@/_actions";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -28,30 +28,31 @@ type TCategories = {
   images: {
     src: string | null;
   } | null;
-  Products: {
-    id: string;
-  }[];
   subCategories: {
-    name: string | null;
+    id: string;
   }[];
 };
 
 const CategoriesForm: React.FC<{
   categories: TCategories[];
 }> = memo(({ categories }) => {
-  const productId = useParams()?.id as string;
+  const categoryId = useParams()?.id as string;
   const [pending, startTransition] = useTransition();
   const form = useForm({
     defaultValues: {
       categories: categories
-        .filter((c) => c.Products.length != 0)
-        .map((c) => c.id),
+        .filter((c) => c.subCategories?.length != 0)
+        .map((o) => o.subCategories.map((e) => e.id))
+        .flat(),
     },
   });
 
   const onSubmit = (data: any) => {
     return startTransition(() => {
-      return connectCategories({ categoriesIds: data.categories, productId });
+      return connectSubCategories({
+        categoriesIds: data.categories,
+        categoryId,
+      });
     });
   };
 
@@ -91,9 +92,9 @@ const CategoriesForm: React.FC<{
                               </FormLabel>
                               <FormDescription>
                                 <div className="flex flex-row items-center space-x-2">
-                                  {c?.subCategories.map((c) => (
-                                    <Badge key={c.name}>{c?.name}</Badge>
-                                  ))}
+                                  {/* {c?.parentCategory && (
+                                    <Badge>{c?.parentCategory?.name}</Badge>
+                                  )} */}
                                   {c?.displayOnLandingPage && (
                                     <Layout className="w-4 h-4" />
                                   )}

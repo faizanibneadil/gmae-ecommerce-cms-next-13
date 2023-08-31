@@ -5,7 +5,6 @@ export const createCategorySchema = z.object({
     name: z.string().trim().min(1, "Minimum 1 correctors are required.").max(40, "Maximum 40 correctors are allowed."),
     slug: z.string().trim().toLowerCase().transform(value => value.replace(/[^\w\s-]/g, "").replace(/\s+/g, " ").trim().replace(/\s+/g, "-")),
     order: z.coerce.number().nonnegative("0 Or Positive numbers only allowed. Ex: 1,2,3 ... 4"),
-    categoryId: z.string(),
     isPublished: z.coerce.boolean(),
     displayOnLandingPage: z.coerce.boolean()
 })

@@ -30,10 +30,8 @@ const Page: React.FC<{
 }> = ({ params, searchParams }) => {
   const properties = use(getProperties(params.id));
   return (
-    <div>
-      <div className="max-w-2xl mx-auto">
-        <PropertiesForm properties={properties} />
-      </div>
+    <div className="max-w-2xl mx-auto">
+      <PropertiesForm properties={properties} />
     </div>
   );
 };

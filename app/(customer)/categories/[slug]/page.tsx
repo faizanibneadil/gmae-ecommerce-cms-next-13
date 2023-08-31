@@ -15,13 +15,6 @@ const getCategory = cache(async (slug: string) => {
           src: true,
         },
       },
-      subCategory: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
       Products: {
         select: {
           id: true,
@@ -47,7 +40,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const category = await getCategory(params.slug);
   return (
     <div className="max-w-3xl mx-auto mt-4">
-      <div className="flex items-center space-x-2">
+      {/* <div className="flex items-center space-x-2">
         {category?.subCategory?.map((sub) => (
           <Link
             href={`/categories/${sub.slug}`}
@@ -57,7 +50,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {sub.name}
           </Link>
         ))}
-      </div>
+      </div> */}
       <div>
         <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
           {category?.Products?.map((p) => (

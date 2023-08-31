@@ -35,11 +35,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Spin from "@/app/_components/loading-spinner";
-import { initializeNewInventory } from "@/_actions";
+import {
+  initImage,
+  initializeNewCategory,
+  initializeNewInventory,
+} from "@/_actions";
+import { useTheme } from "next-themes";
 
 const menu = [{ name: "Dashboard", route: "Dashboard" }];
 
 const Menu = memo(() => {
+  const { setTheme } = useTheme();
   const { replace } = useRouter();
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
@@ -49,6 +55,22 @@ const Menu = memo(() => {
     return startTransition(async () => {
       const id = await initializeNewInventory();
       return replace(`/admin/inventory/${id}`);
+    });
+  };
+
+  // create empty image
+  const initNewImage = () => {
+    return startTransition(async () => {
+      const id = await initImage();
+      return replace(`/admin/images/${id}`);
+    });
+  };
+
+  // create empty category
+  const initCategory = () => {
+    return startTransition(async () => {
+      const id = await initializeNewCategory();
+      return replace(`/admin/categories/${id}`);
     });
   };
 
@@ -102,7 +124,9 @@ const Menu = memo(() => {
               <PackagePlus className="w-4 h-4 mr-2" />
               <span>Add Inventory</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => route("/admin/inventory/analytics")}
+            >
               <BarChart className="w-4 h-4 mr-2" />
               <span>Analytics</span>
             </DropdownMenuItem>
@@ -126,7 +150,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Image Gallery</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={initNewImage}>
               <ImagePlus className="w-4 h-4 mr-2" />
               <span>Add Images</span>
             </DropdownMenuItem>
@@ -150,7 +174,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Categories</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={initCategory}>
               <PlusIcon className="w-4 h-4 mr-2" />
               <span>Add Category</span>
             </DropdownMenuItem>
@@ -194,6 +218,7 @@ const Menu = memo(() => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
         {/* users  */}
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">
@@ -237,7 +262,7 @@ const Menu = memo(() => {
               <Store className="w-4 h-4 mr-2" />
               <span>Add Shop</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => route("/admin/shops")}>
               <Store className="w-4 h-4 mr-2" />
               <span>All Shops</span>
             </DropdownMenuItem>
@@ -262,7 +287,7 @@ const Menu = memo(() => {
               <Target className="w-4 h-4 mr-2" />
               <span>Add Brand</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => route("/admin/brands")}>
               <Target className="w-4 h-4 mr-2" />
               <span>All Brands</span>
             </DropdownMenuItem>
@@ -287,7 +312,7 @@ const Menu = memo(() => {
               <Factory className="w-4 h-4 mr-2" />
               <span>Add Company</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => route("/admin/companies")}>
               <Factory className="w-4 h-4 mr-2" />
               <span>All Companies</span>
             </DropdownMenuItem>
@@ -311,15 +336,15 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Theme</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => setTheme("light")}>
               <Moon className="w-4 h-4 mr-2" />
               <span>Light</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
               <Sun className="w-4 h-4 mr-2" />
               <span>Dark</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
               <Laptop className="w-4 h-4 mr-2" />
               <span>System Default</span>
             </DropdownMenuItem>

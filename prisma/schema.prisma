@@ -116,9 +116,8 @@ model Categories {
   order                Int?         @default(0)
   displayOnLandingPage Boolean?     @default(false)
   isPublished          Boolean?     @default(false)
-  parentCategoryId     String?
-  parentCategory       Categories?  @relation("subCategory", fields: [parentCategoryId], references: [id])
-  subCategory          Categories[] @relation("subCategory")
+  categoriesBy         Categories[] @relation("subCategories")
+  subCategories        Categories[] @relation("subCategories")
   Products             Products[]
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
@@ -128,7 +127,6 @@ model Categories {
   @@index([displayOnLandingPage])
   @@index([isPublished])
   @@index([imageId])
-  @@index([parentCategoryId])
 }
 
 // Next-Auth

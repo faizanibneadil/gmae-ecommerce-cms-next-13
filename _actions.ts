@@ -4,31 +4,19 @@ import { prisma } from "./config/db";
 import { createAttributesSchema, createCategorySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 
-export async function createCategoryAction(formData: FormData) {
-    const form = Object.fromEntries(formData.entries())
-    const res = await createCategorySchema.safeParseAsync(form)
-    if (!res.success) {
-        return { error: res.error.format() }
-    } else {
-        const { id, categoryId, ...values } = res.data
-        let query = Object.create({});
-        query.create = Object.assign(Object.create({}), { ...values });
-        query.update = Object.assign(Object.create({}), { ...values });
-        query.where = Object.assign(Object.create({}), { id: id });
-        if (!categoryId || categoryId === 'undefined') {
-            query.update = Object.assign(Object.create({}), { ...values, parentCategory: { disconnect: true } });
-        } else {
-            query.create = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
-            query.update = Object.assign(Object.create({}), { ...values, parentCategory: { connect: { id: categoryId } } });
-        }
-        try {
-            await prisma.categories.upsert(query)
-            revalidatePath("/admin/categories")
-            console.log("Create Or Updated Successfully 👍")
-        } catch (e) {
-            console.log("Something went wrong when Creating Or Updating with this error 👎")
-            console.log(e)
-        }
+export async function createCategoryAction(form: any) {
+    const res = createCategorySchema.parse(form)
+    const { id, ...values } = res
+    try {
+        await prisma.categories.update({
+            data: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/admin/categories/${id}`)
+        console.log("Category Updated Successfully 👍")
+    } catch (e) {
+        console.log("Something went wrong when Creating Or Updating with this error 👎")
+        console.log(e)
     }
 }
 
@@ -207,6 +195,27 @@ export async function connectCategories({ categoriesIds, productId }: { categori
         })
         revalidatePath(`/admin/inventory/${productId}/categories`)
         console.log("Successfully updated product categories 👍")
+    } catch (e) {
+        console.log("Something went wrong when connecting image to production 👎")
+        console.log(e)
+    }
+}
+
+export async function connectSubCategories({ categoriesIds, categoryId }: { categoriesIds: string[], categoryId: string }) {
+    try {
+        await prisma.categories.update({
+            data: {
+                subCategories: {
+                    set: categoriesIds?.map(c => ({ id: c }))
+                }
+            },
+            where: {
+                id: categoryId
+            }
+        })
+        revalidatePath(`/admin/categories/${categoryId}/categories`)
+        revalidatePath(`/admin/categories`)
+        console.log("Successfully updated sub Categories 👍")
     } catch (e) {
         console.log("Something went wrong when connecting image to production 👎")
         console.log(e)

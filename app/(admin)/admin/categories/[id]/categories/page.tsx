@@ -9,11 +9,19 @@ const getCategories = cache(async (id: string) => {
       name: true,
       isPublished: true,
       displayOnLandingPage: true,
-      images: {
-        select: { src: true },
+      images: { select: { src: true } },
+      subCategories: {
+        select: {
+          id: true,
+        },
+        where: {
+          categoriesBy: {
+            some: {
+              id,
+            },
+          },
+        },
       },
-      subCategories: { select: { name: true }, where: { id } },
-      Products: { select: { id: true }, where: { id } },
     },
   });
   return categories;
@@ -23,6 +31,7 @@ const Page: React.FC<{
   params: { id: string };
 }> = memo(({ params }) => {
   const categories = use(getCategories(params.id));
+  console.log(categories);
   return (
     <div className="mt-4">
       <CategoriesForm categories={categories} />
