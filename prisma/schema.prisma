@@ -18,6 +18,26 @@ model Example {
   name String
 }
 
+model Shops {
+  id      String  @id @default(uuid())
+  name    String?
+  owner   String?
+  phone   Int?
+  address String?
+}
+
+model Brands {
+  id       String     @id @default(uuid())
+  name     String?
+  products Products[]
+}
+
+model Companies {
+  id       String     @id @default(uuid())
+  name     String?
+  products Products[]
+}
+
 model CartItem {
   id        String    @id @default(uuid())
   quantity  Int?
@@ -100,12 +120,18 @@ model Products {
   Categories     Categories[]
   Attributes     Attributes[]
   CartItem       CartItem[]
+  Brands         Brands?      @relation(fields: [brandId], references: [id])
+  brandId        String?
+  Companies      Companies?   @relation(fields: [companyId], references: [id])
+  companyId      String?
 
   @@index([slug])
   @@index([isPublished])
   @@index([isFeatured])
   @@index([isReviewEnable])
   @@index([ytVideosIds])
+  @@index([brandId])
+  @@index([companyId])
 }
 
 model Categories {

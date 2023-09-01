@@ -36,6 +36,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Spin from "@/app/_components/loading-spinner";
 import {
+  initBrand,
+  initCompany,
   initImage,
   initializeNewCategory,
   initializeNewInventory,
@@ -71,6 +73,22 @@ const Menu = memo(() => {
     return startTransition(async () => {
       const id = await initializeNewCategory();
       return replace(`/admin/categories/${id}`);
+    });
+  };
+
+  // create empty Company
+  const initNewCompany = () => {
+    return startTransition(async () => {
+      const id = await initCompany();
+      return replace(`/admin/companies/${id}`);
+    });
+  };
+
+  // create empty brand
+  const initNewBrand = () => {
+    return startTransition(async () => {
+      const id = await initBrand();
+      return replace(`/admin/brands/${id}`);
     });
   };
 
@@ -208,7 +226,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Customers</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => route("/admin/customers/new")}>
               <PlusIcon className="w-4 h-4 mr-2" />
               <span>Add Customer</span>
             </DropdownMenuItem>
@@ -233,7 +251,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Users</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => route("/admin/users/new")}>
               <PlusIcon className="w-4 h-4 mr-2" />
               <span>Add User</span>
             </DropdownMenuItem>
@@ -258,7 +276,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Shops</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={() => route("/admin/shops/new")}>
               <Store className="w-4 h-4 mr-2" />
               <span>Add Shop</span>
             </DropdownMenuItem>
@@ -283,7 +301,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Brands</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={initNewBrand}>
               <Target className="w-4 h-4 mr-2" />
               <span>Add Brand</span>
             </DropdownMenuItem>
@@ -308,7 +326,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Companies</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => route("/admin")}>
+            <DropdownMenuItem onClick={initNewCompany}>
               <Factory className="w-4 h-4 mr-2" />
               <span>Add Company</span>
             </DropdownMenuItem>

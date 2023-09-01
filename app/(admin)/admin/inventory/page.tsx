@@ -1,9 +1,6 @@
 import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { notFound } from "next/navigation";
-import MoreOptions from "./_components/more-options";
-import { Card } from "@/components/ui/card";
-import Image from "next/image";
 import InfiniteScroll from "./_components/Infinite-scroll";
 
 const getAllProducts = cache(async () => {

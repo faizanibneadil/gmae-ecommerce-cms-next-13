@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAttributesSchema, createCategorySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
+import { createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 
 export async function createCategoryAction(form: any) {
@@ -269,6 +269,48 @@ export async function initImage() {
     const { id } = await prisma.images.create({ data: {}, select: { id: true } })
     return id
 }
+
+export async function initCompany() {
+    const { id } = await prisma.companies.create({ data: {}, select: { id: true } })
+    return id
+}
+
+export async function createCompany(form: typeof createCompanySchema) {
+    const { id, ...values } = createCompanySchema.parse(form)
+    try {
+        await prisma.companies.update({
+            data: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/admin/companies/${id}`)
+        console.log("Company Successful Created Or Updated 👍")
+    } catch (e) {
+        console.log("Something went wrong when creating new or updating company 👎")
+        console.log(e)
+    }
+}
+
+export async function initBrand() {
+    const { id } = await prisma.brands.create({ data: {}, select: { id: true } })
+    return id
+}
+
+
+export async function createBrand(form: typeof createBrandSchema) {
+    const { id, ...values } = createBrandSchema.parse(form)
+    try {
+        await prisma.brands.update({
+            data: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/admin/brands/${id}`)
+        console.log("Brand Successful Created Or Updated 👍")
+    } catch (e) {
+        console.log("Something went wrong when creating new or updating Brand 👎")
+        console.log(e)
+    }
+}
+
 
 export async function initAttribute({ productId }: { productId: string }) {
     await prisma.attributes.create({

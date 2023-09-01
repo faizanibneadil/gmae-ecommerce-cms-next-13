@@ -2,61 +2,107 @@
 
 import { createImageAction } from "@/_actions";
 import { Images } from "@prisma/client";
-import { Button, TextInput } from "@tremor/react";
-import { Image, Save, Search, Text } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { memo, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import Spin from "@/app/_components/loading-spinner";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-interface Props {
-  id: string;
+const CreateImageForm: React.FC<{
   image: Images | null;
-}
-
-const CreateImageForm = ({ id, image }: Props) => {
-  const { replace } = useRouter();
+}> = memo(({ image }) => {
   const [isPending, startTransition] = useTransition();
-  const action = (formData: FormData) => {
-    startTransition(() => createImageAction(formData));
-    replace("/admin/images");
+
+  // form hook
+  const form = useForm({
+    defaultValues: {
+      id: image?.id?.toString(),
+      src: image?.src?.toString(),
+      searchText: image?.searchText?.toString(),
+      altText: image?.altText?.toString(),
+    },
+  });
+
+  // submit action
+  const onSubmit = (values: any) => {
+    return startTransition(() => {
+      return createImageAction(values);
+    });
   };
   return (
-    <form action={action} className="flex flex-col w-full gap-2 mt-4">
-      <input type="hidden" name="id" value={image?.id} />
-      <TextInput
-        defaultValue={image?.src as string}
-        disabled={isPending}
-        icon={Image}
-        name="src"
-        placeholder="Image Google Drive ID"
-        required
-      />
-      <TextInput
-        defaultValue={image?.searchText?.join(" ")}
-        disabled={isPending}
-        icon={Search}
-        name="searchText"
-        placeholder="Search Text Ex: headphones"
-        required
-      />
-      <TextInput
-        defaultValue={image?.altText as string}
-        icon={Text}
-        disabled={isPending}
-        name="altText"
-        placeholder="alt text Ex: iPhone black headphones etc ..."
-        required
-      />
-      <Button
-        loading={isPending}
-        disabled={isPending}
-        icon={Save}
-        type="submit"
-        className="w-full"
-      >
-        Save
-      </Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="id"
+          render={({ field }) => <Input type="hidden" {...field} />}
+        />
+        <FormField
+          control={form.control}
+          name="src"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image Id / Source</FormLabel>
+              <FormControl>
+                <Input placeholder="Image Id" {...field} />
+              </FormControl>
+              <FormDescription className="text-xs">
+                Provide imag id that you uploaded on google drive.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="searchText"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Search Text</FormLabel>
+              <FormControl>
+                <Input placeholder="Search Text" {...field} />
+              </FormControl>
+              <FormDescription className="text-xs">
+                Provide Search Text that how to wont to search this image.
+                Search Text looks like this: Ex: Printer, Mobile phons bla bla.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="altText"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Alter Text</FormLabel>
+              <FormControl>
+                <Input placeholder="Alt Text" {...field} />
+              </FormControl>
+              <FormDescription className="text-xs">
+                Provide Alternative text in case image is not rendered so
+                alternative text will be display on the screen this best text
+                for SEO.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" variant="outline" className="w-full">
+          {isPending ? <Spin /> : `Save`}
+        </Button>
+      </form>
+    </Form>
   );
-};
-
+});
+CreateImageForm.displayName = "CreateImageForm";
 export default CreateImageForm;

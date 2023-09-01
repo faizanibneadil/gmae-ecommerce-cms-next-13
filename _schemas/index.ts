@@ -44,3 +44,13 @@ export const updateDeliveryLocationSchema = z.object({
     location: z.string(),
     LocationRate: z.coerce.number()
 })
+
+export const createCompanySchema = z.object({
+    id: z.string({ required_error: "Id is required." }),
+    name: z.string({ required_error: "Company Name is Required." })
+})
+
+export const createBrandSchema = z.object({
+    id: z.string({ required_error: "Id is required." }),
+    name: z.string({ required_error: "Company Name is Required." })
+})
