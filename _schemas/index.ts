@@ -54,3 +54,13 @@ export const createBrandSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
     name: z.string({ required_error: "Company Name is Required." })
 })
+
+export const createShopSchema = z.object({
+    id: z.string({ required_error: "Id is required." }),
+    name: z.string({ required_error: "Id is required." }),
+    owner: z.string({ required_error: "Id is required." }),
+    phone: z.coerce.number({ required_error: "Id is required." }),
+    address: z.string({ required_error: "Id is required." }),
+    popType: z.enum(["RETAILER", "WHOLESALER"]),
+    payType: z.enum(["CASH", "CHEQUE", "BILL"])
+})

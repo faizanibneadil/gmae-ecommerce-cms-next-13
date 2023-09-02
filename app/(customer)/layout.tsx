@@ -1,15 +1,16 @@
-import { ReactNode } from "react";
 import Navigation from "./_components/navigation";
-import { X } from "lucide-react";
-import { Card } from "@tremor/react";
 import Footer from "./_components/footer";
+import { memo } from "react";
 
-export default function Layout({ children }: { children: ReactNode }) {
+const Layout: React.FC<{ children: React.ReactNode }> = memo(({ children }) => {
   return (
     <div>
-      <Navigation />
-      <main>{children}</main>
-      <Footer />
+      {children}
+      {/* <Navigation /> */}
+      {/* <main>{children}</main> */}
+      {/* <Footer /> */}
     </div>
   );
-}
+});
+Layout.displayName = "Layout";
+export default Layout;

@@ -18,12 +18,30 @@ model Example {
   name String
 }
 
+enum PopType {
+  RETAILER
+  WHOLESALER
+}
+
+enum ShopPaymentType {
+  CASH
+  CHEQUE
+  BILL
+}
+
 model Shops {
-  id      String  @id @default(uuid())
-  name    String?
-  owner   String?
-  phone   Int?
-  address String?
+  id       String           @id @default(uuid())
+  accessId Int?             @unique @default(autoincrement())
+  name     String?
+  owner    String?
+  phone    Int?
+  address  String?
+  popType  PopType?         @default(RETAILER)
+  payType  ShopPaymentType? @default(CASH)
+
+  @@index([accessId])
+  @@index([popType])
+  @@index([payType])
 }
 
 model Brands {

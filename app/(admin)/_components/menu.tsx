@@ -39,6 +39,7 @@ import {
   initBrand,
   initCompany,
   initImage,
+  initShop,
   initializeNewCategory,
   initializeNewInventory,
 } from "@/_actions";
@@ -89,6 +90,14 @@ const Menu = memo(() => {
     return startTransition(async () => {
       const id = await initBrand();
       return replace(`/admin/brands/${id}`);
+    });
+  };
+
+  // create empty Shop
+  const initNewShop = () => {
+    return startTransition(async () => {
+      const id = await initShop();
+      return replace(`/admin/shops/${id}`);
     });
   };
 
@@ -276,7 +285,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Shops</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => route("/admin/shops/new")}>
+            <DropdownMenuItem onClick={initNewShop}>
               <Store className="w-4 h-4 mr-2" />
               <span>Add Shop</span>
             </DropdownMenuItem>

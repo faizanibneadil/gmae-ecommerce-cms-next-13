@@ -1,38 +1,34 @@
+import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/config/db";
-import { List, ListItem } from "@tremor/react";
-import Image from "next/image";
-import CustomersPageHeader from "./components/cutomersPageHeader";
+import { notFound } from "next/navigation";
+import { cache, memo, use } from "react";
 
-export default async function Page() {
+const getCustomers = cache(async () => {
   const customers = await prisma.user.findMany();
-  return (
-    <div className="md:mx-52">
-      <CustomersPageHeader />
-      <List className="mt-6">
-        {customers.map((customer) => (
-          <ListItem key={customer.id}>
-          <span className="flex items-center space-x-2">
-            <Image
-              className="w-8 h-8 mr-4 rounded-full"
-              width={30}
-              height={30}
-              alt=""
-              src={`${customer?.image}`}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
-            <span className="truncate">{customer.name}</span>
-          </span>
-          <span className="flex items-center space-x-2">
-            actions
-            {/* <Icon size="xs" icon={Trash} variant="solid" tooltip="Delete" />
-            <Link href={`/admin/categories/${category.id}`}>
-              <Icon size="xs" icon={Edit} variant="solid" tooltip="Edit" />
-            </Link> */}
-          </span>
-        </ListItem>
-        ))}
-      </List>
+  return customers;
+});
+
+const Page: React.FC<{}> = memo(() => {
+  const customers = use(getCustomers());
+  return customers?.length ? (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
+      {customers?.map((customer) => (
+        <div
+          key={customer.id}
+          className="flex flex-row items-center justify-between p-4 border rounded-lg"
+        >
+          <div className="flex flex-col space-y-1">
+            <h2 className="text-base">{customer.name}</h2>
+            <div className="flex flex-row space-x-2">
+              <Badge>{customer.role}</Badge>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
+  ) : (
+    notFound()
   );
-}
+});
+Page.displayName = "Page";
+export default Page;

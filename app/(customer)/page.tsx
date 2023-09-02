@@ -9,34 +9,34 @@ import { cache, memo, use } from "react";
 
 export const revalidate = 600;
 
-const getCategoriesAndProducts = cache(async () => {
-  const categoriesAndProducts = await prisma.categories.findMany({
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      images: { select: { src: true } },
-      Products: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          images: { select: { src: true }, take: 1 },
-        },
-        where: { isFeatured: true, isPublished: true },
-        take: 6,
-      },
-    },
-    where: {
-      Products: { some: { isFeatured: true, isPublished: true } },
-      isPublished: true,
-      displayOnLandingPage: true,
-    },
-    take: 8,
-    orderBy: { order: "asc" },
-  });
-  return categoriesAndProducts;
-});
+// const getCategoriesAndProducts = cache(async () => {
+//   const categoriesAndProducts = await prisma.categories.findMany({
+//     select: {
+//       id: true,
+//       name: true,
+//       slug: true,
+//       images: { select: { src: true } },
+//       Products: {
+//         select: {
+//           id: true,
+//           title: true,
+//           slug: true,
+//           images: { select: { src: true }, take: 1 },
+//         },
+//         where: { isFeatured: true, isPublished: true },
+//         take: 6,
+//       },
+//     },
+//     where: {
+//       Products: { some: { isFeatured: true, isPublished: true } },
+//       isPublished: true,
+//       displayOnLandingPage: true,
+//     },
+//     take: 8,
+//     orderBy: { order: "asc" },
+//   });
+//   return categoriesAndProducts;
+// });
 
 interface Props {
   searchParams: { [key: string]: string };
@@ -44,12 +44,12 @@ interface Props {
 }
 
 const Page: React.FC<Props> = () => {
-  const categories = use(getCategoriesAndProducts());
-  const session = use(getServerSession(authOptions));
+  // const categories = use(getCategoriesAndProducts());
+  // const session = use(getServerSession(authOptions));
   return (
     <div>
-      <Carousel />
-      <div className="container mx-auto">
+      {/* <Carousel /> */}
+      {/* <div className="container mx-auto">
         {categories?.map((category) => (
           <>
             <section
@@ -89,7 +89,7 @@ const Page: React.FC<Props> = () => {
             <div className="flex-grow border-t border-gray-200"></div>
           </>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, updateDeliveryLocationSchema } from "./_schemas";
+import { createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 
 export async function createCategoryAction(form: any) {
@@ -307,6 +307,26 @@ export async function createBrand(form: typeof createBrandSchema) {
         console.log("Brand Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Brand 👎")
+        console.log(e)
+    }
+}
+
+export async function initShop() {
+    const { id } = await prisma.shops.create({ data: {}, select: { id: true } })
+    return id
+}
+
+export async function createShop(form: typeof createShopSchema) {
+    const { id, ...values } = createShopSchema.parse(form)
+    try {
+        await prisma.shops.update({
+            data: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/admin/shops/${id}`)
+        console.log("Shop Successful Created Or Updated 👍")
+    } catch (e) {
+        console.log("Something went wrong when creating new or updating Shop 👎")
         console.log(e)
     }
 }
