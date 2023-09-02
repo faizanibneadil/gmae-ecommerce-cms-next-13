@@ -6,93 +6,107 @@ import Carousel from "./_components/carousel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
 import { cache, memo, use } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import InfiniteScroll from "./_components/Infinite-scroll";
+import { notFound } from "next/navigation";
 
 export const revalidate = 600;
 
-// const getCategoriesAndProducts = cache(async () => {
-//   const categoriesAndProducts = await prisma.categories.findMany({
-//     select: {
-//       id: true,
-//       name: true,
-//       slug: true,
-//       images: { select: { src: true } },
-//       Products: {
-//         select: {
-//           id: true,
-//           title: true,
-//           slug: true,
-//           images: { select: { src: true }, take: 1 },
-//         },
-//         where: { isFeatured: true, isPublished: true },
-//         take: 6,
-//       },
-//     },
-//     where: {
-//       Products: { some: { isFeatured: true, isPublished: true } },
-//       isPublished: true,
-//       displayOnLandingPage: true,
-//     },
-//     take: 8,
-//     orderBy: { order: "asc" },
-//   });
-//   return categoriesAndProducts;
-// });
+const getCategories = cache(async () => {
+  const categories = await prisma.categories.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      images: { select: { src: true } },
+    },
+    where: {
+      Products: { some: { isFeatured: true, isPublished: true } },
+      isPublished: true,
+      displayOnLandingPage: true,
+    },
+    take: 8,
+    orderBy: { order: "asc" },
+  });
+  return categories;
+});
+
+const getInitialProducts = cache(async () => {
+  const res = await prisma.products.findMany({
+    select: {
+      id: true,
+      title: true,
+      isPublished: true,
+      isFeatured: true,
+      stock: true,
+      salePrice: true,
+      regularPrice: true,
+      images: {
+        select: {
+          id: true,
+          src: true,
+        },
+      },
+    },
+    take: 24,
+  });
+  return res;
+});
 
 interface Props {
   searchParams: { [key: string]: string };
   params: {};
 }
 
-const Page: React.FC<Props> = () => {
-  // const categories = use(getCategoriesAndProducts());
-  // const session = use(getServerSession(authOptions));
+const Page: React.FC<Props> = memo(() => {
+  const categories = use(getCategories());
+  const session = use(getServerSession(authOptions));
+  const products = use(getInitialProducts());
   return (
     <div>
-      {/* <Carousel /> */}
-      {/* <div className="container mx-auto">
-        {categories?.map((category) => (
-          <>
-            <section
-              aria-labelledby={category?.name?.toString()}
-              key={category.id}
-              className="p-2 md:p-4"
-            >
-              <div className="flex items-center justify-between">
-                <span className="flex items-center space-x-2 font-semibold truncate ">
-                  <span className="relative w-8 h-8 rounded-full">
-                    <Image
-                      src={`https://drive.google.com/thumbnail?id=${category.images?.src}&sz=w64-h64`}
-                      fill
-                      alt=""
-                      className="w-8 h-8 rounded-full"
-                    />
-                  </span>
-                  <span className="uppercase">{category.name}</span>
-                </span>
-                <Link
-                  href={`/categories/${category.slug}`}
-                  className="font-semibold "
-                >
-                  See all &rarr;
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-6">
-                {category?.Products.map((p, pIdx) => (
-                  <ProductCard
-                    userId={session?.user.id}
-                    key={pIdx}
-                    product={p}
-                  />
-                ))}
-              </div>
-            </section>
-            <div className="flex-grow border-t border-gray-200"></div>
-          </>
-        ))}
-      </div> */}
+      <Carousel />
+      <ScrollArea className="w-full h-auto p-2 pb-4 mt-2 mb-2">
+        <ScrollBar orientation="horizontal" />
+        <div className="flex flex-col space-y-2">
+          <div className="flex flex-row items-center justify-center space-x-2">
+            {categories?.map((category) => (
+              <Card key={category.id} className="relative w-20 h-20">
+                <Image
+                  fill
+                  sizes="100vw"
+                  src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
+                  alt=""
+                  className="object-cover w-full h-20 rounded-md"
+                />
+              </Card>
+            ))}
+          </div>
+          <div className="flex flex-row items-center justify-center space-x-2">
+            {categories?.map((category) => (
+              <Card key={category.id} className="relative w-20 h-20">
+                <Image
+                  fill
+                  sizes="100vw"
+                  src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
+                  alt=""
+                  className="object-cover w-full h-20 rounded-md"
+                />
+              </Card>
+            ))}
+          </div>
+        </div>
+      </ScrollArea>
+      <div className="p-2">
+        {!!products?.length ? (
+          <InfiniteScroll initialInventory={products} />
+        ) : (
+          notFound()
+        )}
+      </div>
     </div>
   );
-};
-
-const MemoizedPage = memo(Page);
-export default MemoizedPage;
+});
+Page.displayName = "Page";
+export default Page;

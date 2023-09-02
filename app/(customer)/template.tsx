@@ -2,9 +2,15 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Menu, ShoppingCart } from "lucide-react";
+import {
+  ChevronsUpDown,
+  LayoutGrid,
+  Menu,
+  Search,
+  ShoppingCart,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
-import { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, useTransition } from "react";
 import { useTheme } from "next-themes";
 import {
   Sheet,
@@ -14,6 +20,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import CategoriesMenu from "./_components/categories-menu";
 
 const Template: React.FC<{
   children: React.ReactNode;
@@ -44,37 +64,33 @@ const Template: React.FC<{
     <div>
       <div className="sticky top-0 z-50 flex items-center justify-between p-2 space-x-1 bg-white dark:bg-[#020817] border-b">
         <div className="flex flex-row items-center space-x-2">
-          {/* // menu  */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="secondary" size="icon">
-                <Menu />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <SheetHeader>
-                <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-
           {/* logo  */}
-          <Avatar className="px-4 bg-white rounded-md w-28">
-            <AvatarImage src="/logo.png" />
+          <Avatar>
+            <AvatarImage src="https://img.freepik.com/free-vector/flat-design-mobile-store-logo-template_23-2149728794.jpg" />
             <AvatarFallback>LG</AvatarFallback>
           </Avatar>
+
+          <div className="flex items-center space-x-1">
+            <Input
+              className="h-8 py-1 rounded-full"
+              placeholder="Search Product ..."
+            />
+            {/* <Button size="icon" variant="secondary" className="shrink-0">
+              <Search />
+            </Button> */}
+          </div>
         </div>
 
         <div className="flex flex-row items-center space-x-2">
           {/* / cart button  */}
           <Sheet>
             <SheetTrigger>
-              <Button variant="ghost" size="icon">
-                <ShoppingCart />
+              <Button
+                variant="outline"
+                className="w-8 h-8 rounded-full"
+                size="icon"
+              >
+                <ShoppingCart className="w-4 h-4" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
@@ -96,54 +112,50 @@ const Template: React.FC<{
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </SheetTrigger>
-            <SheetContent side="bottom" className="h-80">
-              <SheetHeader>
-                <SheetTitle className="flex flex-col items-center justify-center">
-                  {session?.user.name}
-                  <p className="text-xs">{session?.user?.email}</p>
-                </SheetTitle>
+            <SheetContent side="bottom" className="space-y-2 h-80">
+              <div className="flex flex-col items-center justify-center">
+                {session?.user.name}
+                <p className="text-xs">{session?.user?.email}</p>
+              </div>
 
-                <SheetDescription>
-                  <div className="flex flex-col items-center justify-center w-full space-y-2">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage src={`${session?.user.image}`} />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <Button variant="outline" className="w-full">
-                      My Orders
-                    </Button>
-                    <div className="flex flex-row items-center justify-between w-full space-x-2">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("light")}
-                      >
-                        Light
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("dark")}
-                      >
-                        Dark
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("system")}
-                      >
-                        Default
-                      </Button>
-                    </div>
-                    <Button variant="destructive" className="w-full">
-                      Logout
-                    </Button>
-                  </div>
-                </SheetDescription>
-              </SheetHeader>
+              <div className="flex flex-col items-center justify-center w-full space-y-2">
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src={`${session?.user.image}`} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <Button variant="outline" className="w-full">
+                  My Orders
+                </Button>
+                <div className="flex flex-row items-center justify-between w-full space-x-2">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("light")}
+                  >
+                    Light
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("dark")}
+                  >
+                    Dark
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("system")}
+                  >
+                    Default
+                  </Button>
+                </div>
+                <Button variant="destructive" className="w-full">
+                  Logout
+                </Button>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
@@ -153,11 +165,21 @@ const Template: React.FC<{
   ) : (
     <div>
       <div className="sticky top-0 z-50 flex items-center justify-between p-2 space-x-1 bg-white dark:bg-[#020817] border-b">
-        <Avatar className="px-4 bg-white rounded-md w-28">
-          <AvatarImage src="/logo.png" />
+        <Avatar>
+          <AvatarImage src="https://img.freepik.com/free-vector/flat-design-mobile-store-logo-template_23-2149728794.jpg" />
           <AvatarFallback>LG</AvatarFallback>
         </Avatar>
-        <div>Navigation</div>
+
+        <div className="flex items-center justify-center space-x-2">
+          <CategoriesMenu />
+          <div className="flex items-center space-x-1">
+            <Input className="w-[30rem]" placeholder="Search Product ..." />
+            <Button size="icon" variant="secondary" className="shrink-0">
+              <Search />
+            </Button>
+          </div>
+        </div>
+
         <div className="flex flex-row items-center space-x-2">
           {/* / cart button  */}
           <Sheet>
@@ -185,54 +207,50 @@ const Template: React.FC<{
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle className="flex flex-col items-center justify-center">
-                  {session?.user.name}
-                  <p className="text-xs">{session?.user?.email}</p>
-                </SheetTitle>
+            <SheetContent side="right" className="space-y-2">
+              <div className="flex flex-col items-center justify-center">
+                {session?.user.name}
+                <p className="text-xs">{session?.user?.email}</p>
+              </div>
 
-                <SheetDescription>
-                  <div className="flex flex-col items-center justify-center w-full space-y-2">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage src={`${session?.user.image}`} />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <Button variant="outline" className="w-full">
-                      My Orders
-                    </Button>
-                    <div className="flex flex-row items-center justify-between w-full space-x-2">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("light")}
-                      >
-                        Light
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("dark")}
-                      >
-                        Dark
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={() => setTheme("system")}
-                      >
-                        Default
-                      </Button>
-                    </div>
-                    <Button variant="destructive" className="w-full">
-                      Logout
-                    </Button>
-                  </div>
-                </SheetDescription>
-              </SheetHeader>
+              <div className="flex flex-col items-center justify-center w-full space-y-2">
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src={`${session?.user.image}`} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <Button variant="outline" className="w-full">
+                  My Orders
+                </Button>
+                <div className="flex flex-row items-center justify-between w-full space-x-2">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("light")}
+                  >
+                    Light
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("dark")}
+                  >
+                    Dark
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                    onClick={() => setTheme("system")}
+                  >
+                    Default
+                  </Button>
+                </div>
+                <Button variant="destructive" className="w-full">
+                  Logout
+                </Button>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
