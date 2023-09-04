@@ -7,6 +7,10 @@ import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { priceFormatter } from "@/lib/utils";
 import { List, ListItem } from "@tremor/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -19,18 +23,12 @@ interface Props {
 const getProperties = cache(async ({ slug }: { slug: string }) => {
   const properties = await prisma.products.findUnique({
     select: {
-      id: true,
       title: true,
-      slug: true,
       description: true,
-      regularPrice: true,
-      salePrice: true,
-      purchaseLimit: true,
-      Attributes: {
+      variants: {
         select: {
           id: true,
-          name: true,
-          value: true,
+          images: { select: { src: true }, take: 1 },
         },
       },
       images: { select: { src: true }, take: 1 },
@@ -39,52 +37,31 @@ const getProperties = cache(async ({ slug }: { slug: string }) => {
       slug: slug,
     },
   });
+
   return properties;
 });
 
 const Page: React.FC<Props> = ({ params }) => {
   const session = use(getServerSession(authOptions));
   const properties = use(getProperties({ slug: params.slug }));
+
   return (
     <div className="flex flex-col space-y-2">
       <div className="text-lg font-semibold">{properties?.title}</div>
-      <div className="text-md">{properties?.description}</div>
-      <div
-        className={`text-sm font-semibold ${
-          properties?.salePrice && `line-through`
-        }`}
-      >
-        {priceFormatter.format(Number(properties?.regularPrice))}
-      </div>
-      {properties?.salePrice && (
-        <div className="text-lg font-semibold">
-          {priceFormatter.format(Number(properties?.salePrice))}
-        </div>
-      )}
+      <div className="text-md">{properties?.description?.slice(0, 120)}</div>
 
-      <div className="flex space-x-0.5 flex-wrap space-y-0.5">
-        <List>
-          {properties?.Attributes.map((attribute) => (
-            <ListItem key={attribute.id}>
-              <span>{attribute.name}</span>
-              <span>{attribute.value}</span>
-            </ListItem>
-          ))}
-        </List>
-      </div>
-
-      <div className="max-w-lg">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <AddToCartButton
-            slug={properties?.slug}
-            session={session}
-            product={properties}
-          />
-          <AddToFavoriteButton
-            props={{ productId: properties?.id, userId: session?.user.id }}
-          />
-          <BuyNowButton />
-        </div>
+      <div className="grid grid-cols-3 gap-2">
+        {properties?.variants?.map((v) => (
+          <Card key={v.id} className="relative w-full h-20">
+            <Image
+              fill
+              sizes="100vw"
+              src={`https://lh3.googleusercontent.com/d/${v.images[0]?.src?.toString()}=s820`}
+              alt=""
+              className="object-contain w-full h-20 rounded-md"
+            />
+          </Card>
+        ))}
       </div>
     </div>
   );

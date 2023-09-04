@@ -1,4 +1,3 @@
-import ProductCard from "../../_components/productsCard";
 import Link from "next/link";
 import { cache } from "react";
 import { prisma } from "@/config/db";
@@ -52,11 +51,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
         ))}
       </div> */}
       <div>
-        <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
+        {/* <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4">
           {category?.Products?.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

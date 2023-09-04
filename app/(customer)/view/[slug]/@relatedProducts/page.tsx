@@ -1,5 +1,5 @@
 import { cache, memo, use } from "react";
-import ProductCard from "../../../_components/productsCard";
+// import ProductCard from "../../../_components/productsCard";
 import { prisma } from "@/config/db";
 
 interface Props {
@@ -34,11 +34,11 @@ const Page: React.FC<Props> = ({ params }) => {
   return !!products?.length ? (
     <div className="space-y-2">
       <div className="font-semibold text-md">Related Products:</div>
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
+      {/* <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
         {products?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
+      </div> */}
     </div>
   ) : null;
 };

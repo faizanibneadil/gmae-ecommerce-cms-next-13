@@ -1,5 +1,5 @@
 import { cache, memo, use } from "react";
-import ProductCard from "../../../_components/productsCard";
+// import ProductCard from "../../../_components/productsCard";
 import { prisma } from "@/config/db";
 
 interface Props {
@@ -44,7 +44,7 @@ const Page: React.FC<Props> = ({ params }) => {
   return !!variants?.length ? (
     <div className="space-y-2">
       <div className="font-semibold text-md">Also available in:</div>
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
+      {/* <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
         {variants?.map((variant) => (
           <ProductCard
             key={variant.id}
@@ -52,7 +52,7 @@ const Page: React.FC<Props> = ({ params }) => {
             attributes={variant.Attributes}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   ) : null;
 };

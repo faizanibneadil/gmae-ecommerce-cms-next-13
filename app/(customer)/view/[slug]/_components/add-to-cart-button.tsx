@@ -1,8 +1,9 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 // import { addToCart } from "@/_actions";
 import useCart from "@/store/cart-store";
-import { Badge, Button, NumberInput } from "@tremor/react";
 import { Hash, ShoppingCart } from "lucide-react";
 import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
@@ -48,19 +49,17 @@ const AddToCartButton = ({ session, product, slug }: Props) => {
   const auth = () => signIn("google");
   return (
     <Button
-      loading={isPending}
       disabled={isPending || currantItem?.qty === product?.purchaseLimit}
       onClick={session ? action : auth}
-      icon={ShoppingCart}
     >
-      {currantItem?.qty === product?.purchaseLimit
-        ? `Maximum Limit`
-        : `Add To Cart`}
-      {currantItem?.qty && (
-        <Badge size="xs" className="ml-2">
-          {currantItem?.qty}
-        </Badge>
+      {currantItem?.qty === product?.purchaseLimit ? (
+        `Maximum Limit`
+      ) : (
+        <div className="flex flex-row items-center space-x-2">
+          <ShoppingCart /> <span>Add To Cart</span>
+        </div>
       )}
+      {currantItem?.qty && <Badge className="ml-2">{currantItem?.qty}</Badge>}
     </Button>
   );
 };

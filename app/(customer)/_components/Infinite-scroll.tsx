@@ -3,12 +3,12 @@
 import { memo, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Spin from "@/app/_components/loading-spinner";
-import { Card } from "@/components/ui/card";
 import InfiniteScrollCard from "./infinite-scroll-card";
 import { getInventory } from "../_actions/get-infinite-products";
 
 interface InitialInventoryTypes {
   title: string | null;
+  slug: string | null;
   images: {
     id: string;
     src: string | null;

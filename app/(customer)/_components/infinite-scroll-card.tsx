@@ -3,9 +3,11 @@ import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { priceFormatter } from "@/lib/utils";
+import Link from "next/link";
 
 interface InfiniteScrollCardTypes {
   title: string | null;
+  slug: string | null;
   images: {
     id: string;
     src: string | null;
@@ -34,7 +36,7 @@ const InfiniteScrollCard: React.FC<{
     Number(item.salePrice)
   );
   return (
-    <div className="flex flex-col space-y-1">
+    <Link href={`/view/${item.slug}`} className="flex flex-col space-y-1">
       <Card className="relative w-full h-32">
         <Image
           fill
@@ -55,7 +57,7 @@ const InfiniteScrollCard: React.FC<{
           {priceFormatter.format(Number(item.salePrice))}
         </Badge>
       </div>
-    </div>
+    </Link>
   );
 });
 InfiniteScrollCard.displayName = "InfiniteScrollCard";

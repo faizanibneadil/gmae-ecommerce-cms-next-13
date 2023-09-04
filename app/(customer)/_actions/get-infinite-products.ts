@@ -7,6 +7,7 @@ export async function getInventory({ lastProductId }: { lastProductId: string })
         select: {
             id: true,
             title: true,
+            slug: true,
             isPublished: true,
             isFeatured: true,
             stock: true,

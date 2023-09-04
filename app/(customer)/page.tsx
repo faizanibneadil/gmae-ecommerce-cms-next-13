@@ -1,13 +1,10 @@
 import { prisma } from "@/config/db";
-import ProductCard from "./_components/productsCard";
-import Link from "next/link";
 import Image from "next/image";
 import Carousel from "./_components/carousel";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
 import { cache, memo, use } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import InfiniteScroll from "./_components/Infinite-scroll";
 import { notFound } from "next/navigation";
@@ -38,6 +35,7 @@ const getInitialProducts = cache(async () => {
     select: {
       id: true,
       title: true,
+      slug: true,
       isPublished: true,
       isFeatured: true,
       stock: true,
@@ -98,7 +96,7 @@ const Page: React.FC<Props> = memo(() => {
           </div>
         </div>
       </ScrollArea>
-      <div className="p-2">
+      <div className="max-w-6xl p-2 mx-auto">
         {!!products?.length ? (
           <InfiniteScroll initialInventory={products} />
         ) : (

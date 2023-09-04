@@ -1,7 +1,6 @@
 import { authOptions } from "@/config/authOptions";
 import { prisma } from "@/config/db";
 import { getServerSession } from "next-auth";
-import ProductCard from "../_components/productsCard";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);

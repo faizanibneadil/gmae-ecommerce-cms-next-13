@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import "./globals.css";
-import "@radix-ui/themes/styles.css";
 import { Inter } from "next/font/google";
 import Providers from "../providers/poviders";
 import { Toaster } from "react-hot-toast";
