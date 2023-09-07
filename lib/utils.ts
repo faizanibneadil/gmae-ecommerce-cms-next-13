@@ -9,3 +9,12 @@ export const priceFormatter = new Intl.NumberFormat("en-US", {
     currency: "PKR",
     style: "currency"
 })
+
+export const calculatePercentage = (
+    regularPrice: number,
+    salePrice: number
+): number => {
+    const discount = regularPrice - salePrice;
+    const percentage = (discount / regularPrice) * 100;
+    return Number(percentage.toFixed());
+};

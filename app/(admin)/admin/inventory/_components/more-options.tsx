@@ -63,7 +63,7 @@ const MoreOptions: React.FC<{
             <Pencil className="w-4 h-4 mr-2" />
             <span>Edit Properties</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => route(`/${id}/categories`)}>
             <ListChecks className="w-4 h-4 mr-2" />
             <span>Edit Categories</span>
           </DropdownMenuItem>
@@ -75,7 +75,7 @@ const MoreOptions: React.FC<{
             <PackagePlus className="w-4 h-4 mr-2" />
             <span>Edit Variants</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => route(`/${id}/variants`)}>
+          <DropdownMenuItem onClick={() => route(`/${id}/attributes`)}>
             <List className="w-4 h-4 mr-2" />
             <span>Edit Attributes</span>
           </DropdownMenuItem>

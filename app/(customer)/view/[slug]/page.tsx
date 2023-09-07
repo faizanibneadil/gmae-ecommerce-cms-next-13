@@ -47,7 +47,9 @@ const Page: React.FC<Props> = ({ params }) => {
 
   return (
     <div className="flex flex-col space-y-2">
-      <div className="text-lg font-semibold">{properties?.title}</div>
+      <div className="text-lg font-semibold leading-tight">
+        {properties?.title}
+      </div>
       <div className="text-md">{properties?.description?.slice(0, 120)}</div>
 
       <div className="grid grid-cols-3 gap-2">

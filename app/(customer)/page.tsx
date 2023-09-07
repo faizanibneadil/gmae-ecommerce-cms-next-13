@@ -10,7 +10,7 @@ import InfiniteScroll from "./_components/Infinite-scroll";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { priceFormatter } from "@/lib/utils";
+import { calculatePercentage, priceFormatter } from "@/lib/utils";
 import { ArrowRightIcon } from "../_components/icons";
 
 export const revalidate = 600;
@@ -77,15 +77,6 @@ const Page: React.FC<Props> = memo(() => {
   const session = use(getServerSession(authOptions));
   const products = use(getInitialProducts());
 
-  const calculatePercentage = (
-    regularPrice: number,
-    salePrice: number
-  ): number => {
-    const discount = regularPrice - salePrice;
-    const percentage = (discount / regularPrice) * 100;
-    return Number(percentage.toFixed());
-  };
-
   return (
     <div>
       <Carousel />
@@ -94,28 +85,32 @@ const Page: React.FC<Props> = memo(() => {
         <div className="flex flex-col space-y-2">
           <div className="flex flex-row items-center justify-center space-x-2">
             {categories?.map((category) => (
-              <Card key={category.id} className="relative w-20 h-20">
-                <Image
-                  fill
-                  sizes="100vw"
-                  src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
-                  alt=""
-                  className="object-cover w-full h-20 rounded-md"
-                />
-              </Card>
+              <Link key={category.id} href={`/categories/${category.slug}`}>
+                <Card className="relative w-20 h-20">
+                  <Image
+                    fill
+                    sizes="100vw"
+                    src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
+                    alt=""
+                    className="object-cover w-full h-20 rounded-md"
+                  />
+                </Card>
+              </Link>
             ))}
           </div>
           <div className="flex flex-row items-center justify-center space-x-2">
             {categories?.map((category) => (
-              <Card key={category.id} className="relative w-20 h-20">
-                <Image
-                  fill
-                  sizes="100vw"
-                  src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
-                  alt=""
-                  className="object-cover w-full h-20 rounded-md"
-                />
-              </Card>
+              <Link key={category.id} href={`/categories/${category.slug}`}>
+                <Card className="relative w-20 h-20">
+                  <Image
+                    fill
+                    sizes="100vw"
+                    src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
+                    alt=""
+                    className="object-cover w-full h-20 rounded-md"
+                  />
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -123,9 +118,11 @@ const Page: React.FC<Props> = memo(() => {
       <div>
         {categories?.map((category) => (
           <div key={category.id} className="flex flex-col space-y-2">
-            <div className="flex items-center justify-between p-4 font-bold uppercase">
+            <div className="flex items-center justify-between p-2 font-bold uppercase">
               <div className="truncate line-clamp-1">{category.name}</div>
-              <ArrowRightIcon />
+              <Link href={`/categories/${category.slug}`}>
+                <ArrowRightIcon />
+              </Link>
             </div>
             <ScrollArea className="w-full h-auto p-2 pb-4 mt-2 mb-2">
               <ScrollBar orientation="horizontal" />

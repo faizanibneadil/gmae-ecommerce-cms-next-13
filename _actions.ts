@@ -45,8 +45,7 @@ export async function createProductAction(values: any) {
     }
 }
 
-export async function createImageAction(formData: FormData) {
-    const form = Object.fromEntries(formData)
+export async function createImageAction(form: any) {
     const { id, searchText, ...values } = createImagesSchema.parse(form)
     try {
         await prisma.images.upsert({

@@ -214,10 +214,13 @@ const Template: React.FC<{
   ) : (
     <div>
       <div className="sticky top-0 z-50 flex items-center justify-between p-2 space-x-1 bg-white dark:bg-[#020817] border-b">
-        <Avatar>
-          <AvatarImage src="https://img.freepik.com/free-vector/flat-design-mobile-store-logo-template_23-2149728794.jpg" />
-          <AvatarFallback>LG</AvatarFallback>
-        </Avatar>
+        <div className="flex flex-row items-center space-x-2">
+          <Avatar>
+            <AvatarImage src="https://img.freepik.com/free-vector/flat-design-mobile-store-logo-template_23-2149728794.jpg" />
+            <AvatarFallback>LG</AvatarFallback>
+          </Avatar>
+          <h1 className="font-semibold">TechChowk</h1>
+        </div>
 
         <div className="flex items-center justify-center space-x-2">
           <CategoriesMenu />
