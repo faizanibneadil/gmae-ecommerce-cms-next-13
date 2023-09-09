@@ -14,7 +14,8 @@ export const calculatePercentage = (
     regularPrice: number,
     salePrice: number
 ): number => {
+    if (!salePrice || salePrice === 0) return 0
     const discount = regularPrice - salePrice;
     const percentage = (discount / regularPrice) * 100;
-    return Number(percentage.toFixed());
+    return percentage;
 };

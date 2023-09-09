@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/config/db";
 import { cache, memo, use } from "react";
-
-export const revalidate = 600;
+import { Card } from "@/components/ui/card";
 
 const getCategories = cache(async () => {
   const categories = await prisma.categories.findMany({
@@ -26,13 +25,13 @@ const getCategories = cache(async () => {
   return categories;
 });
 
-const Page = () => {
+const Page: React.FC<{}> = memo(() => {
   const categories = use(getCategories());
   return !!categories?.length ? (
     <div className="max-w-3xl p-2 mx-auto mt-4">
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
         {categories?.map((category) => (
-          <div key={category?.id} className="relative h-48 rounded-md">
+          <Card key={category?.id} className="relative h-48 rounded-md">
             <Link href={`/categories/${category?.slug}`}>
               <Image
                 src={`https://lh3.googleusercontent.com/d/${category?.images?.src}=s220`}
@@ -44,13 +43,13 @@ const Page = () => {
                 {category?.name}
               </div>
             </Link>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
   ) : (
     <p>Categories Not Found</p>
   );
-};
-const MemoizedPage = memo(Page);
-export default MemoizedPage;
+});
+Page.displayName = "Page";
+export default Page;

@@ -3,6 +3,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
 import { createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
+import { calculatePercentage } from "./lib/utils";
+import { z } from "zod";
 
 export async function createCategoryAction(form: any) {
     const res = createCategorySchema.parse(form)
@@ -30,17 +32,22 @@ export async function deleteProductAction(id: string) {
     revalidatePath("/admin/inventory")
 }
 
-export async function createProductAction(values: any) {
-    const { id, ...otherValues } = createProductSchema.parse(values)
+export async function createProductAction(values: z.infer<typeof createProductSchema>) {
+    const { id, regularPrice, salePrice, ...otherValues } = createProductSchema.parse(values)
     try {
         await prisma.products.update({
-            data: { ...otherValues },
+            data: {
+                ...otherValues,
+                regularPrice,
+                salePrice,
+                discountInPercentage: calculatePercentage(regularPrice, salePrice)
+            },
             where: { id }
         })
         revalidatePath(`/admin/inventory/${id}`)
         console.log("Updated Successfully 👍")
     } catch (e) {
-        console.log("Something went wrong when Updating with this error 👎")
+        console.log("Something went wrong when Updating Product with this error 👎")
         console.log(e)
     }
 }

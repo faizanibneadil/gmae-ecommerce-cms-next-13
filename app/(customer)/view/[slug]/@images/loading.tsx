@@ -1,4 +1,6 @@
-const Loading = () => {
+import { memo } from "react";
+
+const Loading: React.FC<{}> = memo(() => {
   return (
     <div className="flex flex-col space-y-2">
       <div className="w-full bg-gray-400 rounded-md h-80 animate-pulse" />
@@ -12,6 +14,6 @@ const Loading = () => {
       </div>
     </div>
   );
-};
-
+});
+Loading.displayName = "Loading";
 export default Loading;

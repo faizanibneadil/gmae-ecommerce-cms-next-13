@@ -12,11 +12,6 @@ import { memo, useTransition } from "react";
 type Props = {
   session: Session | null;
   product: {
-    Attributes: {
-      id: string;
-      name: string | null;
-      value: string | null;
-    }[];
     images: {
       src: string | null;
     }[];

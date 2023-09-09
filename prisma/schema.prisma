@@ -116,32 +116,33 @@ model Images {
 }
 
 model Products {
-  id             String       @id @default(uuid())
-  title          String?
-  slug           String?      @unique
-  description    String?
-  regularPrice   Int? // @default(0)
-  salePrice      Int? // @default(0)
-  purchasePrice  Int? // @default(0)
-  purchaseLimit  Int? // @default(0)
-  isTrackStock   Boolean?     @default(false)
-  isReviewEnable Boolean?     @default(true)
-  isPublished    Boolean?     @default(false)
-  isFeatured     Boolean?     @default(false)
-  stock          Int? // @default(0)
-  ytVideosIds    String[]
-  variantBy      Products[]   @relation("variants")
-  variants       Products[]   @relation("variants")
-  createdAt      DateTime?    @default(now())
-  updatedAt      DateTime?    @updatedAt
-  images         Images[]
-  Categories     Categories[]
-  Attributes     Attributes[]
-  CartItem       CartItem[]
-  Brands         Brands?      @relation(fields: [brandId], references: [id])
-  brandId        String?
-  Companies      Companies?   @relation(fields: [companyId], references: [id])
-  companyId      String?
+  id                   String       @id @default(uuid())
+  title                String?
+  slug                 String?      @unique
+  description          String?
+  regularPrice         Int? // @default(0)
+  salePrice            Int? // @default(0)
+  purchasePrice        Int? // @default(0)
+  purchaseLimit        Int? // @default(0)
+  isTrackStock         Boolean?     @default(false)
+  isReviewEnable       Boolean?     @default(true)
+  isPublished          Boolean?     @default(false)
+  isFeatured           Boolean?     @default(false)
+  stock                Int? // @default(0)
+  ytVideosIds          String[]
+  discountInPercentage Float        @default(0)
+  variantBy            Products[]   @relation("variants")
+  variants             Products[]   @relation("variants")
+  createdAt            DateTime?    @default(now())
+  updatedAt            DateTime?    @updatedAt
+  images               Images[]
+  Categories           Categories[]
+  Attributes           Attributes[]
+  CartItem             CartItem[]
+  Brands               Brands?      @relation(fields: [brandId], references: [id])
+  brandId              String?
+  Companies            Companies?   @relation(fields: [companyId], references: [id])
+  companyId            String?
 
   @@index([slug])
   @@index([isPublished])
@@ -150,6 +151,8 @@ model Products {
   @@index([ytVideosIds])
   @@index([brandId])
   @@index([companyId])
+  @@index([regularPrice])
+  @@index([salePrice])
 }
 
 model Categories {

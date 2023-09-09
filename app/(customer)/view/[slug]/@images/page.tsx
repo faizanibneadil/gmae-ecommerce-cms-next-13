@@ -24,14 +24,14 @@ const getImages = cache(async (slug: string) => {
   return productImages;
 });
 
-const Page: React.FC<Props> = ({ params }) => {
+const Page: React.FC<Props> = memo(({ params }) => {
   const images = use(getImages(params.slug));
   return (
     <div className="flex flex-col space-y-2">
       <ImagesSlider images={images} />
     </div>
   );
-};
+});
 
-const MemoizedPage = memo(Page);
-export default MemoizedPage;
+Page.displayName = "Page";
+export default Page;

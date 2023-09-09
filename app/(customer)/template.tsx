@@ -2,15 +2,9 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronsUpDown,
-  LayoutGrid,
-  Menu,
-  Search,
-  ShoppingCart,
-} from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import { useSession } from "next-auth/react";
-import React, { memo, useEffect, useState, useTransition } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import {
   Sheet,
@@ -21,17 +15,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import CategoriesMenu from "./_components/categories-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";

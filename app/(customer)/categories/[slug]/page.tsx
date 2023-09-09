@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { cache } from "react";
+import { cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { calculatePercentage, priceFormatter } from "@/lib/utils";
+import { priceFormatter } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 const getCategory = cache(async (slug: string) => {
@@ -35,6 +35,7 @@ const getCategory = cache(async (slug: string) => {
           slug: true,
           salePrice: true,
           regularPrice: true,
+          discountInPercentage: true,
           images: {
             select: {
               src: true,
@@ -42,6 +43,7 @@ const getCategory = cache(async (slug: string) => {
             take: 1,
           },
         },
+        where: { isPublished: true },
       },
     },
     where: {
@@ -51,8 +53,8 @@ const getCategory = cache(async (slug: string) => {
   return category;
 });
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const category = await getCategory(params.slug);
+const Page: React.FC<{ params: { slug: string } }> = memo(({ params }) => {
+  const category = use(getCategory(params.slug));
   return (
     <div className="max-w-3xl mx-auto">
       {/* subCategories bar  */}
@@ -88,18 +90,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
                   alt=""
                   className="object-cover w-full h-20 mb-2 rounded-md"
                 />
-                {calculatePercentage(
-                  Number(item.regularPrice),
-                  Number(item.salePrice)
-                ) > 0 && (
+                {item.discountInPercentage > 0 && (
                   <Badge
                     className="absolute bottom-1 left-1"
                     variant="destructive"
                   >
-                    {`${calculatePercentage(
-                      Number(item.regularPrice),
-                      Number(item.salePrice)
-                    )}% OFF`}
+                    {`${item.discountInPercentage.toFixed()}% OFF`}
                   </Badge>
                 )}
               </Card>
@@ -115,4 +111,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
       </div>
     </div>
   );
-}
+});
+Page.displayName = "Page";
+export default Page;

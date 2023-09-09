@@ -19,13 +19,6 @@ const getProperties = cache(async ({ slug }: { slug: string }) => {
       regularPrice: true,
       salePrice: true,
       purchaseLimit: true,
-      Attributes: {
-        select: {
-          id: true,
-          name: true,
-          value: true,
-        },
-      },
       images: { select: { src: true }, take: 1 },
     },
     where: {
@@ -61,19 +54,6 @@ const Page: React.FC<{
           </Badge>
         )}
       </div>
-      <Card className="mt-2">
-        <div className="divide-y">
-          {properties?.Attributes?.map((attribute) => (
-            <div
-              className="flex items-center justify-between p-2"
-              key={attribute.id}
-            >
-              <span>{attribute.name}</span>
-              <span>{attribute.value}</span>
-            </div>
-          ))}
-        </div>
-      </Card>
 
       <div className="flex flex-col mt-4 space-y-2">
         <AddToCartButton

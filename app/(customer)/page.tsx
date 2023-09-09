@@ -28,6 +28,7 @@ const getCategories = cache(async () => {
           slug: true,
           regularPrice: true,
           salePrice: true,
+          discountInPercentage: true,
           images: { select: { src: true }, take: 1 },
         },
       },
@@ -44,29 +45,6 @@ const getCategories = cache(async () => {
   return categories;
 });
 
-const getInitialProducts = cache(async () => {
-  const res = await prisma.products.findMany({
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      isPublished: true,
-      isFeatured: true,
-      stock: true,
-      salePrice: true,
-      regularPrice: true,
-      images: {
-        select: {
-          id: true,
-          src: true,
-        },
-      },
-    },
-    take: 24,
-  });
-  return res;
-});
-
 interface Props {
   searchParams: { [key: string]: string };
   params: {};
@@ -75,8 +53,6 @@ interface Props {
 const Page: React.FC<Props> = memo(() => {
   const categories = use(getCategories());
   const session = use(getServerSession(authOptions));
-  const products = use(getInitialProducts());
-
   return (
     <div>
       <Carousel />
@@ -141,18 +117,12 @@ const Page: React.FC<Props> = memo(() => {
                         alt=""
                         className="object-cover w-full h-20 mb-2 rounded-md"
                       />
-                      {calculatePercentage(
-                        Number(item.regularPrice),
-                        Number(item.salePrice)
-                      ) > 0 && (
+                      {item?.discountInPercentage > 0 && (
                         <Badge
                           className="absolute bottom-1 left-1"
                           variant="destructive"
                         >
-                          {`${calculatePercentage(
-                            Number(item.regularPrice),
-                            Number(item.salePrice)
-                          )}% OFF`}
+                          {`${item?.discountInPercentage?.toFixed()}% OFF`}
                         </Badge>
                       )}
                     </Card>
