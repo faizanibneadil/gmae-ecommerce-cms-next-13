@@ -4,7 +4,7 @@ import { memo } from "react";
 
 const ImagesSliderItem: React.FC<{ src: string | null }> = memo(({ src }) => {
   return (
-    <Card className="relative w-full h-60">
+    <Card className="relative w-full h-80">
       <Image
         src={`https://lh3.googleusercontent.com/d/${src}=s820`}
         alt=""

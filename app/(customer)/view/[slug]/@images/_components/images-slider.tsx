@@ -30,7 +30,7 @@ const ImagesSlider: React.FC<Props> = memo(({ images }) => {
         loop={true}
         spaceBetween={0}
         slidesPerView={1}
-        className="flex items-center justify-center w-full h-60"
+        className="flex items-center justify-center w-full h-80"
       >
         {images?.images.map((image: any) => (
           <SwiperSlide key={image.id}>

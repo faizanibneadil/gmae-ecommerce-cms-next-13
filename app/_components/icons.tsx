@@ -14,6 +14,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  Star,
   Trash,
   Unplug,
   XCircle,
@@ -33,6 +34,7 @@ export const MoveLeftIcon = (props: LucideProps) => <MoveLeft {...props} />;
 export const PlugIcon = (props: LucideProps) => <Plug {...props} />;
 export const UnPlugIcon = (props: LucideProps) => <Unplug {...props} />;
 export const ArrowRightIcon = (props: LucideProps) => <ArrowRight {...props} />;
+export const StarIcon = (props: LucideProps) => <Star {...props} />;
 export const NoIcon = () => null;
 export const Spin = (props: LucideProps) => (
   <Loader className="w-4 h-4 animate-spin`" />

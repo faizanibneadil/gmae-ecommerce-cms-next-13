@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import CategoriesMenu from "./_components/categories-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useRouter } from "next/navigation";
+import CartComponent from "./_components/cart-component";
 
 const Template: React.FC<{
   children: React.ReactNode;
@@ -67,27 +68,7 @@ const Template: React.FC<{
             </Button> */}
           </div>
           <div className="flex flex-row items-center space-x-2">
-            {/* / cart button  */}
-            <Sheet>
-              <SheetTrigger>
-                <Button
-                  variant="outline"
-                  className="w-8 h-8 rounded-full"
-                  size="icon"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <SheetHeader>
-                  <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-                  <SheetDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </SheetDescription>
-                </SheetHeader>
-              </SheetContent>
-            </Sheet>
+            <CartComponent />
 
             {/* user button  */}
             <Sheet>
@@ -216,23 +197,7 @@ const Template: React.FC<{
         </div>
 
         <div className="flex flex-row items-center space-x-2">
-          {/* / cart button  */}
-          <Sheet>
-            <SheetTrigger>
-              <Button variant="ghost" size="icon">
-                <ShoppingCart />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
+          <CartComponent />
 
           {/* user button  */}
           <Sheet>
