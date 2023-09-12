@@ -20,13 +20,12 @@ import CategoriesMenu from "./_components/categories-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useRouter } from "next/navigation";
 import CartComponent from "./_components/cart-component";
+import UserComponent from "./_components/user-component";
 
 const Template: React.FC<{
   children: React.ReactNode;
 }> = memo(({ children }) => {
   const { push } = useRouter();
-  const { setTheme } = useTheme();
-  const { data: session } = useSession();
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 0
   );
@@ -69,61 +68,7 @@ const Template: React.FC<{
           </div>
           <div className="flex flex-row items-center space-x-2">
             <CartComponent />
-
-            {/* user button  */}
-            <Sheet>
-              <SheetTrigger>
-                <Avatar>
-                  <AvatarImage src={`${session?.user.image}`} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="space-y-2 h-80">
-                <div className="flex flex-col items-center justify-center">
-                  {session?.user.name}
-                  <p className="text-xs">{session?.user?.email}</p>
-                </div>
-
-                <div className="flex flex-col items-center justify-center w-full space-y-2">
-                  <Avatar className="w-20 h-20">
-                    <AvatarImage src={`${session?.user.image}`} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <Button variant="outline" className="w-full">
-                    My Orders
-                  </Button>
-                  <div className="flex flex-row items-center justify-between w-full space-x-2">
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="w-full"
-                      onClick={() => setTheme("light")}
-                    >
-                      Light
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="w-full"
-                      onClick={() => setTheme("dark")}
-                    >
-                      Dark
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="w-full"
-                      onClick={() => setTheme("system")}
-                    >
-                      Default
-                    </Button>
-                  </div>
-                  <Button variant="destructive" className="w-full">
-                    Logout
-                  </Button>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <UserComponent />
           </div>
         </div>
       </div>
@@ -198,61 +143,7 @@ const Template: React.FC<{
 
         <div className="flex flex-row items-center space-x-2">
           <CartComponent />
-
-          {/* user button  */}
-          <Sheet>
-            <SheetTrigger>
-              <Avatar>
-                <AvatarImage src={`${session?.user.image}`} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </SheetTrigger>
-            <SheetContent side="right" className="space-y-2">
-              <div className="flex flex-col items-center justify-center">
-                {session?.user.name}
-                <p className="text-xs">{session?.user?.email}</p>
-              </div>
-
-              <div className="flex flex-col items-center justify-center w-full space-y-2">
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src={`${session?.user.image}`} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <Button variant="outline" className="w-full">
-                  My Orders
-                </Button>
-                <div className="flex flex-row items-center justify-between w-full space-x-2">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="w-full"
-                    onClick={() => setTheme("light")}
-                  >
-                    Light
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="w-full"
-                    onClick={() => setTheme("dark")}
-                  >
-                    Dark
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="w-full"
-                    onClick={() => setTheme("system")}
-                  >
-                    Default
-                  </Button>
-                </div>
-                <Button variant="destructive" className="w-full">
-                  Logout
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <UserComponent />
         </div>
       </div>
       <div>{children}</div>

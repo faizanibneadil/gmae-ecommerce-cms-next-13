@@ -2,33 +2,28 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-// import { addToCart } from "@/_actions";
 import useCart from "@/store/cart-store";
-import { Hash, ShoppingCart } from "lucide-react";
-import { Session } from "next-auth";
-import { signIn } from "next-auth/react";
+import { ShoppingCart } from "lucide-react";
 import { memo, useTransition } from "react";
 
-type Props = {
-  session: Session | null;
-  product: {
-    images: {
-      src: string | null;
-    }[];
-    id: string;
-    title: string | null;
-    slug: string | null;
-    description: string | null;
-    regularPrice: number | null;
-    salePrice: number | null;
-    purchaseLimit: number | null;
-  } | null;
-  slug: string | null | undefined;
+type TItem = {
+  images: {
+    src: string | null;
+  }[];
+  id: string;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
+  regularPrice: number | null;
+  salePrice: number | null;
+  purchaseLimit: number | null;
 };
 
-const AddToCartButton = ({ session, product, slug }: Props) => {
+const AddToCartButton: React.FC<{
+  product: TItem | null;
+}> = memo(({ product }) => {
   const addToCart = useCart((state) => state.addToCart);
-  const currantItem = useCart((state) => state.currantItem(product?.id));
+  const currantItem = useCart((state) => state.getCartItem(product?.id));
   const [isPending, startTransition] = useTransition();
   const action = () => {
     return startTransition(() => {
@@ -38,14 +33,15 @@ const AddToCartButton = ({ session, product, slug }: Props) => {
         salePrice: product?.salePrice,
         title: product?.title,
         image: product?.images[0]?.src,
+        purchaseLimit: product?.purchaseLimit,
       });
     });
   };
-  const auth = () => signIn("google");
+
   return (
     <Button
       disabled={isPending || currantItem?.qty === product?.purchaseLimit}
-      onClick={session ? action : auth}
+      onClick={action}
     >
       {currantItem?.qty === product?.purchaseLimit ? (
         `Maximum Limit`
@@ -57,6 +53,6 @@ const AddToCartButton = ({ session, product, slug }: Props) => {
       {currantItem?.qty && <Badge className="ml-2">{currantItem?.qty}</Badge>}
     </Button>
   );
-};
-
-export default memo(AddToCartButton);
+});
+AddToCartButton.displayName = "AddToCartButton";
+export default AddToCartButton;

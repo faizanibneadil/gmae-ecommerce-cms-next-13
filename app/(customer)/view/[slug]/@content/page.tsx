@@ -89,13 +89,10 @@ const Page: React.FC<{
         </div>
       )}
 
-      <AddToCartButton
-        slug={properties?.slug}
-        session={session}
-        product={properties}
-      />
+      <AddToCartButton product={properties} />
       <AddToFavoriteButton
-        props={{ productId: properties?.id, userId: session?.user.id }}
+        productId={properties?.id}
+        userId={session?.user.id}
       />
     </div>
   );

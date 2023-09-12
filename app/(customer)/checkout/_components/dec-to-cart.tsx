@@ -1,36 +1,29 @@
 "use client";
-import { decrementToCart } from "@/_actions";
-import { Icon } from "@tremor/react";
 import { Minus } from "lucide-react";
-import { FC, memo, useTransition } from "react";
+import { memo, useTransition } from "react";
 import Spin from "../../../_components/loading-spinner";
+import useCart from "@/store/cart-store";
+import { Button } from "@/components/ui/button";
 
-interface Props {
+const DecrementToCart: React.FC<{
   productId: string | undefined;
-  userId: string | undefined;
-}
-
-interface Props {}
-
-const DecrementToCart: FC<Props> = ({ productId, userId }) => {
+}> = ({ productId }) => {
+  const decToCart = useCart((state) => state.decrementToCart);
   const [isDecrementing, decrement] = useTransition();
-  const action = () => {
-    return decrement(() => {
-      return decrementToCart({
-        productId,
-        userId,
-      });
-    });
-  };
+  const action = () => decrement(() => decToCart(productId));
   return (
-    <Icon
+    <Button
       onClick={action}
-      icon={isDecrementing ? Spin : Minus}
-      variant="solid"
-      size="xs"
-      tooltip="Decrement Quantity"
-      className="cursor-pointer"
-    />
+      variant="outline"
+      size="sm"
+      className="cursor-pointer p-1 w-6 h-6"
+    >
+      {isDecrementing ? (
+        <Spin className="w-6 h-6" />
+      ) : (
+        <Minus className="w-6 h-6" />
+      )}
+    </Button>
   );
 };
 

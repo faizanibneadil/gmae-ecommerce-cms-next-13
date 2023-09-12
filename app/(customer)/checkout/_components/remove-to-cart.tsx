@@ -1,35 +1,29 @@
 "use client";
-import { Icon } from "@tremor/react";
 import { X } from "lucide-react";
-import { FC, memo, useTransition } from "react";
+import { memo, useTransition } from "react";
 import Spin from "../../../_components/loading-spinner";
-import { removeToCart } from "@/_actions";
+import useCart from "@/store/cart-store";
+import { Button } from "@/components/ui/button";
 
-interface Props {
+const RemoveToCart: React.FC<{
   productId: string | undefined;
-  userId: string | undefined;
-}
-
-const RemoveToCart: FC<Props> = ({ productId, userId }) => {
+}> = ({ productId }) => {
+  const removeToCart = useCart((state) => state.removeProductToCart);
   const [isDecrementing, decrement] = useTransition();
-  const action = () => {
-    return decrement(() => {
-      return removeToCart({
-        productId,
-        userId,
-      });
-    });
-  };
+  const action = () => decrement(() => removeToCart(productId));
   return (
-    <Icon
+    <Button
       onClick={action}
-      icon={isDecrementing ? Spin : X}
-      variant="solid"
-      className="cursor-pointer"
-      color="rose"
-      size="xs"
-      tooltip="Remove To Cart"
-    />
+      variant="outline"
+      className="w-6 h-6 p-1 cursor-pointer"
+      size="sm"
+    >
+      {isDecrementing ? (
+        <Spin className="w-6 h-6" />
+      ) : (
+        <X className="w-6 h-6" />
+      )}
+    </Button>
   );
 };
 

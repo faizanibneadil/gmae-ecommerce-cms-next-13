@@ -19,7 +19,6 @@ import {
 } from "@tremor/react";
 import Link from "next/link";
 import { priceFormatter } from "@/lib/utils";
-import Locations from "./_components/locations";
 import CartItems from "./_components/items";
 import CartSummary from "./_components/cart-summary";
 
@@ -38,8 +37,7 @@ const Page: React.FC<Props> = ({ searchParams }) => {
   return (
     <div className="grid grid-cols-1 gap-2 my-4 md:grid-cols-2">
       <div>
-        <CartItems session={session} />
-        <Locations props={{ locations: locations }} />
+        <CartItems />
         <CartSummary />
       </div>
       <div>

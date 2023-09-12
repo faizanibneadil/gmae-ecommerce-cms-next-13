@@ -1,34 +1,41 @@
 "use client";
-import { addToCart } from "@/_actions";
-import { Icon } from "@tremor/react";
 import { Plus } from "lucide-react";
-import { FC, memo, useTransition } from "react";
+import { memo, useTransition } from "react";
 import Spin from "../../../_components/loading-spinner";
+import useCart from "@/store/cart-store";
+import { Button } from "@/components/ui/button";
 
-interface Props {
-  productId: string | undefined;
-  userId: string | undefined;
-}
-
-const IncrementToCart: FC<Props> = ({ productId, userId }) => {
-  const [isIncrementing, increment] = useTransition();
-  const action = () => {
-    return increment(() => {
-      return addToCart({
-        productId,
-        userId,
-      });
-    });
+const IncrementToCart: React.FC<{
+  product: {
+    id: string | undefined;
+    title: string | null | undefined;
+    regularPrice: number | null | undefined;
+    salePrice: number | null | undefined;
+    purchaseLimit: number | null | undefined;
+    image: string | null | undefined;
+    qty?: number | undefined;
+    discount?: number | undefined;
+    subtotal?: number | undefined;
   };
+}> = ({ product }) => {
+  const incToCart = useCart((state) => state.addToCart);
+  const maxBuyLimit = useCart((state) => state.getCartItem(product.id)?.qty);
+  const [isIncrementing, increment] = useTransition();
+  const action = () => increment(() => incToCart(product));
   return (
-    <Icon
+    <Button
+      disabled={maxBuyLimit === product.purchaseLimit}
       onClick={action}
-      icon={isIncrementing ? Spin : Plus}
-      variant="solid"
-      size="xs"
-      tooltip="Increment Quantity"
-      className="cursor-pointer"
-    />
+      variant="outline"
+      size="sm"
+      className="w-6 h-6 p-1 cursor-pointer"
+    >
+      {isIncrementing ? (
+        <Spin className="w-6 h-6" />
+      ) : (
+        <Plus className="w-6 h-6" />
+      )}
+    </Button>
   );
 };
 

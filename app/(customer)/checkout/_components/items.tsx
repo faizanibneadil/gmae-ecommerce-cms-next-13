@@ -1,19 +1,19 @@
 "use client";
 
 import useCart from "@/store/cart-store";
-import { Card, Text } from "@tremor/react";
 import Image from "next/image";
 import IncrementToCart from "../_components/inc-to-cart-button";
 import DecrementToCart from "../_components/dec-to-cart";
 import RemoveToCart from "../_components/remove-to-cart";
 import { priceFormatter } from "@/lib/utils";
-import { Session } from "next-auth";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-const CartItems: React.FC<{ session: Session | null }> = ({ session }) => {
+const CartItems: React.FC<{}> = ({}) => {
+  const { push } = useRouter();
   const items = useCart((state) => state.items);
   return items?.length ? (
-    <Card className="w-full p-0 mx-auto rounded-none">
+    <div className="w-full p-0 mx-auto rounded-none">
       <div className="flow-root">
         <ul
           role="list"
@@ -37,9 +37,10 @@ const CartItems: React.FC<{ session: Session | null }> = ({ session }) => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-gray-900 line-clamp-3">
-                      {p.qty} x {p.title}
+                      <span className="text-destructive">{p.qty}</span> x{" "}
+                      {p.title}
                     </p>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-destructive">
                       {priceFormatter.format(
                         Number(p.salePrice) ?? Number(p.regularPrice)
                       )}
@@ -51,18 +52,9 @@ const CartItems: React.FC<{ session: Session | null }> = ({ session }) => {
                       <p className="text-xs">Sub Total: {p.subtotal}</p>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <IncrementToCart
-                        productId={p.id}
-                        userId="{session?.user.id}"
-                      />
-                      <DecrementToCart
-                        productId={p.id}
-                        userId="{session?.user.id}"
-                      />
-                      <RemoveToCart
-                        productId={p.id}
-                        userId="{session?.user.id}"
-                      />
+                      <IncrementToCart product={p} />
+                      <DecrementToCart productId={p.id} />
+                      <RemoveToCart productId={p.id} />
                     </div>
                   </div>
                 </div>
@@ -70,9 +62,11 @@ const CartItems: React.FC<{ session: Session | null }> = ({ session }) => {
             </li>
           ))}
         </ul>
-        <Button className="w-full">Checkout</Button>
       </div>
-    </Card>
+      <Button onClick={() => push("/checkout")} className="w-full pt-4">
+        Checkout
+      </Button>
+    </div>
   ) : (
     <div>Items not found.</div>
   );

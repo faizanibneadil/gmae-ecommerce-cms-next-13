@@ -19,7 +19,6 @@ import { useSession } from "next-auth/react";
 
 const CartComponent: React.FC<{}> = memo(() => {
   const items = useCart((state) => state.items);
-  const { data: session } = useSession();
   return (
     <Sheet>
       <SheetTrigger>
@@ -27,11 +26,11 @@ const CartComponent: React.FC<{}> = memo(() => {
           <ShoppingCart />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full px-1 pt-4 md:w-1/4">
+      <SheetContent side="right" className="w-full px-1 pt-4 md:w-2/6">
         <SheetHeader className="flex flex-col items-center justify-center">
           <SheetTitle>My Shopping Cart.</SheetTitle>
           <SheetDescription>{items.length} Items</SheetDescription>
-          <CartItems session={session} />
+          <CartItems />
         </SheetHeader>
       </SheetContent>
     </Sheet>
