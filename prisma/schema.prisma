@@ -18,6 +18,22 @@ model Example {
   name String
 }
 
+model UserAddresses {
+  id             String  @id @default(uuid())
+  label          String?
+  streetAddress1 String?
+  streetAddress2 String?
+  apartment      String?
+  city           String?
+  province       String?
+  postalCode     Int?
+  phone          Int?
+  User           User?   @relation(fields: [userId], references: [id])
+  userId         String?
+
+  @@index([userId])
+}
+
 enum PopType {
   RETAILER
   WHOLESALER
@@ -207,13 +223,23 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  SALES_MAN
+  BOOKER
+  DELIVERY_BOY
+  CUSTOMER
+}
+
 model User {
-  id            String      @id @default(uuid())
+  id            String          @id @default(uuid())
   name          String?
-  email         String?     @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
-  role          String?     @default("customer")
+  role          Role?           @default(CUSTOMER)
+  address       UserAddresses[]
   Account       Account[]
   Session       Session[]
   favorites     Favorites[]

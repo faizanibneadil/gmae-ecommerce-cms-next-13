@@ -3,14 +3,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { memo } from "react";
 
-const UserComponent: React.FC<{}> = memo(() => {
+const UserComponent: React.FC<{
+  side: "bottom" | "left" | "right" | "top";
+}> = memo(({ side }) => {
+  const { replace } = useRouter();
   const { setTheme } = useTheme();
   const { data: session } = useSession();
-  return (
+  return session ? (
     <Sheet>
       <SheetTrigger>
         <Avatar>
@@ -18,7 +22,12 @@ const UserComponent: React.FC<{}> = memo(() => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </SheetTrigger>
-      <SheetContent side="right" className="space-y-2">
+      <SheetContent
+        side={side}
+        className={`space-y-2 ${
+          (side === "top" || side === "bottom") && "h-100"
+        }`}
+      >
         <div className="flex flex-col items-center justify-center">
           {session?.user.name}
           <p className="text-xs">{session?.user?.email}</p>
@@ -34,6 +43,13 @@ const UserComponent: React.FC<{}> = memo(() => {
           </Button>
           <Button variant="secondary" className="w-full">
             My Favorites
+          </Button>
+          <Button
+            onClick={() => replace("/me/address")}
+            variant="secondary"
+            className="w-full"
+          >
+            My Addresses
           </Button>
           <div className="flex flex-row items-center justify-between w-full space-x-2">
             <Button
@@ -61,12 +77,18 @@ const UserComponent: React.FC<{}> = memo(() => {
               Default
             </Button>
           </div>
-          <Button variant="destructive" className="w-full">
+          <Button
+            onClick={() => signOut()}
+            variant="destructive"
+            className="w-full"
+          >
             Logout
           </Button>
         </div>
       </SheetContent>
     </Sheet>
+  ) : (
+    <Button onClick={() => signIn("google")}>Login</Button>
   );
 });
 

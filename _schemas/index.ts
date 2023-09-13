@@ -57,10 +57,22 @@ export const createBrandSchema = z.object({
 
 export const createShopSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    name: z.string({ required_error: "Id is required." }),
-    owner: z.string({ required_error: "Id is required." }),
-    phone: z.coerce.number({ required_error: "Id is required." }),
-    address: z.string({ required_error: "Id is required." }),
+    name: z.string({ required_error: "Name is required." }),
+    owner: z.string({ required_error: "Owner is required." }),
+    phone: z.coerce.number({ required_error: "Phone Number is required." }),
+    address: z.string({ required_error: "Address is required." }),
     popType: z.enum(["RETAILER", "WHOLESALER"]),
     payType: z.enum(["CASH", "CHEQUE", "BILL"])
+})
+
+export const createAddressSchema = z.object({
+    id: z.string({ required_error: "Id is required." }),
+    label: z.string({ required_error: "Label is required." }),
+    streetAddress1: z.string({ required_error: "Street Address 1 is required." }),
+    streetAddress2: z.string(),
+    apartment: z.string(),
+    city: z.string(),
+    province: z.string(),
+    postalCode: z.coerce.number({ required_error: "Postal Code / ZIP Code is required." }),
+    phone: z.coerce.number({ required_error: "Phone Number is required." }),
 })

@@ -68,7 +68,7 @@ const Template: React.FC<{
           </div>
           <div className="flex flex-row items-center space-x-2">
             <CartComponent />
-            <UserComponent />
+            <UserComponent side="bottom" />
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@ const Template: React.FC<{
 
         <div className="flex flex-row items-center space-x-2">
           <CartComponent />
-          <UserComponent />
+          <UserComponent side="right" />
         </div>
       </div>
       <div>{children}</div>

@@ -14,7 +14,7 @@ import useCart from "@/store/cart-store";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { memo } from "react";
-import CartItems from "../checkout/_components/items";
+import CartItems from "../checkout/_components/cart-items";
 import { useSession } from "next-auth/react";
 
 const CartComponent: React.FC<{}> = memo(() => {
@@ -30,7 +30,7 @@ const CartComponent: React.FC<{}> = memo(() => {
         <SheetHeader className="flex flex-col items-center justify-center">
           <SheetTitle>My Shopping Cart.</SheetTitle>
           <SheetDescription>{items.length} Items</SheetDescription>
-          <CartItems />
+          <CartItems checkout />
         </SheetHeader>
       </SheetContent>
     </Sheet>

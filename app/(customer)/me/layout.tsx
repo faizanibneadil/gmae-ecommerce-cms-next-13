@@ -1,14 +1,13 @@
 import { authOptions } from "@/config/authOptions";
 import { getServerSession } from "next-auth";
-import { ReactNode } from "react";
+import { ReactNode, memo, use } from "react";
 
-export default async function Layout({
-  children,
-  auth,
-}: {
+const Layout: React.FC<{
   children: ReactNode;
   auth: ReactNode;
-}) {
-  const session = await getServerSession(authOptions);
+}> = memo(({ children, auth }) => {
+  const session = use(getServerSession(authOptions));
   return <div>{session ? children : auth}</div>;
-}
+});
+Layout.displayName = "Layout";
+export default Layout;

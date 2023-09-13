@@ -16,7 +16,9 @@ export interface CartStore {
     items: CartItem[];
     discount: number;
     total: number;
+    addressId: string
     n: (value: number | undefined | null) => number
+    setAddress: (id: string) => void
     addToCart: (item: CartItem) => void;
     getCartItem: (id: string | undefined) => CartItem | undefined
     calculateDiscount: (items: CartItem[]) => number
@@ -31,6 +33,13 @@ const useCart = create<CartStore>((set, get) => ({
     items: [],
     discount: 0,
     total: 0,
+    addressId: "",
+    /**
+     * 
+     * @param id as Give user selected address
+     * @returns 
+     */
+    setAddress: (id) => set(state => ({ addressId: id })),
     /**
      * 
      * @param r as regularPrice

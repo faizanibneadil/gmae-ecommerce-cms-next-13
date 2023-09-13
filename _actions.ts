@@ -1,10 +1,11 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, updateDeliveryLocationSchema } from "./_schemas";
+import { createAddressSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, updateDeliveryLocationSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 import { calculatePercentage } from "./lib/utils";
 import { z } from "zod";
+import { Session } from "next-auth";
 
 export async function createCategoryAction(form: any) {
     const res = createCategorySchema.parse(form)
@@ -322,6 +323,11 @@ export async function initShop() {
     return id
 }
 
+export async function InitAddress(session: Session | null) {
+    const { id } = await prisma.userAddresses.create({ data: { User: { connect: { id: session?.user?.id } } }, select: { id: true } })
+    return id
+}
+
 export async function createShop(form: typeof createShopSchema) {
     const { id, ...values } = createShopSchema.parse(form)
     try {
@@ -333,6 +339,21 @@ export async function createShop(form: typeof createShopSchema) {
         console.log("Shop Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Shop 👎")
+        console.log(e)
+    }
+}
+
+export async function createUserAddress(form: typeof createAddressSchema) {
+    const { id, ...values } = createAddressSchema.parse(form)
+    try {
+        await prisma.userAddresses.update({
+            data: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/me/address/${id}`)
+        console.log("Address Successful Created Or Updated 👍")
+    } catch (e) {
+        console.log("Something went wrong when creating new or updating Address 👎")
         console.log(e)
     }
 }
