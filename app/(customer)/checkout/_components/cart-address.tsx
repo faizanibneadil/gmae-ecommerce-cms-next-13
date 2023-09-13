@@ -25,6 +25,7 @@ const CartAddress: React.FC<{
   address: TAddress[];
 }> = memo(({ address }) => {
   const setAddress = useCart((state) => state.setAddress);
+  if (address.length) setAddress(address[0].id);
   return address?.length ? (
     <RadioGroup
       onValueChange={(addressId) => setAddress(addressId)}
