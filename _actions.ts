@@ -470,7 +470,7 @@ export async function placeOrder({ addressId, cartItems, cartTotal, session, tot
                 User: { connect: { id: session?.user.id } },
                 discount: totalDiscount,
                 total: cartTotal,
-                status: { connect: { id: "05c6b1d9-1a03-4cd7-bd36-bdf9dbcb72bf" } }
+                status: { connect: { id: "1319884a-e559-4461-b4bd-9ed6110441f3" } }
             },
             select: { id: true }
         })
