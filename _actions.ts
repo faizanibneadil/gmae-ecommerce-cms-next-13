@@ -382,48 +382,6 @@ export async function deleteAttribute({ productId, attributeId }: { productId: s
     })
 }
 
-export async function addNewDeliveryLocation() {
-    try {
-        await prisma.deliveryLocations.create({ data: {} })
-        revalidateTag("locations")
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export async function updateDeliveryLocationAction(formData: FormData) {
-    const form = Object.fromEntries(formData.entries())
-    const values = updateDeliveryLocationSchema.parse(form)
-    try {
-        await prisma.deliveryLocations.update({
-            data: {
-                location: values.location,
-                rate: values.LocationRate
-            },
-            where: {
-                id: values.locationId
-            }
-        })
-        revalidateTag("locations")
-        console.log("Location has been successfully updated.👍")
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export async function deleteDeliveryLocation({ locationId }: { locationId: string }) {
-    try {
-        await prisma.deliveryLocations.delete({
-            where: {
-                id: locationId
-            }
-        })
-        revalidateTag("locations")
-        console.log("Location has been successfully deleted.👍")
-    } catch (e) {
-        console.log(e)
-    }
-}
 
 interface AddToFavoriteProps {
     productId: string | undefined,
@@ -473,5 +431,53 @@ export async function addToFavorite({ productId, userId }: AddToFavoriteProps) {
     } catch (e) {
         console.log(e)
         console.log("Something went wrong when adding to favorites 👎")
+    }
+}
+
+type CartItem = {
+    id: string | undefined;
+    title: string | undefined | null;
+    regularPrice: number | null | undefined;
+    salePrice: number | null | undefined;
+    purchaseLimit: number | null | undefined
+    image: string | null | undefined
+    qty?: number;
+    discount?: number;
+    subtotal?: number;
+};
+
+type PlaceOrderTypes = {
+    session: Session | null
+    cartItems: CartItem[]
+    addressId: string
+    totalDiscount: number
+    cartTotal: number
+}
+
+export async function placeOrder({ addressId, cartItems, cartTotal, session, totalDiscount }: PlaceOrderTypes) {
+    try {
+        const { id } = await prisma.orders.create({
+            data: {
+                orderItems: {
+                    create: cartItems.map(i => ({
+                        discount: i.discount as number,
+                        quantity: i.qty as number,
+                        subtotal: i.subtotal as number,
+                        Products: { connect: { id: i.id } }
+                    }))
+                },
+                address: { connect: { id: addressId } },
+                User: { connect: { id: session?.user.id } },
+                discount: totalDiscount,
+                total: cartTotal,
+                status: { connect: { id: "05c6b1d9-1a03-4cd7-bd36-bdf9dbcb72bf" } }
+            },
+            select: { id: true }
+        })
+        console.log("Order Successfully Placed.👍")
+        return id
+    } catch (error) {
+        console.log("Something Went Wrong when placing an Order... 👎. Please Try Again")
+        console.log(error)
     }
 }

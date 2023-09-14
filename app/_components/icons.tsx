@@ -17,6 +17,7 @@ import {
   Search,
   Star,
   Trash,
+  Truck,
   Unplug,
   XCircle,
 } from "lucide-react";
@@ -37,6 +38,7 @@ export const UnPlugIcon = (props: LucideProps) => <Unplug {...props} />;
 export const ArrowRightIcon = (props: LucideProps) => <ArrowRight {...props} />;
 export const StarIcon = (props: LucideProps) => <Star {...props} />;
 export const AddressIcon = (props: LucideProps) => <MapPin {...props} />;
+export const TruckIcon = (props: LucideProps) => <Truck {...props} />;
 export const NoIcon = () => null;
 export const Spin = (props: LucideProps) => (
   <Loader className="w-4 h-4 animate-spin`" />

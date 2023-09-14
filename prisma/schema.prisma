@@ -19,7 +19,7 @@ model Example {
 }
 
 model UserAddresses {
-  id             String  @id @default(uuid())
+  id             String   @id @default(uuid())
   label          String?
   streetAddress1 String?
   streetAddress2 String?
@@ -28,8 +28,9 @@ model UserAddresses {
   province       String?
   postalCode     Int?
   phone          Int?
-  User           User?   @relation(fields: [userId], references: [id])
+  User           User?    @relation(fields: [userId], references: [id])
   userId         String?
+  orders         Orders[]
 
   @@index([userId])
 }
@@ -72,31 +73,53 @@ model Companies {
   products Products[]
 }
 
-model CartItem {
-  id        String    @id @default(uuid())
-  quantity  Int?
-  products  Products? @relation(fields: [productId], references: [id])
-  productId String?
-  Cart      Cart?     @relation(fields: [cartId], references: [id])
-  cartId    String?
-
-  @@index([productId])
-  @@index([cartId])
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  RETURNED
+  ON_HOLD
 }
 
-model Cart {
-  id     String     @id @default(uuid())
-  user   User?      @relation(fields: [userId], references: [id])
-  userId String?    @unique
-  items  CartItem[]
+model OrderStatuses {
+  id     String      @id @default(uuid())
+  name   OrderStatus @default(PENDING)
+  orders Orders[]
+}
+
+model OrderItems {
+  id        String    @id @default(uuid())
+  quantity  Int
+  subtotal  Int
+  discount  Int
+  Orders    Orders?   @relation(fields: [orderId], references: [id])
+  orderId   String?
+  Products  Products? @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Orders {
+  id            String        @id @default(uuid())
+  User          User?         @relation(fields: [userId], references: [id])
+  userId        String?
+  discount      Int
+  total         Int
+  orderItems    OrderItems[]
+  address       UserAddresses @relation(fields: [userAddressId], references: [id])
+  userAddressId String
+  statusId      String
+  status        OrderStatuses @relation(fields: [statusId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   @@index([userId])
-}
-
-model DeliveryLocations {
-  id       String  @id @default(uuid())
-  location String?
-  rate     Int?
+  @@index([statusId])
+  @@index([userAddressId])
 }
 
 model Attributes {
@@ -154,11 +177,11 @@ model Products {
   images               Images[]
   Categories           Categories[]
   Attributes           Attributes[]
-  CartItem             CartItem[]
   Brands               Brands?      @relation(fields: [brandId], references: [id])
   brandId              String?
   Companies            Companies?   @relation(fields: [companyId], references: [id])
   companyId            String?
+  OrderItems           OrderItems[]
 
   @@index([slug])
   @@index([isPublished])
@@ -243,5 +266,5 @@ model User {
   Account       Account[]
   Session       Session[]
   favorites     Favorites[]
-  Cart          Cart?
+  orders        Orders[]
 }

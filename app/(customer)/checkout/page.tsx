@@ -23,7 +23,7 @@ const Page: React.FC<{}> = memo(() => {
       <CartItems checkout={false} />
       <CartSummary />
       <CartAddress address={address} />
-      <PlaceOrder />
+      <PlaceOrder session={session} />
     </div>
   );
 });

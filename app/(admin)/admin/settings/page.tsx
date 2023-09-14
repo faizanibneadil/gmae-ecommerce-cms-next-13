@@ -1,5 +1,5 @@
 const Page = () => {
-  return <p>More Settings.</p>;
+  return <p>Settings Page.</p>;
 };
 
 export default Page;
