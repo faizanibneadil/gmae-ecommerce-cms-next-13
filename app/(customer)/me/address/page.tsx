@@ -7,14 +7,16 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import AddNewAddress from "./_components/Init-address";
 import { AddressIcon } from "@/app/_components/icons";
+import { getServerSession } from "next-auth";
 
-const getAddress = cache(async () => {
-  const address = await prisma.userAddresses.findMany();
+const getAddress = cache(async (uid: string | undefined) => {
+  const address = await prisma.userAddresses.findMany({ where: { id: uid } });
   return address;
 });
 
 const Page: React.FC<{}> = memo(() => {
-  const address = use(getAddress());
+  const session = use(getServerSession());
+  const address = use(getAddress(session?.user.id));
   return address?.length ? (
     <div>
       <AddNewAddress />

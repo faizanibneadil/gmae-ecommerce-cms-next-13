@@ -1,5 +1,6 @@
+"use client";
 import { $Enums } from "@prisma/client";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 type TStatus = {
   id: string;
@@ -8,7 +9,18 @@ type TStatus = {
 
 const OrderStatus: React.FC<{
   status: TStatus | undefined;
-}> = memo(({ status }) => {
+  statusWillChange: boolean;
+}> = memo(({ status, statusWillChange }) => {
+  useEffect(() => {
+    if (statusWillChange) {
+      const refreshInterval = setInterval(
+        () => window.location.reload(),
+        60000
+      );
+      return () => clearInterval(refreshInterval);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center w-40 h-40 border rounded-full">
       <h1 className="text-xs">Order Status</h1>

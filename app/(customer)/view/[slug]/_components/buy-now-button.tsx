@@ -1,12 +1,17 @@
 "use client";
 
-import { Button } from "@tremor/react";
+import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 
 type Props = {};
 
 const BuyNowButton = (props: Props) => {
-  return <Button icon={ShoppingBag}>Buy Now</Button>;
+  return (
+    <Button className="flex items-center justify-center">
+      <ShoppingBag className="mr-2" />
+      <span>Buy Now</span>
+    </Button>
+  );
 };
 
 export default BuyNowButton;

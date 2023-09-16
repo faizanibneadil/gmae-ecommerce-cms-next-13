@@ -1,9 +1,9 @@
-import { Callout } from "@tremor/react";
+import { Card } from "@/components/ui/card";
 
 export default function NotFound() {
   return (
-    <Callout className="w-full" title="Categories not found." color="rose">
+    <Card className="w-full">
       Categories are not found. Please create click on Create Category button.
-    </Callout>
+    </Card>
   );
 }

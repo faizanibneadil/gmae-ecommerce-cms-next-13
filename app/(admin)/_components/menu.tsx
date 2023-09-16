@@ -216,9 +216,9 @@ const Menu = memo(() => {
           <ArrowLeftRight className="w-4 h-4 mr-2" />
           <span>Transactions</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => route("/admin/deliveries")}>
+        <DropdownMenuItem onClick={() => route("/admin/orders")}>
           <Truck className="w-4 h-4 mr-2" />
-          <span>Deliveries</span>
+          <span>Orders</span>
         </DropdownMenuItem>
 
         {/* customers  */}

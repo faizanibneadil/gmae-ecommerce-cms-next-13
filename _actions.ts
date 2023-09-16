@@ -470,7 +470,7 @@ export async function placeOrder({ addressId, cartItems, cartTotal, session, tot
                 User: { connect: { id: session?.user.id } },
                 discount: totalDiscount,
                 total: cartTotal,
-                status: { connect: { id: "1319884a-e559-4461-b4bd-9ed6110441f3" } }
+                status: { connect: { id: "05c6b1d9-1a03-4cd7-bd36-bdf9dbcb72bf" } }
             },
             select: { id: true }
         })
@@ -478,6 +478,25 @@ export async function placeOrder({ addressId, cartItems, cartTotal, session, tot
         return id
     } catch (error) {
         console.log("Something Went Wrong when placing an Order... 👎. Please Try Again")
+        console.log(error)
+    }
+}
+
+export async function statusAction({ orderId, statusId }: { orderId: string, statusId: string }) {
+    try {
+        await prisma.orderStatuses.update({
+            data: {
+                orders: {
+                    connect: {
+                        id: orderId
+                    }
+                }
+            },
+            where: { id: statusId, }
+        })
+        console.log("Status Has been changed")
+    } catch (error) {
+        console.log("Something Went Wrong when changing order status")
         console.log(error)
     }
 }

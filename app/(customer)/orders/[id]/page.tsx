@@ -1,8 +1,5 @@
-import { Card } from "@/components/ui/card";
 import { prisma } from "@/config/db";
-import { priceFormatter } from "@/lib/utils";
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache, memo, use } from "react";
 import ReOrderButton from "./_components/re-order-button";
@@ -75,8 +72,8 @@ const getOrderByOrderIdAndUserId = cache(
   }
 );
 
-type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-type TOrder = UnwrapPromise<ReturnType<typeof getOrderByOrderIdAndUserId>>;
+// type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+// type TOrder = UnwrapPromise<ReturnType<typeof getOrderByOrderIdAndUserId>>;
 
 const Page: React.FC<{
   params: { id: string };
@@ -98,7 +95,7 @@ const Page: React.FC<{
   const isCancelOrder = isPending || isProcessing || isOnHold;
   return order ? (
     <div className="flex flex-col items-center justify-center mt-4">
-      <OrderStatus status={order.status} />
+      <OrderStatus status={order.status} statusWillChange={isCancelOrder} />
       <OrderSummery discount={order.discount} total={order.total} />
       <OrderItems items={order.orderItems} />
       {isReOrder ? <ReOrderButton /> : <CancelOrderButton />}

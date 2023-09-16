@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 const Layout: React.FC<{ children: React.ReactNode }> = memo(({ children }) => {
-  return <div className="max-w-3xl mx-auto">{children}</div>;
+  return <div className="max-w-3xl p-2 mx-auto">{children}</div>;
 });
 Layout.displayName = "Layout";
 export default Layout;

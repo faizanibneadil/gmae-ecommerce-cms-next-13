@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@tremor/react";
+import { Button } from "@/components/ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React, { memo } from "react";
 

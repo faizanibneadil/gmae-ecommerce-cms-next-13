@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Callout } from "@tremor/react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { XOctagon } from "lucide-react";
 import { useEffect } from "react";
 
@@ -16,11 +17,9 @@ export default function Error({
   }, [error]);
 
   return (
-    <Callout className="flex items-center justify-center h-40 mt-4 text-center" title="Error" icon={XOctagon} color="rose">
+    <Card className="flex items-center justify-center h-40 mt-4 text-center">
       <h2>Something went wrong!</h2>
-      <Button color="rose" variant="primary" onClick={() => reset()}>
-        Try again
-      </Button>
-    </Callout>
+      <Button onClick={() => reset()}>Try again</Button>
+    </Card>
   );
 }

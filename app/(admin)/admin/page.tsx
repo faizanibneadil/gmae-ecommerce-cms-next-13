@@ -1,16 +1,9 @@
 "use client";
 import { Card, Grid, Text, Title } from "@tremor/react";
-import PageHeader from "../_components/page-header";
 
 export default function Page() {
   return (
     <div className="p-4">
-      <PageHeader
-        backRoute=""
-        enableBackButton={false}
-        pageDescription="Dashboard"
-        pageHeading="Dashboard"
-      />
 
       {/* Main section */}
       <Card className="mt-6">

@@ -1,6 +1,4 @@
-import PageHeader from "@/app/(admin)/_components/page-header";
 import { prisma } from "@/config/db";
-import { Card } from "@tremor/react";
 import { cache, use } from "react";
 import AttributeItemForm from "./_components/attribute-item-form";
 import NewAttribute from "./_components/add-attribute-button";

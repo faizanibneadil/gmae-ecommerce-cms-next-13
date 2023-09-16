@@ -1,7 +1,6 @@
 "use client";
 import { useTransition } from "react";
 import Spin from "../../../../../_components/loading-spinner";
-import { Icon } from "@tremor/react";
 import { connectImageToCategoryAction } from "@/_actions";
 export default function ConnectImage({
   children,
@@ -24,7 +23,7 @@ export default function ConnectImage({
       {children}
       {connecting && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <Icon variant="shadow" size="xs" icon={Spin} />
+          <Spin />
         </div>
       )}
     </button>
