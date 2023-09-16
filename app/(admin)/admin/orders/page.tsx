@@ -68,7 +68,7 @@ const OrderItem: React.FC<{ order: TOrders[number] }> = memo(({ order }) => {
     <Link
       key={order.id}
       href={`/admin/orders/${order.id}`}
-      className="flex flex-row items-center justify-between p-4 my-2 border rounded-lg"
+      className="flex flex-row items-center justify-between p-2 my-2 border rounded-lg"
     >
       <div className="flex items-center space-x-2">
         <TruckIcon />
