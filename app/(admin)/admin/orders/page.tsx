@@ -2,7 +2,7 @@ import { TruckIcon } from "@/app/_components/icons";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/config/db";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { cache, memo, use } from "react";
 import OrderFilter from "./_components/orders-filter";
 
@@ -31,7 +31,9 @@ const getOrders = cache(async (statusId: string | undefined) => {
 type TOrders = Awaited<ReturnType<typeof getOrders>>;
 
 const getStatuses = cache(async () => {
-  const statuses = await prisma.orderStatuses.findMany();
+  const statuses = await prisma.orderStatuses.findMany({
+    include: { _count: { select: { orders: true } } },
+  });
   return statuses;
 });
 
@@ -45,7 +47,7 @@ const Page: React.FC<{
   return (
     <div className="flex flex-col space-y-2">
       <OrderFilter statuses={statuses} OpenStatus={searchParams?.statusId} />
-      {orders.length ? <Orders orders={orders} /> : `Order Not Found`}
+      {orders.length ? <Orders orders={orders} /> : <OrderNotFound />}
     </div>
   );
 });
@@ -82,3 +84,12 @@ const OrderItem: React.FC<{ order: TOrders[number] }> = memo(({ order }) => {
   );
 });
 OrderItem.displayName = "OrderItem";
+
+const OrderNotFound: React.FC<{}> = memo(() => {
+  return (
+    <div className="flex items-center justify-center w-full h-40 mt-4 border rounded-md">
+      <p className="text-muted-foreground">Orders Not Found.</p>
+    </div>
+  );
+});
+OrderNotFound.displayName = "OrderNotFound";
