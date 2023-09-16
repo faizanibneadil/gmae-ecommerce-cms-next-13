@@ -324,6 +324,7 @@ export async function initShop() {
 }
 
 export async function InitAddress(session: Session | null) {
+    if (!session) return
     const { id } = await prisma.userAddresses.create({ data: { User: { connect: { id: session?.user?.id } } }, select: { id: true } })
     return id
 }

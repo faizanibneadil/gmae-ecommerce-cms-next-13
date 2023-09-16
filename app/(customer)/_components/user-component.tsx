@@ -38,7 +38,11 @@ const UserComponent: React.FC<{
             <AvatarImage src={`${session?.user.image}`} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <Button variant="outline" className="w-full">
+          <Button
+            onClick={() => replace("/orders")}
+            variant="outline"
+            className="w-full"
+          >
             My Orders
           </Button>
           <Button variant="secondary" className="w-full">

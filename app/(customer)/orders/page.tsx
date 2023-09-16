@@ -1,6 +1,5 @@
 import { TruckIcon } from "@/app/_components/icons";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 import { prisma } from "@/config/db";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -10,20 +9,22 @@ import { cache, memo, use } from "react";
 const getOrdersByUserId = cache(async (id: string | undefined) => {
   const orders = await prisma.orders.findMany({
     where: { id },
-    include: {
+    select: {
       _count: {
         select: {
           orderItems: true,
         },
       },
-      status: true,
+      id: true,
+      createdAt: true,
+      status: { select: { name: true } },
     },
+    orderBy: { createdAt: "desc" },
   });
   return orders;
 });
 
-type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-type TOrders = UnwrapPromise<ReturnType<typeof getOrdersByUserId>>;
+type TOrders = Awaited<ReturnType<typeof getOrdersByUserId>>;
 
 /**
  * Page Component
@@ -60,16 +61,13 @@ const OrderItem: React.FC<{ order: TOrders[number] }> = memo(({ order }) => {
       <div className="flex items-center space-x-2">
         <TruckIcon />
         <div className="space-y-0.5">
-          <h2 className="text-base">
-            <Badge variant="secondary">{order._count.orderItems}</Badge> Items
-          </h2>
-          <div className="flex flex-row items-center space-x-2">
-            <Badge>Total: {order.total}</Badge>
-            <Badge>Discount: {order.discount}</Badge>
-          </div>
+          <h2 className="text-base">{order._count.orderItems} Items</h2>
         </div>
       </div>
-      <Badge variant="destructive">{order.status?.name}</Badge>
+      <div className="flex flex-col items-center md:flex-row gap-x-1 gap-y-1">
+        <Badge>{order.createdAt.toLocaleDateString()}</Badge>
+        <Badge variant="destructive">{order.status?.name}</Badge>
+      </div>
     </Link>
   );
 });

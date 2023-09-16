@@ -72,8 +72,7 @@ const getOrderByOrderIdAndUserId = cache(
   }
 );
 
-// type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-// type TOrder = UnwrapPromise<ReturnType<typeof getOrderByOrderIdAndUserId>>;
+type TOrder = Awaited<ReturnType<typeof getOrderByOrderIdAndUserId>>;
 
 const Page: React.FC<{
   params: { id: string };
