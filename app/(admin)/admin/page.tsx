@@ -1,10 +1,10 @@
 "use client";
 import { Card, Grid, Text, Title } from "@tremor/react";
+import PageHeader from "../_components/page-header";
 
 export default function Page() {
   return (
     <div className="p-4">
-
       {/* Main section */}
       <Card className="mt-6">
         <div className="h-96" />
