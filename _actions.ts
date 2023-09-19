@@ -508,3 +508,20 @@ export async function updateUser(form: typeof createUserSchema) {
         console.log(error)
     }
 }
+export async function updateProductCompany(values: any) {
+    try {
+        await prisma.products.update({
+            data: {
+                Companies: { connect: { id: values.id } }
+            },
+            where: {
+                id: values.productId
+            }
+        })
+        revalidatePath(`/admin/inventory/${values.productId}/companies`)
+        console.log("product company updated successfully. 👍")
+    } catch (error) {
+        console.log("Something Went Wrong when updating product company. 👎")
+        console.log(error)
+    }
+}

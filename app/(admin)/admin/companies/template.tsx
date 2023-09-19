@@ -25,7 +25,7 @@ import ActionsButtons from "./_components/actions-buttons";
 const Template: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const params = useParams();
   return params?.id ? (
-    <div className="px-2 mt-2">
+    <div className="max-w-2xl px-2 mx-auto mt-2">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
           <ActionsButtons path="/" tooltipContent="Back">
@@ -45,7 +45,7 @@ const Template: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       {children}
     </div>
   ) : (
-    <div className="px-2 mt-2">
+    <div className="max-w-4xl px-2 mx-auto mt-2">
       <div className="flex mb-2 space-x-2">
         <Input placeholder="Search Company ..." />
         <Button variant="secondary" className="shrink-0">
