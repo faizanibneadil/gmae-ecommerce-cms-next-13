@@ -24,6 +24,7 @@ const Variants: React.FC<{}> = memo(() => {
       const variants = await $getVariants(productId);
       setVariants(variants);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return fetching ? (

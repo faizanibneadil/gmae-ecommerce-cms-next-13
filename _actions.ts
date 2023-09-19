@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAddressSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, updateDeliveryLocationSchema } from "./_schemas";
+import { createAddressSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 import { calculatePercentage } from "./lib/utils";
 import { z } from "zod";
@@ -229,32 +229,17 @@ export async function connectSubCategories({ categoriesIds, categoryId }: { cate
     }
 }
 
-export async function createAttributesAction(formData: FormData) {
-    const form = Object.fromEntries(formData.entries())
-    const { productId, attrId, ...values } = createAttributesSchema.parse(form)
+export async function createAttributesAction(form: typeof createAttributesSchema) {
+    const { productId, ...values } = createAttributesSchema.parse(form)
     try {
-        await prisma.attributes.upsert({
-            create: {
+        await prisma.attributes.create({
+            data: {
                 ...values,
-                product: {
-                    connect: {
-                        id: productId
-                    }
-                }
-            },
-            update: {
-                ...values,
-                product: {
-                    connect: {
-                        id: productId
-                    }
-                }
-            },
-            where: {
-                id: attrId ?? productId
+                product: { connect: { id: productId } }
+
             }
         })
-        revalidatePath(`/admin/inventory/${productId}`)
+        revalidatePath(`/admin/inventory/${productId}/attributes`)
     } catch (e) {
         console.log("Something went wrong when Updating with this error 👎")
         console.log(e)
@@ -373,14 +358,21 @@ export async function initAttribute({ productId }: { productId: string }) {
 }
 
 export async function deleteAttribute({ productId, attributeId }: { productId: string, attributeId: string }) {
-    await prisma.attributes.delete({
-        where: {
-            product: {
-                id: productId
-            },
-            id: attributeId
-        }
-    })
+    try {
+        await prisma.attributes.delete({
+            where: {
+                product: {
+                    id: productId
+                },
+                id: attributeId
+            }
+        })
+        revalidatePath(`/admin/inventory/${productId}/attributes`)
+        console.log("Attribute is successfully deleted 👍")
+    } catch (error) {
+        console.log("Something Went Wrong when deleting attribute 👎")
+        console.log(error)
+    }
 }
 
 
@@ -498,6 +490,21 @@ export async function statusAction({ orderId, statusId }: { orderId: string, sta
         console.log("Status Has been changed")
     } catch (error) {
         console.log("Something Went Wrong when changing order status")
+        console.log(error)
+    }
+}
+
+
+export async function updateUser(form: typeof createUserSchema) {
+    const { id, ...values } = createUserSchema.parse(form)
+    try {
+        await prisma.user.update({
+            data: { ...values },
+            where: { id }
+        })
+        console.log("User Profile has been updated successfully. 👍")
+    } catch (error) {
+        console.log("Something Went Wrong when updating user's info 👎")
         console.log(error)
     }
 }

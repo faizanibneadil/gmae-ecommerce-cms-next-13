@@ -29,11 +29,7 @@ const Page: React.FC<{
   searchParams: { [key: string]: string };
 }> = ({ params, searchParams }) => {
   const properties = use(getProperties(params.id));
-  return (
-    <div className="max-w-2xl mx-auto">
-      <PropertiesForm properties={properties} />
-    </div>
-  );
+  return <PropertiesForm properties={properties} />;
 };
 
 export default Page;

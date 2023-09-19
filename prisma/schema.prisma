@@ -18,6 +18,38 @@ model Example {
   name String
 }
 
+model Billing {
+  id           String     @id @default(uuid())
+  booker       User?      @relation(name: "bookings", fields: [bookerId], references: [id])
+  bookerId     String
+  saleMane     User?      @relation(name: "deliveries", fields: [saleManeId], references: [id])
+  saleManeId   String
+  area         Areas?     @relation(fields: [areaId], references: [id])
+  areaId       String
+  company      Companies? @relation(fields: [companyId], references: [id])
+  companyId    String
+  shop         Shops?     @relation(fields: [shopId], references: [id])
+  shopId       String
+  products     Products[]
+  deliveryDate DateTime
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([bookerId])
+  @@index([saleManeId])
+  @@index([areaId])
+  @@index([companyId])
+  @@index([shopId])
+  @@index([deliveryDate])
+}
+
+model Areas {
+  id    String    @id @default(uuid())
+  name  String?
+  shops Shops[]
+  bills Billing[]
+}
+
 model UserAddresses {
   id             String   @id @default(uuid())
   label          String?
@@ -27,7 +59,7 @@ model UserAddresses {
   city           String?
   province       String?
   postalCode     Int?
-  phone          Int?
+  phone          String?
   User           User?    @relation(fields: [userId], references: [id])
   userId         String?
   orders         Orders[]
@@ -51,11 +83,15 @@ model Shops {
   accessId Int?             @unique @default(autoincrement())
   name     String?
   owner    String?
-  phone    Int?
+  phone    String?
   address  String?
   popType  PopType?         @default(RETAILER)
   payType  ShopPaymentType? @default(CASH)
+  Areas    Areas?           @relation(fields: [areaId], references: [id])
+  areaId   String?
+  bills    Billing[]
 
+  @@index([areaId])
   @@index([accessId])
   @@index([popType])
   @@index([payType])
@@ -71,6 +107,7 @@ model Companies {
   id       String     @id @default(uuid())
   name     String?
   products Products[]
+  bills    Billing[]
 }
 
 enum OrderStatus {
@@ -163,6 +200,7 @@ model Products {
   salePrice            Int? // @default(0)
   purchasePrice        Int? // @default(0)
   purchaseLimit        Int? // @default(0)
+  profit               Int?
   isTrackStock         Boolean?     @default(false)
   isReviewEnable       Boolean?     @default(true)
   isPublished          Boolean?     @default(false)
@@ -182,6 +220,7 @@ model Products {
   Companies            Companies?   @relation(fields: [companyId], references: [id])
   companyId            String?
   OrderItems           OrderItems[]
+  Billing              Billing[]
 
   @@index([slug])
   @@index([isPublished])
@@ -247,12 +286,14 @@ model Session {
 }
 
 enum Role {
-  SUPER_ADMIN
   ADMIN
   SALES_MAN
   BOOKER
-  DELIVERY_BOY
+  INVENTORY_STAFF
+  BILLING
+  INSIGHTS
   CUSTOMER
+  SHOP_OWNER
 }
 
 model User {
@@ -262,9 +303,13 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role?           @default(CUSTOMER)
+  cnic          String?
+  phone         String?
   address       UserAddresses[]
   Account       Account[]
   Session       Session[]
   favorites     Favorites[]
   orders        Orders[]
+  bookings      Billing[]       @relation(name: "bookings")
+  deliveries    Billing[]       @relation(name: "deliveries")
 }

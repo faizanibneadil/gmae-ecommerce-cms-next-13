@@ -35,6 +35,7 @@ const InfiniteScroll: React.FC<{
 
   useEffect(() => {
     if (inView) loadImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   return (

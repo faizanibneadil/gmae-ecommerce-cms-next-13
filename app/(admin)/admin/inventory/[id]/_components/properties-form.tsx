@@ -16,6 +16,14 @@ import { Textarea } from "@/components/ui/textarea";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createProductSchema } from "@/_schemas";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { InfoIcon } from "@/app/_components/icons";
 
 type TProperties = {
   id: string;
@@ -37,6 +45,7 @@ const CreateInventoryForm: React.FC<{
   properties: TProperties;
 }> = memo(({ properties }) => {
   const form = useForm({
+    resolver: zodResolver(createProductSchema),
     defaultValues: {
       id: properties?.id?.toString(),
       title: properties?.title?.toString(),
@@ -125,7 +134,18 @@ const CreateInventoryForm: React.FC<{
             name="regularPrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Regular Price</FormLabel>
+                <FormLabel className="flex items-center justify-between">
+                  <span>Regular Price</span>
+                  <Popover>
+                    <PopoverTrigger>
+                      <InfoIcon className="w-4 h-4" />
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-2 text-xs">
+                      The price at which this item is normally sold in the
+                      market.
+                    </PopoverContent>
+                  </Popover>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Regular Price" {...field} />
                 </FormControl>
@@ -139,7 +159,17 @@ const CreateInventoryForm: React.FC<{
             name="salePrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sale / Discounted Price</FormLabel>
+                <FormLabel className="flex items-center justify-between">
+                  <span>Sale / Discounted Price</span>
+                  <Popover>
+                    <PopoverTrigger>
+                      <InfoIcon className="w-4 h-4" />
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-2 text-xs">
+                      The price that is lower than the market price.
+                    </PopoverContent>
+                  </Popover>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Sale Price" {...field} />
                 </FormControl>
@@ -153,7 +183,17 @@ const CreateInventoryForm: React.FC<{
             name="purchasePrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Purchase / Cost Price</FormLabel>
+                <FormLabel className="flex items-center justify-between">
+                  <span>Purchase / Cost Price</span>
+                  <Popover>
+                    <PopoverTrigger>
+                      <InfoIcon className="w-4 h-4" />
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-2 text-xs">
+                      The price at which you have purchased this item.
+                    </PopoverContent>
+                  </Popover>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Purchase Price" {...field} />
                 </FormControl>
@@ -167,7 +207,18 @@ const CreateInventoryForm: React.FC<{
             name="purchaseLimit"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Purchase Limit</FormLabel>
+                <FormLabel className="flex items-center justify-between">
+                  <span>Purchase Limit.</span>
+                  <Popover>
+                    <PopoverTrigger>
+                      <InfoIcon className="w-4 h-4" />
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-2 text-xs">
+                      How many quantities of this product can the customer
+                      purchase at most?
+                    </PopoverContent>
+                  </Popover>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Purchase Limit" {...field} />
                 </FormControl>
@@ -181,7 +232,18 @@ const CreateInventoryForm: React.FC<{
             name="stock"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Stock</FormLabel>
+                <FormLabel className="flex items-center justify-between">
+                  <span>Stock.</span>
+                  <Popover>
+                    <PopoverTrigger>
+                      <InfoIcon className="w-4 h-4" />
+                    </PopoverTrigger>
+                    <PopoverContent side="top" className="p-2 text-xs">
+                      How much is the stock quantity of this product in the
+                      warehouse?
+                    </PopoverContent>
+                  </Popover>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Stock" {...field} />
                 </FormControl>
@@ -199,7 +261,7 @@ const CreateInventoryForm: React.FC<{
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Publish</FormLabel>
                 <FormDescription>
-                  Make this product visible on website
+                  Publish this product and display it on your website.
                 </FormDescription>
               </div>
               <FormControl>
@@ -219,7 +281,8 @@ const CreateInventoryForm: React.FC<{
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Featured</FormLabel>
                 <FormDescription>
-                  Make this product Featured for display on landing page
+                  Make this product a featured product so that it is displayed
+                  on the first page of the website.
                 </FormDescription>
               </div>
               <FormControl>
@@ -238,7 +301,10 @@ const CreateInventoryForm: React.FC<{
             <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Enable Reviews</FormLabel>
-                <FormDescription>display reviews for public</FormDescription>
+                <FormDescription>
+                  Enable reviews for this product so that customers can see each
+                  others reviews
+                </FormDescription>
               </div>
               <FormControl>
                 <Switch
@@ -259,8 +325,8 @@ const CreateInventoryForm: React.FC<{
                   Enable Tracking Stock
                 </FormLabel>
                 <FormDescription>
-                  Enable this will minus quantity in product on each sale is
-                  successful.
+                  Whenever an order is completed, the stock of this product
+                  should be deducted by the products stock quantity.
                 </FormDescription>
               </div>
               <FormControl>

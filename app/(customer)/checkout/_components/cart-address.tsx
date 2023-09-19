@@ -17,7 +17,7 @@ type TAddress = {
   city: string | null;
   province: string | null;
   postalCode: number | null;
-  phone: number | null;
+  phone: string | null;
   userId: string | null;
 };
 

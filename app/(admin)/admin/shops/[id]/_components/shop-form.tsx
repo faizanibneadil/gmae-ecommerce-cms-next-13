@@ -12,19 +12,19 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { $Enums } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createShopSchema } from "@/_schemas";
 
 type TShop = {
   id: string;
   accessId: number | null;
   name: string | null;
   owner: string | null;
-  phone: number | null;
+  phone: string | null;
   address: string | null;
   popType: $Enums.PopType | null;
   payType: $Enums.ShopPaymentType | null;
@@ -34,6 +34,7 @@ const CreateShopForm: React.FC<{
   shop: TShop | null;
 }> = memo(({ shop }) => {
   const form = useForm({
+    resolver: zodResolver(createShopSchema),
     defaultValues: {
       id: shop?.id?.toString(),
       name: shop?.name?.toString(),

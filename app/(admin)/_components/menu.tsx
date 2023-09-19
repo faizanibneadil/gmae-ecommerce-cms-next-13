@@ -15,6 +15,7 @@ import {
   PackagePlus,
   Palette,
   PlusIcon,
+  Receipt,
   Store,
   Sun,
   Target,
@@ -132,6 +133,10 @@ const Menu = memo(() => {
         <DropdownMenuItem onClick={() => route("/admin")}>
           <Gauge className="w-4 h-4 mr-2" />
           <span>Dashboard</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => route("/admin/billing")}>
+          <Receipt className="w-4 h-4 mr-2" />
+          <span>Billing</span>
         </DropdownMenuItem>
         {/* // inventory  */}
         <DropdownMenu>

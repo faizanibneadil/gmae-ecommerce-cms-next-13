@@ -19,6 +19,7 @@ const OrderStatus: React.FC<{
       );
       return () => clearInterval(refreshInterval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -20,37 +20,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ActionsButtons from "./_components/actions-buttons";
+import MoreOptions from "./_components/more-options";
 
 const Template: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const params = useParams();
   return params?.id ? (
-    <div className="px-2 mt-2">
-      <div className="flex items-center justify-between mb-2">
+    <div className="max-w-2xl px-2 mx-auto mt-2">
+      <div className="flex items-center justify-between mb-2 space-x-1">
         <div className="flex items-center">
           <ActionsButtons path="/" tooltipContent="Back">
             <MoveLeft />
           </ActionsButtons>
         </div>
-        <div className="flex flex-wrap items-center space-x-1">
-          <ActionsButtons path="/images" tooltipContent="Add Images">
-            <ImagePlus />
-          </ActionsButtons>
-          <ActionsButtons path="/categories" tooltipContent="Add Categories">
-            <ListChecks />
-          </ActionsButtons>
-          <ActionsButtons path="/variants" tooltipContent="Add Variants">
-            <PackagePlus />
-          </ActionsButtons>
-          <ActionsButtons path="/attributes" tooltipContent="Add Attributes">
-            <List />
-          </ActionsButtons>
-          <ActionsButtons
-            path="/seo"
-            tooltipContent="Make SEO (Search Engine Optimization)"
-          >
-            <PackageSearch />
-          </ActionsButtons>
-        </div>
+        <MoreOptions id={params?.id.toString()} />
       </div>
 
       {children}

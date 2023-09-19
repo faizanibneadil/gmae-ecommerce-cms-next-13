@@ -1,6 +1,6 @@
 "use client";
 
-const Error: React.FC<{}> = () => {
+const Error = () => {
   return <div>Something Went Wrong.</div>;
 };
 

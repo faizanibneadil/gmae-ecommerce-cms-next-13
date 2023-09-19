@@ -1,7 +1,14 @@
-import { memo } from "react";
+import { prisma } from "@/config/db";
+import { cache, memo, use } from "react";
+import UserProfileForm from "./_components/user-profile-form";
+const getUserById = cache(async (id: string) => {
+  const user = await prisma.user.findUnique({ where: { id } });
+  return user;
+});
 
-const Page: React.FC<{}> = memo(() => {
-  return <div>Coming Soon ...</div>;
+const Page: React.FC<{ params: { id: string } }> = memo(({ params }) => {
+  const user = use(getUserById(params?.id));
+  return <UserProfileForm user={user} />;
 });
 
 Page.displayName = "Page";

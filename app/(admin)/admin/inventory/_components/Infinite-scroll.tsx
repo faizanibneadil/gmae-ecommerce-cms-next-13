@@ -41,6 +41,7 @@ const InfiniteScroll: React.FC<{
 
   useEffect(() => {
     if (inView) loadInventory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   return (

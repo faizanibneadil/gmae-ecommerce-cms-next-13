@@ -6,6 +6,7 @@ import EditAddress from "./_components/edit-address-button";
 import AddNewAddress from "./_components/Init-address";
 import { AddressIcon } from "@/app/_components/icons";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/authOptions";
 
 const getAddress = cache(async (userId: string | undefined) => {
   const address = await prisma.userAddresses.findMany({
@@ -17,7 +18,7 @@ const getAddress = cache(async (userId: string | undefined) => {
 type TAddress = Awaited<ReturnType<typeof getAddress>>;
 
 const Page: React.FC<{}> = memo(() => {
-  const session = use(getServerSession());
+  const session = use(getServerSession(authOptions));
   const addresses = use(getAddress(session?.user.id));
   return addresses?.length ? <Addresses addresses={addresses} /> : notFound();
 });

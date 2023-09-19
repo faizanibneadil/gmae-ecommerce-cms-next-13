@@ -15,6 +15,8 @@ import { memo, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import Spin from "@/app/_components/loading-spinner";
 import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createCategorySchema } from "@/_schemas";
 
 type TCategories = {
   id: string;
@@ -29,6 +31,7 @@ const CategoryForm: React.FC<{
   categories: TCategories;
 }> = memo(({ categories }) => {
   const form = useForm({
+    resolver: zodResolver(createCategorySchema),
     defaultValues: {
       id: categories?.id?.toString(),
       name: categories?.name?.toString(),

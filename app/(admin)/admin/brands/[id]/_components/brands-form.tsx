@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createBrandSchema } from "@/_schemas";
 
 type TProperties = {
   id: string;
@@ -26,6 +26,7 @@ const CreateBrandsForm: React.FC<{
   brand: TProperties | null;
 }> = memo(({ brand }) => {
   const form = useForm({
+    resolver: zodResolver(createBrandSchema),
     defaultValues: {
       id: brand?.id?.toString(),
       name: brand?.name?.toString(),

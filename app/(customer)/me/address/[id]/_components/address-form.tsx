@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createAddressSchema } from "@/_schemas";
 
 type TAddress = {
   id: string;
@@ -25,7 +27,7 @@ type TAddress = {
   city: string | null;
   province: string | null;
   postalCode: number | null;
-  phone: number | null;
+  phone: string | null;
   userId: string | null;
 };
 
@@ -33,6 +35,7 @@ const CreateUserAddressForm: React.FC<{
   address: TAddress | null;
 }> = memo(({ address }) => {
   const form = useForm({
+    resolver: zodResolver(createAddressSchema),
     defaultValues: {
       id: address?.id?.toString(),
       label: address?.label?.toString(),
