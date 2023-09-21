@@ -36,10 +36,11 @@ type TCompanies = {
 const CompaniesForm: React.FC<{
   companies: TCompanies[];
 }> = memo(({ companies }) => {
+  const productId = useParams()?.id as string;
   const form = useForm({
     defaultValues: {
       id: companies.find((c) => c.products.length > 0)?.id,
-      productId: companies.find((c) => c.products.length > 0)?.products[0].id,
+      productId: productId,
     },
   });
   const [isPending, startTransition] = useTransition();

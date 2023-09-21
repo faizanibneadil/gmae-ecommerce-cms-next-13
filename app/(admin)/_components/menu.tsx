@@ -10,12 +10,14 @@ import {
   ImagePlus,
   Laptop,
   ListChecks,
+  Map,
   Moon,
   Package,
   PackagePlus,
   Palette,
   PlusIcon,
   Receipt,
+  Sheet,
   Store,
   Sun,
   Target,
@@ -38,7 +40,6 @@ import {
 import Spin from "@/app/_components/loading-spinner";
 import {
   initBrand,
-  initCompany,
   initImage,
   initShop,
   initializeNewCategory,
@@ -75,14 +76,6 @@ const Menu = memo(() => {
     return startTransition(async () => {
       const id = await initializeNewCategory();
       return replace(`/admin/categories/${id}`);
-    });
-  };
-
-  // create empty Company
-  const initNewCompany = () => {
-    return startTransition(async () => {
-      const id = await initCompany();
-      return replace(`/admin/companies/${id}`);
     });
   };
 
@@ -134,10 +127,11 @@ const Menu = memo(() => {
           <Gauge className="w-4 h-4 mr-2" />
           <span>Dashboard</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => route("/admin/billing")}>
-          <Receipt className="w-4 h-4 mr-2" />
-          <span>Billing</span>
+        <DropdownMenuItem onClick={() => route(`/admin/transactions`)}>
+          <ArrowLeftRight className="w-4 h-4 mr-2" />
+          <span>Transactions</span>
         </DropdownMenuItem>
+
         {/* // inventory  */}
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">
@@ -217,10 +211,6 @@ const Menu = memo(() => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DropdownMenuItem onClick={() => route("/admin/transactions")}>
-          <ArrowLeftRight className="w-4 h-4 mr-2" />
-          <span>Transactions</span>
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => route("/admin/orders")}>
           <Truck className="w-4 h-4 mr-2" />
           <span>Orders</span>
@@ -272,6 +262,31 @@ const Menu = memo(() => {
             <DropdownMenuItem onClick={() => route("/admin/users")}>
               <ListChecks className="w-4 h-4 mr-2" />
               <span>All Users</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Areas  */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="w-full">
+            <DropdownMenuItem className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Map className="w-4 h-4 mr-2" />
+                <span>Areas</span>
+              </div>
+              <ChevronsUpDown className="w-4 h-4" />
+            </DropdownMenuItem>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-44 md:w-80">
+            <DropdownMenuLabel>Areas</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => route("/admin/areas/new")}>
+              <PlusIcon className="w-4 h-4 mr-2" />
+              <span>Add Area</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => route("/admin/areas")}>
+              <ListChecks className="w-4 h-4 mr-2" />
+              <span>All Areas</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -340,7 +355,7 @@ const Menu = memo(() => {
           <DropdownMenuContent className="w-44 md:w-80">
             <DropdownMenuLabel>Companies</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={initNewCompany}>
+            <DropdownMenuItem onClick={() => route("/admin/companies/new")}>
               <Factory className="w-4 h-4 mr-2" />
               <span>Add Company</span>
             </DropdownMenuItem>

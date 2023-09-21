@@ -50,6 +50,11 @@ export const createCompanySchema = z.object({
     name: z.string({ required_error: "Company Name is Required." }).trim().nonempty("Company Name is required.")
 })
 
+export const createAreaSchema = z.object({
+    id: z.string({ required_error: "Id is required." }),
+    name: z.string({ required_error: "Area Name is Required." }).trim().nonempty("Company Name is required.")
+})
+
 export const createBrandSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
     name: z.string().trim().nonempty("Brand Name is Required.")

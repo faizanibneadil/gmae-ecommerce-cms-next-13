@@ -18,6 +18,7 @@ import { $Enums } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createShopSchema } from "@/_schemas";
+import { useRouter } from "next/navigation";
 
 type TShop = {
   id: string;
@@ -33,6 +34,7 @@ type TShop = {
 const CreateShopForm: React.FC<{
   shop: TShop | null;
 }> = memo(({ shop }) => {
+  const { replace } = useRouter();
   const form = useForm({
     resolver: zodResolver(createShopSchema),
     defaultValues: {
@@ -49,8 +51,9 @@ const CreateShopForm: React.FC<{
 
   // Server Action
   const onSubmit = (values: any) => {
-    startTransition(() => {
-      return createShop(values);
+    startTransition(async () => {
+      await createShop(values);
+      return replace("/admin/shops");
     });
   };
 

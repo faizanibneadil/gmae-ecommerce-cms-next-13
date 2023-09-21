@@ -10,18 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Eye,
-  Globe,
-  ImagePlus,
-  Layout,
-  List,
-  ListChecks,
-  MoreHorizontal,
-  PackagePlus,
-  PackageSearch,
-  Pencil,
-} from "lucide-react";
+import { Map, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { memo, useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
@@ -34,34 +23,30 @@ const MoreOptions: React.FC<{
 
   const route = (path: string) => {
     return startTransition(() => {
-      return replace(`/admin/images/${path}`);
+      return replace(`/admin/shops/${path}`);
     });
   };
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" disabled={pending}>
+      <DropdownMenuTrigger asChild className="max-w-[14rem]">
+        <Button variant="outline" disabled={pending} className="w-full">
           {pending ? <Spin /> : `Options`}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" loop>
         <DropdownMenuLabel className="flex items-center justify-between">
-          Edit Image
+          Edit Shop
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => route(`/${id}`)}>
             <Pencil className="w-4 h-4 mr-2" />
-            <span>Edit Properties</span>
+            <span>Edit Shop</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => route(`/${id}/products`)}>
-            <ImagePlus className="w-4 h-4 mr-2" />
-            <span>Add Products</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => route(`/${id}/categories`)}>
-            <PackagePlus className="w-4 h-4 mr-2" />
-            <span>Add Categories</span>
+          <DropdownMenuItem onClick={() => route(`/${id}/area`)}>
+            <Map className="w-4 h-4 mr-2" />
+            <span>Update Area</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

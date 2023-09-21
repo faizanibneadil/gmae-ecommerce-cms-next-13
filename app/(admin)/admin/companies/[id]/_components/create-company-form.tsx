@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createCategorySchema } from "@/_schemas";
+import { createCompanySchema } from "@/_schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { v4 as uuidv4 } from "uuid";
 
 type TCompany = {
   id: string;
@@ -29,8 +31,9 @@ const CreateCompanyForm: React.FC<{
 
   // form hook
   const form = useForm({
+    resolver: zodResolver(createCompanySchema),
     defaultValues: {
-      id: company?.id?.toString(),
+      id: company?.id?.toString() ?? uuidv4(),
       name: company?.name?.toString(),
     },
   });

@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAddressSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
+import { createAddressSchema, createAreaSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 import { calculatePercentage } from "./lib/utils";
 import { z } from "zod";
@@ -229,6 +229,27 @@ export async function connectSubCategories({ categoriesIds, categoryId }: { cate
     }
 }
 
+export async function connectShopsWithArea({ shopIds, areaId }: { shopIds: string[], areaId: string }) {
+    try {
+        await prisma.areas.update({
+            data: {
+                shops: {
+                    set: shopIds?.map(c => ({ id: c }))
+                }
+            },
+            where: {
+                id: areaId
+            }
+        })
+        revalidatePath(`/admin/areas/${areaId}/shops`)
+        revalidatePath(`/admin/areas`)
+        console.log("Successfully updated Shop 👍")
+    } catch (e) {
+        console.log("Something went wrong when connecting Shops wih single area. 👎")
+        console.log(e)
+    }
+}
+
 export async function createAttributesAction(form: typeof createAttributesSchema) {
     const { productId, ...values } = createAttributesSchema.parse(form)
     try {
@@ -262,22 +283,35 @@ export async function initImage() {
     return id
 }
 
-export async function initCompany() {
-    const { id } = await prisma.companies.create({ data: {}, select: { id: true } })
-    return id
-}
 
 export async function createCompany(form: typeof createCompanySchema) {
     const { id, ...values } = createCompanySchema.parse(form)
     try {
-        await prisma.companies.update({
-            data: { ...values },
+        await prisma.companies.upsert({
+            create: { ...values },
+            update: { ...values },
             where: { id }
         })
         revalidatePath(`/admin/companies/${id}`)
         console.log("Company Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating company 👎")
+        console.log(e)
+    }
+}
+
+export async function createArea(form: typeof createAreaSchema) {
+    const { id, ...values } = createAreaSchema.parse(form)
+    try {
+        await prisma.areas.upsert({
+            create: { ...values },
+            update: { ...values },
+            where: { id }
+        })
+        revalidatePath(`/admin/areas/${id}`)
+        console.log("Area Successful Created Or Updated 👍")
+    } catch (e) {
+        console.log("Something went wrong when creating new or updating Area 👎")
         console.log(e)
     }
 }
@@ -498,8 +532,9 @@ export async function statusAction({ orderId, statusId }: { orderId: string, sta
 export async function updateUser(form: typeof createUserSchema) {
     const { id, ...values } = createUserSchema.parse(form)
     try {
-        await prisma.user.update({
-            data: { ...values },
+        await prisma.user.upsert({
+            create: { ...values },
+            update: { ...values },
             where: { id }
         })
         console.log("User Profile has been updated successfully. 👍")
@@ -508,6 +543,7 @@ export async function updateUser(form: typeof createUserSchema) {
         console.log(error)
     }
 }
+
 export async function updateProductCompany(values: any) {
     try {
         await prisma.products.update({
@@ -522,6 +558,24 @@ export async function updateProductCompany(values: any) {
         console.log("product company updated successfully. 👍")
     } catch (error) {
         console.log("Something Went Wrong when updating product company. 👎")
+        console.log(error)
+    }
+}
+
+export async function updateShopArea(values: any) {
+    try {
+        await prisma.shops.update({
+            data: {
+                Areas: { connect: { id: values.id } }
+            },
+            where: {
+                id: values.shopId
+            }
+        })
+        revalidatePath(`/admin/shops/${values.shopId}/area`)
+        console.log("Shop Area updated successfully. 👍")
+    } catch (error) {
+        console.log("Something Went Wrong when updating Shop Area. 👎")
         console.log(error)
     }
 }

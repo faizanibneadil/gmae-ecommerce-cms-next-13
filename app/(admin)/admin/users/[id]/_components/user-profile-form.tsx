@@ -1,5 +1,6 @@
 "use client";
 import { memo, useTransition } from "react";
+import { v4 as uuidV4 } from "uuid";
 import {
   Form,
   FormControl,
@@ -18,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { updateUser } from "@/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "@/_schemas";
+import { useRouter } from "next/navigation";
 
 const UserProfileForm: React.FC<{
   user: {
@@ -31,10 +33,11 @@ const UserProfileForm: React.FC<{
     phone: string | null;
   } | null;
 }> = memo(({ user }) => {
+  const { replace } = useRouter();
   const form = useForm({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
-      id: user?.id.toString(),
+      id: user?.id.toString() ?? uuidV4(),
       name: user?.name?.toString(),
       email: user?.email?.toString(),
       role: user?.role?.toString(),
@@ -46,8 +49,9 @@ const UserProfileForm: React.FC<{
 
   // Server Action
   const onSubmit = (values: any) => {
-    startTransition(() => {
-      return updateUser(values);
+    startTransition(async () => {
+      await updateUser(values);
+      return replace("/admin/users");
     });
   };
 

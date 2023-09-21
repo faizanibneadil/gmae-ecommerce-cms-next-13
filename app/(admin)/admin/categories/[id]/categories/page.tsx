@@ -31,7 +31,6 @@ const Page: React.FC<{
   params: { id: string };
 }> = memo(({ params }) => {
   const categories = use(getCategories(params.id));
-  console.log(categories);
   return (
     <div className="mt-4">
       <CategoriesForm categories={categories} />
