@@ -43,7 +43,6 @@ const SaveBill: React.FC<{}> = memo(() => {
         saleManeId,
         shopId,
       });
-      console.log(res);
       setMessage(res);
       setShopId("");
       resetQty();
