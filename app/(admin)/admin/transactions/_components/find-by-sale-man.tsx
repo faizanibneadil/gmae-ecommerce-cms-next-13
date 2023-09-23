@@ -16,38 +16,40 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import useTransaction from "@/store/use-transactions";
+import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
 import { memo, useEffect } from "react";
 import { getFilteredTransactions } from "../_actions/get-transactions-by-filters";
 
-type TCompany = {
+type TSaleMen = {
   id: string;
   name: string | null;
+  role: $Enums.Role | null;
 };
 
-const FindByCompany: React.FC<{
-  companies: TCompany[];
-}> = memo(({ companies }) => {
-  const companyId = useTransaction((state) => state.companyId);
-  const setCompanyId = useTransaction((state) => state.setCompanyId);
+const FindBySaleMan: React.FC<{
+  saleMen: TSaleMen[];
+}> = memo(({ saleMen }) => {
+  const saleManId = useTransaction((state) => state.saleManId);
+  const setSaleManId = useTransaction((state) => state.setSaleManId);
   const setTransactions = useTransaction((state) => state.setTransactions);
   const setFetching = useTransaction((state) => state.setFetching);
   const isFetching = useTransaction((state) => state.isFetching);
+
   useEffect(() => {
     // Implement the database query function here
-    if (companyId.trim() !== "") {
+    if (saleManId.trim() !== "") {
       // Trigger the database query function with the inputValue
       // and set the query result in state
       const action = async () => {
         setFetching(true);
-        const t = await getFilteredTransactions({ companyId });
+        const t = await getFilteredTransactions({ saleManId });
         setTransactions(t);
         setFetching(false);
       };
       action();
     }
-  }, [companyId]);
-
+  }, [saleManId]);
   return (
     <Popover>
       <PopoverTrigger disabled={isFetching} asChild>
@@ -56,39 +58,39 @@ const FindByCompany: React.FC<{
           role="combobox"
           className={cn(
             "w-full justify-between",
-            !companyId && "text-muted-foreground"
+            !saleManId && "text-muted-foreground"
           )}
         >
-          {companyId
-            ? companies.find((s) => s.id === companyId)?.name
-            : "Find By Company"}
+          {saleManId
+            ? saleMen.find((s) => s.id === saleManId)?.name
+            : "Find By Sale Man"}
           {/* <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" /> */}
           <Badge
             variant="secondary"
             className="text-[0.50rem]/[0.8rem] font-  py-0.5"
           >
-            Company
+            Sale Man
           </Badge>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-72">
         <Command className="w-full">
-          <CommandInput placeholder="Search Company..." />
-          <CommandEmpty>No Company found.</CommandEmpty>
+          <CommandInput placeholder="Search Sale Mane..." />
+          <CommandEmpty>No Sale Mane found.</CommandEmpty>
           <CommandGroup>
-            {companies?.map((company) => (
+            {saleMen?.map((saleMane) => (
               <CommandItem
-                value={company.id}
-                key={company.id}
-                onSelect={() => setCompanyId(company.id)}
+                value={saleMane.id}
+                key={saleMane.id}
+                onSelect={() => setSaleManId(saleMane.id)}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    company.id === companyId ? "opacity-100" : "opacity-0"
+                    saleMane.id === saleManId ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {company.name}
+                {saleMane.name}
               </CommandItem>
             ))}
           </CommandGroup>
@@ -97,5 +99,5 @@ const FindByCompany: React.FC<{
     </Popover>
   );
 });
-FindByCompany.displayName = "FindByCompany";
-export default FindByCompany;
+FindBySaleMan.displayName = "FindBySaleMan";
+export default FindBySaleMan;

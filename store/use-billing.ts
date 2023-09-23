@@ -18,8 +18,8 @@ type TShops = {
     name: string | null;
 };
 
-
 export interface BillStore {
+    message: string[] | undefined
     isFetching: boolean
     bookerId: string
     saleManeId: string
@@ -29,6 +29,7 @@ export interface BillStore {
     deliveryDate: Date
     items: BillItem[] | undefined;
     shops: TShops[] | undefined
+    setMessage: (message: string[] | undefined) => void
     setBookerId: (bookerId: string) => void
     setSaleManeId: (saleManeId: string) => void
     setAreaId: (areaId: string) => void
@@ -40,9 +41,11 @@ export interface BillStore {
     setFetching: (isFetching: boolean) => void
     setQty: (id: string, qty: number) => void
     getQty: (id: string) => number | undefined
+    resetQty: () => void
 }
 
 const useBilling = create<BillStore>((set, get) => ({
+    message: [],
     isFetching: false,
     bookerId: "",
     saleManeId: "",
@@ -53,6 +56,7 @@ const useBilling = create<BillStore>((set, get) => ({
     items: [],
     shops: [],
     companies: [],
+    setMessage: (message) => set((state) => ({ message })),
     setFetching: (isFetching) => set((state) => ({ isFetching })),
     setBookerId: (bookerId) => set((state) => ({ bookerId })),
     setSaleManeId: (saleManeId) => set((state) => ({ saleManeId })),
@@ -63,7 +67,8 @@ const useBilling = create<BillStore>((set, get) => ({
     setItems: (items) => set((state) => ({ items })),
     setShops: (shops) => set((state) => ({ shops })),
     setQty: (id, qty) => set(state => ({ items: state.items?.map(i => i.id === id ? { ...i, qty } : i) })),
-    getQty: (id) => get().items?.find(i => i.id === id)?.qty
+    getQty: (id) => get().items?.find(i => i.id === id)?.qty,
+    resetQty: () => set((state) => ({ items: state.items?.map(i => ({ ...i, qty: 0 })) }))
 }));
 
 export default useBilling;

@@ -3,8 +3,12 @@ import { Card } from "@/components/ui/card";
 import { prisma } from "@/config/db";
 import { notFound } from "next/navigation";
 import { cache, memo, use } from "react";
-import { format } from "date-fns";
 import TransactionFilters from "./_components/transactions-filters";
+import Transactions from "./_components/transactions";
+// import Transactions from "./_components/transactions";
+
+const lastDay = Date.now() - 24 * 60 * 60 * 1000;
+const day = new Date(lastDay).toISOString();
 
 const getTransactions = cache(async () => {
   const transactions = await prisma.billing.findMany({
@@ -16,6 +20,11 @@ const getTransactions = cache(async () => {
     orderBy: {
       createdAt: "desc",
     },
+    where: {
+      createdAt: {
+        gte: day,
+      },
+    },
   });
   return transactions;
 });
@@ -25,24 +34,7 @@ const Page: React.FC<{}> = memo(() => {
   return transactions.length ? (
     <div className="space-y-1">
       <TransactionFilters />
-      <div className="flex flex-col space-y-1">
-        {transactions?.map((transaction) => (
-          <Card
-            key={transaction.id}
-            className="flex items-center justify-between px-4 py-2 rounded-md"
-          >
-            <div className="flex flex-row items-center space-x-1">
-              <Badge variant="secondary">ID:{transaction.accessId}</Badge>
-              <Badge variant="outline">
-                {transaction.createdAt.toLocaleDateString()}
-              </Badge>
-            </div>
-            <button>
-              <Badge variant="destructive">Open</Badge>
-            </button>
-          </Card>
-        ))}
-      </div>
+      <Transactions initialTransactions={transactions} />
     </div>
   ) : (
     notFound()

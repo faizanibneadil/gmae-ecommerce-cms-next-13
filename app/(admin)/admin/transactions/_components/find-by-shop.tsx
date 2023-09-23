@@ -15,19 +15,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import useBilling from "@/store/use-billing";
-import { $Enums } from "@prisma/client";
+import useTransaction from "@/store/use-transactions";
 import { Check } from "lucide-react";
-import { memo } from "react";
+import { memo, useEffect } from "react";
+import { getFilteredTransactions } from "../_actions/get-transactions-by-filters";
 
 const FindByShop: React.FC<{}> = memo(() => {
-  const shopId = useBilling((state) => state.shopId);
-  const setShopId = useBilling((state) => state.setShopId);
-  const isFetching = useBilling((state) => state.isFetching);
-  const shops = useBilling((state) => state.shops);
+  const areaId = useTransaction((state) => state.areaId).trim() == "";
+  const shopId = useTransaction((state) => state.shopId);
+  const setShopId = useTransaction((state) => state.setShopId);
+  const shops = useTransaction((state) => state.shops);
+  const setTransactions = useTransaction((state) => state.setTransactions);
+  const setFetching = useTransaction((state) => state.setFetching);
+  const isFetching = useTransaction((state) => state.isFetching);
+  useEffect(() => {
+    // Implement the database query function here
+    if (shopId.trim() !== "") {
+      // Trigger the database query function with the inputValue
+      // and set the query result in state
+      const action = async () => {
+        setFetching(true);
+        const t = await getFilteredTransactions({ shopId });
+        setTransactions(t);
+        setFetching(false);
+      };
+      action();
+    }
+  }, [shopId]);
   return (
     <Popover>
-      <PopoverTrigger disabled={isFetching} asChild>
+      <PopoverTrigger disabled={isFetching || Boolean(areaId)} asChild>
         <Button
           variant="outline"
           role="combobox"

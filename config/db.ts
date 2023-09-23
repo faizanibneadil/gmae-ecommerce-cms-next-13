@@ -11,7 +11,7 @@ export const prisma =
   new PrismaClient({
     errorFormat: 'minimal',
     log:
-      process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+      process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 
 export const xPrisma = prisma.$extends(withAccelerate())

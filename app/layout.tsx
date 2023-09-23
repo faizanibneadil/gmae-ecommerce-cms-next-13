@@ -23,7 +23,7 @@ export default async function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthSessionProvider>{children}</AuthSessionProvider>
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
         </ThemeProvider>
       </body>
     </html>

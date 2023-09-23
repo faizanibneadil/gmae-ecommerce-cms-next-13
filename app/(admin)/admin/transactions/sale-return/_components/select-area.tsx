@@ -16,62 +16,62 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import useBilling from "@/store/use-billing";
+import useSaleReturn from "@/store/use-sale-return";
 import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
-import { memo } from "react";
+import { memo, useEffect, useTransition } from "react";
 
-type TSaleManes = {
+type TAreas = {
   id: string;
   name: string | null;
-  role: $Enums.Role | null;
 };
 
-const FindBySaleMane: React.FC<{
-  saleManes: TSaleManes[];
-}> = memo(({ saleManes }) => {
-  const saleManeId = useBilling((state) => state.saleManeId);
-  const setSaleManeId = useBilling((state) => state.setSaleManeId);
+const SelectArea: React.FC<{
+  areas: TAreas[];
+}> = memo(({ areas }) => {
+  const setAreaId = useSaleReturn((state) => state.setAreaId);
+  const areaId = useSaleReturn((state) => state.areaId);
+  const isFetching = useSaleReturn((state) => state.isFetching);
+
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={isFetching} asChild>
         <Button
           variant="outline"
           role="combobox"
           className={cn(
             "w-full justify-between",
-            !saleManeId && "text-muted-foreground"
+            !areaId && "text-muted-foreground"
           )}
         >
-          {saleManeId
-            ? saleManes.find((s) => s.id === saleManeId)?.name
-            : "Find By Sale Mane"}
+          {areaId ? areas.find((s) => s.id === areaId)?.name : "Select Area"}
           {/* <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" /> */}
           <Badge
             variant="secondary"
             className="text-[0.50rem]/[0.8rem] font-  py-0.5"
           >
-            Sale Mane
+            Select Area
           </Badge>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-72">
         <Command className="w-full">
-          <CommandInput placeholder="Search Sale Mane..." />
-          <CommandEmpty>No Sale Mane found.</CommandEmpty>
+          <CommandInput placeholder="Search Area..." />
+          <CommandEmpty>No Area found.</CommandEmpty>
           <CommandGroup>
-            {saleManes?.map((saleMane) => (
+            {areas?.map((booker) => (
               <CommandItem
-                value={saleMane.id}
-                key={saleMane.id}
-                onSelect={() => setSaleManeId(saleMane.id)}
+                value={booker.id}
+                key={booker.id}
+                onSelect={() => setAreaId(booker.id)}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    saleMane.id === saleManeId ? "opacity-100" : "opacity-0"
+                    booker.id === areaId ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {saleMane.name}
+                {booker.name}
               </CommandItem>
             ))}
           </CommandGroup>
@@ -80,5 +80,5 @@ const FindBySaleMane: React.FC<{
     </Popover>
   );
 });
-FindBySaleMane.displayName = "FindBySaleMane";
-export default FindBySaleMane;
+SelectArea.displayName = "SelectArea";
+export default SelectArea;

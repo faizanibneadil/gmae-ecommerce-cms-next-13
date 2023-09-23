@@ -90,3 +90,29 @@ export const createUserSchema = z.object({
     role: z.enum(["CUSTOMER", "SALES_MAN", "BOOKER", "INVENTORY_STAFF", "ADMIN", "BILLING", "INSIGHTS", "SHOP_OWNER"], { required_error: "User Role is required." }),
     phone: z.string().nonempty("Phone Number is required.").refine((value) => /^\d{11}$/.test(value), { message: "Phone Number must be exactly 11 numeric digits." })
 })
+
+export const createBillingSchema = z.object({
+    bookerId: z.string().nonempty("Select Booker."),
+    saleManeId: z.string().nonempty("Select Sale Man"),
+    areaId: z.string().nonempty("Select Area."),
+    shopId: z.string().nonempty("Select Shop."),
+    companyId: z.string().nonempty("Select Company."),
+    deliveryDate: z.date({ required_error: "Select Delivery Date." }),
+    items: z.object({
+        title: z.string().nullable(),
+        images: z.object({
+            src: z.number().nullable()
+        }),
+        id: z.string(),
+        regularPrice: z.number().nullable(),
+        salePrice: z.number().nullable(),
+        stock: z.number().nullable(),
+        qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
+    }).array().min(1, "Minimum 1 item should be into a sale.")
+})
+
+export const updateBillReturn = z.object({
+    saleManId: z.string().nonempty("Select Sale Man"),
+    areaId: z.string().nonempty("Select Area."),
+})
+

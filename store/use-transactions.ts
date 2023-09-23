@@ -1,17 +1,11 @@
 import { addDays } from "date-fns";
 import { create } from "zustand";
 
-type BillItem = {
-    title: string | null;
-    images: {
-        src: string | null;
-    }[];
+type Transactions = {
     id: string;
-    regularPrice: number | null;
-    salePrice: number | null;
-    stock: number | null;
-    qty?: number | undefined
-};
+    accessId: number;
+    createdAt: Date;
+}
 
 type TShops = {
     id: string;
@@ -21,49 +15,53 @@ type TShops = {
 
 export interface TransactionStore {
     isFetching: boolean
+    transactionId: string
     bookerId: string
-    saleManeId: string
+    saleManId: string
     areaId: string
     shopId: string
     companyId: string
-    transactionDate: Date
-    items: BillItem[] | undefined;
+    deliveryDate: Date | string
+    issueDate: Date | string
+    transactions: Transactions[] | undefined;
     shops: TShops[] | undefined
     setBookerId: (bookerId: string) => void
-    setSaleManeId: (saleManeId: string) => void
+    setSaleManId: (saleManId: string) => void
     setAreaId: (areaId: string) => void
     setShopId: (shopId: string) => void
     setCompanyId: (companyId: string) => void
-    setDeliveryDate: (transactionDate: Date) => void
-    setItems: (items: BillItem[] | undefined) => void
+    setDeliveryDate: (deliveryDate: Date) => void
+    setIssueDate: (issueDate: Date) => void
+    setTransactions: (items: Transactions[] | undefined) => void
+    setTransactionId: (id: string) => void
     setShops: (shops: TShops[] | undefined) => void
     setFetching: (isFetching: boolean) => void
-    setQty: (id: string, qty: number) => void
-    getQty: (id: string) => number | undefined
 }
 
 const useTransaction = create<TransactionStore>((set, get) => ({
     isFetching: false,
+    transactionId: "",
     bookerId: "",
-    saleManeId: "",
+    saleManId: "",
     areaId: "",
     shopId: "",
     companyId: "",
-    transactionDate: addDays(new Date(), 1),
-    items: [],
+    deliveryDate: "",
+    issueDate: "",
     shops: [],
     companies: [],
+    transactions: [],
     setFetching: (isFetching) => set((state) => ({ isFetching })),
     setBookerId: (bookerId) => set((state) => ({ bookerId })),
-    setSaleManeId: (saleManeId) => set((state) => ({ saleManeId })),
+    setSaleManId: (saleManId) => set((state) => ({ saleManId })),
     setAreaId: (areaId) => set((state) => ({ areaId })),
     setShopId: (shopId) => set((state) => ({ shopId })),
     setCompanyId: (companyId) => set((state) => ({ companyId })),
-    setDeliveryDate: (transactionDate) => set((state) => ({ transactionDate })),
-    setItems: (items) => set((state) => ({ items })),
+    setDeliveryDate: (deliveryDate) => set((state) => ({ deliveryDate })),
+    setIssueDate: (issueDate) => set((state) => ({ issueDate })),
+    setTransactions: (transactions) => set((state) => ({ transactions })),
     setShops: (shops) => set((state) => ({ shops })),
-    setQty: (id, qty) => set(state => ({ items: state.items?.map(i => i.id === id ? { ...i, qty } : i) })),
-    getQty: (id) => get().items?.find(i => i.id === id)?.qty
+    setTransactionId: (transactionId) => set((state) => ({ transactionId })),
 }));
 
 export default useTransaction;

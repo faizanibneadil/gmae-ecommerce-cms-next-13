@@ -2,7 +2,7 @@ import { $Enums } from "@prisma/client";
 import { cache, memo, use } from "react";
 import FindByBooker from "./find-by-booker";
 import FindByTransactionId from "./find-by-id";
-import FindBySaleMane from "./find-by-sale-mane";
+import FindBySaleMan from "./find-by-sale-man";
 import FindByArea from "./find-by-area";
 import FindByDeliveryDate from "./find-by-delivery-date";
 import FindByIssueDate from "./find-by-issue-date";
@@ -32,20 +32,17 @@ const TransactionFilters: React.FC<{}> = memo(() => {
   const areas = use(getAreas());
   const companies = use(getCompanies());
   const bookers = users.filter((u) => u.role === "BOOKER");
-  const salesMans = users.filter((u) => u.role === "SALES_MAN");
+  const salesMen = users.filter((u) => u.role === "SALES_MAN");
   return (
-    <div className="space-y-2">
-      <div className="grid content-center grid-cols-1 gap-x-1 gap-y-1 md:grid-cols-2">
-        <FindByTransactionId />
-        <FindByBooker bookers={bookers} />
-        <FindBySaleMane saleManes={salesMans} />
-        <FindByArea areas={areas} />
-        <FindByShop />
-        <FindByCompany companies={companies} />
-        <FindByIssueDate />
-        <FindByDeliveryDate />
-      </div>
-      {/* <BillingProducts /> */}
+    <div className="grid content-center grid-cols-1 gap-x-1 gap-y-1 md:grid-cols-2">
+      <FindByTransactionId />
+      <FindByBooker bookers={bookers} />
+      <FindBySaleMan saleMen={salesMen} />
+      <FindByArea areas={areas} />
+      <FindByShop />
+      <FindByCompany companies={companies} />
+      <FindByIssueDate />
+      <FindByDeliveryDate />
     </div>
   );
 });

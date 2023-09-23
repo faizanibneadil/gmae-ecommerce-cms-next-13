@@ -16,55 +16,60 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import useBilling from "@/store/use-billing";
+import useSaleReturn from "@/store/use-sale-return";
+import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 
-const SelectShop: React.FC<{}> = memo(() => {
-  const shopId = useBilling((state) => state.shopId);
-  const areaId = useBilling((state) => state.areaId).trim() == "";
-  const setShopId = useBilling((state) => state.setShopId);
-  const isFetching = useBilling((state) => state.isFetching);
-  const shops = useBilling((state) => state.shops);
-  const setItems = useBilling((state) => state.setItems);
-  const items = useBilling((state) => state.items);
-  useEffect(() => setItems(items), [shopId]);
+type TSaleManes = {
+  id: string;
+  name: string | null;
+  role: $Enums.Role | null;
+};
 
+const SelectSaleMan: React.FC<{
+  saleMan: TSaleManes[];
+}> = memo(({ saleMan }) => {
+  const saleManId = useSaleReturn((state) => state.saleManId);
+  const setSaleManId = useSaleReturn((state) => state.setSaleManId);
   return (
     <Popover>
-      <PopoverTrigger disabled={isFetching || Boolean(areaId)} asChild>
+      <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           className={cn(
             "w-full justify-between",
-            !shopId && "text-muted-foreground"
+            !saleManId && "text-muted-foreground"
           )}
         >
-          {shopId ? shops?.find((s) => s.id === shopId)?.name : "Select Shop"}
+          {saleManId
+            ? saleMan.find((s) => s.id === saleManId)?.name
+            : "Select Sale Man"}
           {/* <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" /> */}
           <Badge
             variant="secondary"
             className="text-[0.50rem]/[0.8rem] font-  py-0.5"
           >
-            Select Shop
+            Sale Man
           </Badge>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-72">
         <Command className="w-full">
-          <CommandInput placeholder="Search Shop..." />
-          <CommandEmpty>No Shop found.</CommandEmpty>
+          <CommandInput placeholder="Search Sale Man..." />
+          <CommandEmpty>No Sale Man found.</CommandEmpty>
           <CommandGroup>
-            {shops?.map((booker) => (
+            {saleMan?.map((booker) => (
               <CommandItem
                 value={booker.id}
                 key={booker.id}
-                onSelect={() => setShopId(booker.id)}
+                onSelect={() => setSaleManId(booker.id)}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    booker.id === shopId ? "opacity-100" : "opacity-0"
+                    booker.id === saleManId ? "opacity-100" : "opacity-0"
                   )}
                 />
                 {booker.name}
@@ -76,5 +81,5 @@ const SelectShop: React.FC<{}> = memo(() => {
     </Popover>
   );
 });
-SelectShop.displayName = "SelectShop";
-export default SelectShop;
+SelectSaleMan.displayName = "SelectSaleMan";
+export default SelectSaleMan;

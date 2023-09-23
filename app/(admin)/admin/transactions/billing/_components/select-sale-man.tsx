@@ -44,20 +44,20 @@ const SelectSaleMan: React.FC<{
         >
           {saleManeId
             ? saleManes.find((s) => s.id === saleManeId)?.name
-            : "Select Sale Mane"}
+            : "Select Sale Man"}
           {/* <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" /> */}
           <Badge
             variant="secondary"
             className="text-[0.50rem]/[0.8rem] font-  py-0.5"
           >
-            Sale Mane
+            Sale Man
           </Badge>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-72">
         <Command className="w-full">
-          <CommandInput placeholder="Search Sale Mane..." />
-          <CommandEmpty>No Sale Mane found.</CommandEmpty>
+          <CommandInput placeholder="Search Sale Man..." />
+          <CommandEmpty>No Sale Man found.</CommandEmpty>
           <CommandGroup>
             {saleManes?.map((booker) => (
               <CommandItem

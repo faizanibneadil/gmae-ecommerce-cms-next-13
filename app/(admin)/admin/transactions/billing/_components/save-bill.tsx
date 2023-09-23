@@ -26,12 +26,15 @@ const SaveBill: React.FC<{}> = memo(() => {
   const saleManeId = useBilling((state) => state.saleManeId);
   const areaId = useBilling((state) => state.areaId);
   const shopId = useBilling((state) => state.shopId);
+  const setShopId = useBilling((state) => state.setShopId);
   const companyId = useBilling((state) => state.companyId);
   const deliveryDate = useBilling((state) => state.deliveryDate);
+  const resetQty = useBilling((state) => state.resetQty);
+  const setMessage = useBilling((state) => state.setMessage);
 
   const action = () => {
     return start(async () => {
-      return saveBill({
+      const res = await saveBill({
         areaId,
         bookerId,
         companyId,
@@ -40,6 +43,9 @@ const SaveBill: React.FC<{}> = memo(() => {
         saleManeId,
         shopId,
       });
+      setMessage(res);
+      setShopId("");
+      resetQty();
     });
   };
 

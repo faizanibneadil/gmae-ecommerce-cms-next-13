@@ -16,9 +16,12 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import useBilling from "@/store/use-billing";
+import useTransaction from "@/store/use-transactions";
 import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
 import { memo, useEffect, useTransition } from "react";
+import { getFilteredTransactions } from "../_actions/get-transactions-by-filters";
+import { getShopsByAreaId } from "../_actions/get-shops-by-area-id";
 // import { getShopsByAreaId } from "../_actions/get-shops-by-area-id";
 
 type TAreas = {
@@ -29,20 +32,27 @@ type TAreas = {
 const FindByArea: React.FC<{
   areas: TAreas[];
 }> = memo(({ areas }) => {
-  const areaId = useBilling((state) => state.areaId);
-  const setAreaId = useBilling((state) => state.setAreaId);
-  const setShops = useBilling((state) => state.setShops);
-  const isFetching = useBilling((state) => state.isFetching);
-  const setFetching = useBilling((state) => state.setFetching);
-
+  const areaId = useTransaction((state) => state.areaId);
+  const setAreaId = useTransaction((state) => state.setAreaId);
+  const setShops = useTransaction((state) => state.setShops);
+  const setTransactions = useTransaction((state) => state.setTransactions);
+  const setFetching = useTransaction((state) => state.setFetching);
+  const isFetching = useTransaction((state) => state.isFetching);
   useEffect(() => {
-    const getShops = async () => {
-      setFetching(true);
-      //   const shops = await getShopsByAreaId(areaId);
-      //   setShops(shops);
-      setFetching(false);
-    };
-    if (areaId) getShops();
+    // Implement the database query function here
+    if (areaId.trim() !== "") {
+      // Trigger the database query function with the inputValue
+      // and set the query result in state
+      const action = async () => {
+        setFetching(true);
+        const t = await getFilteredTransactions({ areaId });
+        const shops = await getShopsByAreaId(areaId);
+        setTransactions(t);
+        setShops(shops);
+        setFetching(false);
+      };
+      action();
+    }
   }, [areaId]);
 
   return (

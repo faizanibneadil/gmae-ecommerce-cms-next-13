@@ -15,10 +15,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import useBilling from "@/store/use-billing";
+import useTransaction from "@/store/use-transactions";
 import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
-import { memo } from "react";
+import { memo, useEffect } from "react";
+import { getFilteredTransactions } from "../_actions/get-transactions-by-filters";
 
 type TBookers = {
   id: string;
@@ -29,11 +30,28 @@ type TBookers = {
 const FindByBooker: React.FC<{
   bookers: TBookers[];
 }> = memo(({ bookers }) => {
-  const bookerId = useBilling((state) => state.bookerId);
-  const setBookerId = useBilling((state) => state.setBookerId);
+  const bookerId = useTransaction((state) => state.bookerId);
+  const setBookerId = useTransaction((state) => state.setBookerId);
+  const setTransactions = useTransaction((state) => state.setTransactions);
+  const setFetching = useTransaction((state) => state.setFetching);
+  const isFetching = useTransaction((state) => state.isFetching);
+  useEffect(() => {
+    // Implement the database query function here
+    if (bookerId.trim() !== "") {
+      // Trigger the database query function with the inputValue
+      // and set the query result in state
+      const action = async () => {
+        setFetching(true);
+        const t = await getFilteredTransactions({ bookerId });
+        setTransactions(t);
+        setFetching(false);
+      };
+      action();
+    }
+  }, [bookerId]);
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={isFetching} asChild>
         <Button
           variant="outline"
           role="combobox"

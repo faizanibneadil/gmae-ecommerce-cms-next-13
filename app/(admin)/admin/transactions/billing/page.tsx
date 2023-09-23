@@ -24,11 +24,7 @@ const Page: React.FC<{}> = memo(() => {
   const users = use(getUsers());
   const companies = use(getCompanies());
   const areas = use(getAreas());
-  return (
-    <div>
-      <BillingForm users={users} companies={companies} areas={areas} />
-    </div>
-  );
+  return <BillingForm users={users} companies={companies} areas={areas} />;
 });
 
 Page.displayName = "Page";

@@ -1,5 +1,6 @@
 'use server'
 
+import { createBillingSchema } from "@/_schemas";
 import { prisma } from "@/config/db"
 
 type BillItem = {
@@ -24,34 +25,42 @@ interface SaveBillProps {
     items: BillItem[]
 }
 
-export async function saveBill({
-    areaId,
-    bookerId,
-    companyId,
-    items,
-    saleManeId,
-    shopId,
-    deliveryDate
-}: SaveBillProps) {
+
+export async function saveBill(props: SaveBillProps) {
+    const res = createBillingSchema.safeParse(props);
+    if (!res.success) {
+        return Object.values(res.error.format())
+            .map((value) => {
+                // @ts-ignore
+                if (value && value._errors && Array.isArray(value._errors)) {
+                    // @ts-ignore
+                    return value._errors[0];
+                }
+                return null;
+            })
+            .filter((message) => message !== null);
+    }
+
     try {
         await prisma.billing.create({
             data: {
-                booker: { connect: { id: bookerId } },
-                saleMane: { connect: { id: saleManeId } },
-                area: { connect: { id: areaId } },
-                company: { connect: { id: companyId } },
-                shop: { connect: { id: shopId } },
+                booker: { connect: { id: res.data.bookerId } },
+                saleMane: { connect: { id: res.data.saleManeId } },
+                area: { connect: { id: res.data.areaId } },
+                company: { connect: { id: res.data.companyId } },
+                shop: { connect: { id: res.data.shopId } },
                 items: {
-                    create: items.map(i => ({
+                    create: res.data.items.map(i => ({
                         quantity: i.qty as number,
                         products: { connect: { id: i.id } }
                     }))
                 },
-                deliveryDate: deliveryDate,
+                deliveryDate: res.data.deliveryDate,
             },
         })
         console.log("Bill has been saved successfully. 👍")
     } catch (error) {
         console.log("Something Wnt Wrong When Creating New Bill Entry. 👎")
+        console.log(error)
     }
 }
