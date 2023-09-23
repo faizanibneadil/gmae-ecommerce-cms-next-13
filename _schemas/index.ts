@@ -99,14 +99,7 @@ export const createBillingSchema = z.object({
     companyId: z.string().nonempty("Select Company."),
     deliveryDate: z.date({ required_error: "Select Delivery Date." }),
     items: z.object({
-        title: z.string().nullable(),
-        images: z.object({
-            src: z.number().nullable()
-        }),
         id: z.string(),
-        regularPrice: z.number().nullable(),
-        salePrice: z.number().nullable(),
-        stock: z.number().nullable(),
         qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
     }).array().min(1, "Minimum 1 item should be into a sale.")
 })

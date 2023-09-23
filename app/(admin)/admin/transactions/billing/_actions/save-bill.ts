@@ -62,5 +62,6 @@ export async function saveBill(props: SaveBillProps) {
     } catch (error) {
         console.log("Something Wnt Wrong When Creating New Bill Entry. 👎")
         console.log(error)
+        return ['Something Went Wrong.']
     }
 }
