@@ -104,8 +104,18 @@ export const createBillingSchema = z.object({
     }).array().min(1, "Minimum 1 item should be into a sale.")
 })
 
-export const updateBillReturn = z.object({
+export const findBillBySaleManAndAreaId = z.object({
     saleManId: z.string().nonempty("Select Sale Man"),
     areaId: z.string().nonempty("Select Area."),
+})
+
+export const updateBillReturn = z.object({
+    billId: z.string(),
+    items: z.object({
+        id: z.string(),
+        products: z.object({ title: z.string(), id: z.string() }).array(),
+        quantity: z.number(),
+        qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
+    }).array().min(1, "Minimum 1 Product should be return.")
 })
 

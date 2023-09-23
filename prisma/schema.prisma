@@ -18,6 +18,22 @@ model Example {
   name String
 }
 
+model ReturnBillingItems {
+  id       String     @id @default(uuid())
+  products Products[]
+  quantity Int?
+  subtotal Int?
+  discount Int?
+  profit   Int?
+  Bill     Billing?   @relation(fields: [billId], references: [id])
+  billId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([billId])
+}
+
 model BillingItems {
   id       String     @id @default(uuid())
   products Products[]
@@ -35,28 +51,31 @@ model BillingItems {
 }
 
 model Billing {
-  id           String         @id @default(uuid())
-  accessId     Int            @unique @default(autoincrement())
+  id           String               @id @default(uuid())
+  accessId     Int                  @unique @default(autoincrement())
   profit       Int?
   total        Int?
   discount     Int?
   subtotal     Int?
   netAmount    Int?
-  booker       User?          @relation(name: "bookingBy", fields: [bookerId], references: [id])
+  booker       User?                @relation(name: "bookingBy", fields: [bookerId], references: [id])
   bookerId     String
-  saleMane     User?          @relation(name: "deliverBy", fields: [saleManeId], references: [id])
+  saleMane     User?                @relation(name: "deliverBy", fields: [saleManeId], references: [id])
   saleManeId   String
-  area         Areas?         @relation(fields: [areaId], references: [id])
+  area         Areas?               @relation(fields: [areaId], references: [id])
   areaId       String
-  company      Companies?     @relation(fields: [companyId], references: [id])
+  company      Companies?           @relation(fields: [companyId], references: [id])
   companyId    String
-  shop         Shops?         @relation(fields: [shopId], references: [id])
+  shop         Shops?               @relation(fields: [shopId], references: [id])
   shopId       String
   items        BillingItems[]
+  returnItems  ReturnBillingItems[]
+  isReturned   Boolean              @default(false)
   deliveryDate DateTime
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
 
+  @@index([isReturned])
   @@index([bookerId])
   @@index([saleManeId])
   @@index([areaId])
@@ -214,35 +233,36 @@ model Images {
 }
 
 model Products {
-  id                   String         @id @default(uuid())
+  id                   String               @id @default(uuid())
   title                String?
-  slug                 String?        @unique
+  slug                 String?              @unique
   description          String?
   regularPrice         Int? // @default(0)
   salePrice            Int? // @default(0)
   purchasePrice        Int? // @default(0)
   purchaseLimit        Int? // @default(0)
   profit               Int?
-  isTrackStock         Boolean?       @default(false)
-  isReviewEnable       Boolean?       @default(true)
-  isPublished          Boolean?       @default(false)
-  isFeatured           Boolean?       @default(false)
+  isTrackStock         Boolean?             @default(false)
+  isReviewEnable       Boolean?             @default(true)
+  isPublished          Boolean?             @default(false)
+  isFeatured           Boolean?             @default(false)
   stock                Int? // @default(0)
   ytVideosIds          String[]
-  discountInPercentage Float          @default(0)
-  variantBy            Products[]     @relation("variants")
-  variants             Products[]     @relation("variants")
-  createdAt            DateTime?      @default(now())
-  updatedAt            DateTime?      @updatedAt
+  discountInPercentage Float                @default(0)
+  variantBy            Products[]           @relation("variants")
+  variants             Products[]           @relation("variants")
+  createdAt            DateTime?            @default(now())
+  updatedAt            DateTime?            @updatedAt
   images               Images[]
   Categories           Categories[]
   Attributes           Attributes[]
-  Brands               Brands?        @relation(fields: [brandId], references: [id])
+  Brands               Brands?              @relation(fields: [brandId], references: [id])
   brandId              String?
-  Companies            Companies?     @relation(fields: [companyId], references: [id])
+  Companies            Companies?           @relation(fields: [companyId], references: [id])
   companyId            String?
   OrderItems           OrderItems[]
   BillingItems         BillingItems[]
+  returnItems          ReturnBillingItems[]
 
   @@index([slug])
   @@index([isPublished])

@@ -1,6 +1,6 @@
 'use server'
 
-import { updateBillReturn } from "@/_schemas";
+import { findBillBySaleManAndAreaId } from "@/_schemas";
 import { prisma } from "@/config/db"
 
 type BillItem = {
@@ -22,7 +22,7 @@ interface SaleReturnProps {
 
 
 export async function updateBill(props: SaleReturnProps) {
-    const res = updateBillReturn.safeParse(props);
+    const res = findBillBySaleManAndAreaId.safeParse(props);
     if (!res.success) {
         return Object.values(res.error.format())
             .map((value) => {

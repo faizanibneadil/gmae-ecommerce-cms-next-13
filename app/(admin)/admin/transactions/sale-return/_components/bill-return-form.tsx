@@ -30,6 +30,7 @@ const BillReturnForm: React.FC<{
   const areaId = useSaleReturn((state) => state.areaId);
   const setBills = useSaleReturn((state) => state.setBills);
   const setFetching = useSaleReturn((state) => state.setFetching);
+
   useEffect(() => {
     if (areaId && saleManId) {
       const action = async () => {
