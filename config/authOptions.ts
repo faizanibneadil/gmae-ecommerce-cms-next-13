@@ -13,11 +13,24 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
+                    role: profile.role
+                }
+            }
         })
     ],
     adapter: PrismaAdapter(prisma),
     callbacks: {
         async jwt({ token, user, account, profile, session }) {
+            if (user) {
+                // @ts-ignore
+                token.role = user.role
+            }
             // console.log("SESSION FROM JWT => ", session)
             // console.log("token FROM JWT => ", token)
             // console.log("user FROM JWT => ", user)
@@ -27,6 +40,8 @@ export const authOptions: NextAuthOptions = {
         },
         async session(props) {
             // console.log("SESSION => ", props)
+            // @ts-ignore
+            props.session.user.role = props.token.role
             props.session.user.id = props.token.sub
             // console.log(props.session)
             return props.session
