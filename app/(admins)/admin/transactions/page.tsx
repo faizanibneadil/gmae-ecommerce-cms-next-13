@@ -29,13 +29,11 @@ const getTransactions = cache(async () => {
 
 const Page: React.FC<{}> = memo(() => {
   const transactions = use(getTransactions());
-  return transactions.length ? (
+  return (
     <div className="space-y-1">
       <TransactionFilters />
       <Transactions initialTransactions={transactions} />
     </div>
-  ) : (
-    notFound()
   );
 });
 

@@ -11,6 +11,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "drive.google.com",
       "img.freepik.com",
+      "images.unsplash.com",
     ],
   },
   experimental: {

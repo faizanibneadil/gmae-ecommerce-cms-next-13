@@ -5,6 +5,9 @@ type TProducts = {
     products: {
         id: string
         title: string | null;
+        regularPrice: number | null;
+        salePrice: number | null;
+        profit: number | null;
     }[];
     quantity: number | null;
     qty?: number | undefined
@@ -24,6 +27,8 @@ export interface SaleReturnStore {
     areaId: string
     bills: TBill[] | undefined;
     items: TProducts[] | undefined;
+    extraDiscount: string
+    setExtraDiscount: (extraDiscount: string) => void
     setItems: (items: TProducts[] | undefined) => void
     setQty: (id: string, qty: number) => void
     getQty: (id: string) => number | undefined
@@ -41,6 +46,8 @@ const useSaleReturn = create<SaleReturnStore>((set, get) => ({
     areaId: "",
     bills: [],
     items: [],
+    extraDiscount: "",
+    setExtraDiscount: (extraDiscount) => set((state) => ({ extraDiscount })),
     setMessages: (messages) => set((state) => ({ messages })),
     setItems: (items) => set((state) => ({ items })),
     setQty: (id, qty) => set(state => ({ items: state.items?.map(i => i.id === id ? { ...i, qty } : i) })),

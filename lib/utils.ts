@@ -20,6 +20,23 @@ export const calculatePercentage = (
     return percentage;
 };
 
+export const calculateProfit = ({
+    regularPrice,
+    salePrice,
+    purchasePrice
+}: {
+    regularPrice: number,
+    salePrice: number,
+    purchasePrice: number
+}): number => {
+    const initial_profit = regularPrice - purchasePrice
+    // 20                // 70           // 50
+    if (!salePrice || salePrice === 0) return initial_profit
+    const reduced_price_profit = salePrice - purchasePrice
+    //  10                    // 60       / 50
+    return reduced_price_profit;
+};
+
 export const startOfDay = () => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);

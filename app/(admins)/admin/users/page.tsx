@@ -2,7 +2,7 @@ import { EditIcon } from "@/app/_components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { prisma, xPrisma } from "@/config/db";
+import { prisma } from "@/config/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, memo, use } from "react";

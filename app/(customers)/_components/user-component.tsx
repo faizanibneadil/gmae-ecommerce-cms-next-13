@@ -81,6 +81,15 @@ const UserComponent: React.FC<{
               Default
             </Button>
           </div>
+          {session && session.user.role === "ADMIN" && (
+            <Button
+              onClick={() => replace("/distribution")}
+              variant="default"
+              className="w-full"
+            >
+              Open Distribution
+            </Button>
+          )}
           <Button
             onClick={() => signOut()}
             variant="destructive"

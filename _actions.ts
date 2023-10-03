@@ -3,7 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
 import { createAddressSchema, createAreaSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
 import { redirect } from "next/navigation";
-import { calculatePercentage } from "./lib/utils";
+import { calculatePercentage, calculateProfit } from "./lib/utils";
 import { z } from "zod";
 import { Session } from "next-auth";
 
@@ -34,14 +34,24 @@ export async function deleteProductAction(id: string) {
 }
 
 export async function createProductAction(values: z.infer<typeof createProductSchema>) {
-    const { id, regularPrice, salePrice, ...otherValues } = createProductSchema.parse(values)
+    const { id, regularPrice, salePrice, purchasePrice, ...otherValues } = createProductSchema.parse(values)
     try {
-        await prisma.products.update({
-            data: {
+        await prisma.products.upsert({
+            create: {
                 ...otherValues,
                 regularPrice,
                 salePrice,
-                discountInPercentage: calculatePercentage(regularPrice, salePrice)
+                purchasePrice,
+                discountInPercentage: calculatePercentage(regularPrice, salePrice),
+                profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
+            },
+            update: {
+                ...otherValues,
+                regularPrice,
+                salePrice,
+                purchasePrice,
+                discountInPercentage: calculatePercentage(regularPrice, salePrice),
+                profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
             },
             where: { id }
         })
@@ -69,9 +79,9 @@ export async function createImageAction(form: any) {
                     set: searchText.split(" ")
                 }
             },
-            where: { id: id ?? 'dfe9a1ce-10fe-4569-8ceb-4b50ff1ac05c' }
+            where: { id }
         })
-        revalidateTag("admin-all-images")
+        revalidatePath("/images", "page")
     } catch (e) {
         console.log("Something went wrong when Updating with this error 👎")
         console.log(e)
@@ -349,10 +359,17 @@ export async function InitAddress(session: Session | null) {
 }
 
 export async function createShop(form: typeof createShopSchema) {
-    const { id, ...values } = createShopSchema.parse(form)
+    const { id, areaId, ...values } = createShopSchema.parse(form)
     try {
-        await prisma.shops.update({
-            data: { ...values },
+        await prisma.shops.upsert({
+            create: {
+                ...values,
+                Areas: { connect: { id: areaId } }
+            },
+            update: {
+                ...values,
+                Areas: { connect: { id: areaId } }
+            },
             where: { id }
         })
         revalidatePath(`/admin/shops/${id}`)
@@ -530,11 +547,18 @@ export async function statusAction({ orderId, statusId }: { orderId: string, sta
 
 
 export async function updateUser(form: typeof createUserSchema) {
-    const { id, ...values } = createUserSchema.parse(form)
+    const { id, distributionId, ...values } = createUserSchema.parse(form)
+    console.log("distributionId => ", distributionId)
     try {
         await prisma.user.upsert({
-            create: { ...values },
-            update: { ...values },
+            create: {
+                ...values,
+                distributors: { connect: { id: distributionId } }
+            },
+            update: {
+                ...values,
+                distributors: { connect: { id: distributionId } }
+            },
             where: { id }
         })
         console.log("User Profile has been updated successfully. 👍")

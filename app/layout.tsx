@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/theme-provider";
 import AuthSessionProvider from "@/providers/authSessionProvider";
+import ProgressBarProvider from "@/providers/progress-bar-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthSessionProvider>{children}</AuthSessionProvider>
+          <AuthSessionProvider>
+            <ProgressBarProvider>{children}</ProgressBarProvider>
+          </AuthSessionProvider>
           <Toaster position="top-center" />
         </ThemeProvider>
       </body>

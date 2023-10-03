@@ -7,7 +7,7 @@ interface TBill {
     isReturned: boolean
 }
 
-export interface SaleReturnStore {
+export interface DSRStore {
     messages: string[] | undefined
     isFetching: boolean
     saleManId: string
@@ -20,7 +20,7 @@ export interface SaleReturnStore {
     setMessages: (message: string[] | undefined) => void
 }
 
-const useSaleReturn = create<SaleReturnStore>((set, get) => ({
+const useSaleReturn = create<DSRStore>((set, get) => ({
     messages: [],
     isFetching: false,
     saleManId: "",

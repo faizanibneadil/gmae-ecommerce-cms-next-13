@@ -18,6 +18,17 @@ model Example {
   name String
 }
 
+model Distributors {
+  id        String      @id @default(uuid())
+  name      String
+  users     User[]
+  products  Products[]
+  bills     Billing[]
+  areas     Areas[]
+  shops     Shops[]
+  companies Companies[]
+}
+
 model ReturnBillingItems {
   id       String     @id @default(uuid())
   products Products[]
@@ -51,29 +62,32 @@ model BillingItems {
 }
 
 model Billing {
-  id           String               @id @default(uuid())
-  accessId     Int                  @unique @default(autoincrement())
-  profit       Int?
-  total        Int?
-  discount     Int?
-  subtotal     Int?
-  netAmount    Int?
-  booker       User?                @relation(name: "bookingBy", fields: [bookerId], references: [id])
-  bookerId     String
-  saleMane     User?                @relation(name: "deliverBy", fields: [saleManeId], references: [id])
-  saleManeId   String
-  area         Areas?               @relation(fields: [areaId], references: [id])
-  areaId       String
-  company      Companies?           @relation(fields: [companyId], references: [id])
-  companyId    String
-  shop         Shops?               @relation(fields: [shopId], references: [id])
-  shopId       String
-  items        BillingItems[]
-  returnItems  ReturnBillingItems[]
-  isReturned   Boolean              @default(false)
-  deliveryDate DateTime
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
+  id            String               @id @default(uuid())
+  accessId      Int                  @unique @default(autoincrement())
+  profit        Int?
+  total         Int?
+  discount      Int?
+  extraDiscount Int?
+  subtotal      Int?
+  netAmount     Int?
+  booker        User?                @relation(name: "bookingBy", fields: [bookerId], references: [id])
+  bookerId      String
+  saleMane      User?                @relation(name: "deliverBy", fields: [saleManeId], references: [id])
+  saleManeId    String
+  area          Areas?               @relation(fields: [areaId], references: [id])
+  areaId        String
+  company       Companies?           @relation(fields: [companyId], references: [id])
+  companyId     String
+  shop          Shops?               @relation(fields: [shopId], references: [id])
+  shopId        String
+  items         BillingItems[]
+  returnItems   ReturnBillingItems[]
+  distributorId String
+  distributor   Distributors?        @relation(fields: [distributorId], references: [id])
+  isReturned    Boolean              @default(false)
+  deliveryDate  DateTime
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
 
   @@index([isReturned])
   @@index([bookerId])
@@ -85,10 +99,11 @@ model Billing {
 }
 
 model Areas {
-  id    String    @id @default(uuid())
-  name  String?
-  shops Shops[]
-  bills Billing[]
+  id           String         @id @default(uuid())
+  name         String?
+  shops        Shops[]
+  bills        Billing[]
+  distributors Distributors[]
 }
 
 model UserAddresses {
@@ -120,17 +135,18 @@ enum ShopPaymentType {
 }
 
 model Shops {
-  id       String           @id @default(uuid())
-  accessId Int?             @unique @default(autoincrement())
-  name     String?
-  owner    String?
-  phone    String?
-  address  String?
-  popType  PopType?         @default(RETAILER)
-  payType  ShopPaymentType? @default(CASH)
-  Areas    Areas?           @relation(fields: [areaId], references: [id])
-  areaId   String?
-  bills    Billing[]
+  id           String           @id @default(uuid())
+  accessId     Int?             @unique @default(autoincrement())
+  name         String?
+  owner        String?
+  phone        String?
+  address      String?
+  popType      PopType?         @default(RETAILER)
+  payType      ShopPaymentType? @default(CASH)
+  Areas        Areas?           @relation(fields: [areaId], references: [id])
+  areaId       String?
+  bills        Billing[]
+  distributors Distributors[]
 
   @@index([areaId])
   @@index([accessId])
@@ -145,10 +161,11 @@ model Brands {
 }
 
 model Companies {
-  id       String     @id @default(uuid())
-  name     String?
-  products Products[]
-  bills    Billing[]
+  id           String         @id @default(uuid())
+  name         String?
+  products     Products[]
+  bills        Billing[]
+  distributors Distributors[]
 }
 
 enum OrderStatus {
@@ -263,6 +280,7 @@ model Products {
   OrderItems           OrderItems[]
   BillingItems         BillingItems[]
   returnItems          ReturnBillingItems[]
+  distributors         Distributors[]
 
   @@index([slug])
   @@index([isPublished])
@@ -331,11 +349,8 @@ enum Role {
   ADMIN
   SALES_MAN
   BOOKER
-  INVENTORY_STAFF
-  BILLING
-  INSIGHTS
+  KPO
   CUSTOMER
-  SHOP_OWNER
 }
 
 model User {
@@ -354,4 +369,5 @@ model User {
   orders        Orders[]
   bookingBy     Billing[]       @relation(name: "bookingBy")
   deliverBy     Billing[]       @relation(name: "deliverBy")
+  distributors  Distributors[]
 }

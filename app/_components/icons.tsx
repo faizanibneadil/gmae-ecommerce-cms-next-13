@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   Check,
+  CornerDownRight,
   Edit,
   Eye,
   Globe,
@@ -13,6 +14,7 @@ import {
   MapPin,
   Minus,
   MoveLeft,
+  Pencil,
   Plug,
   Plus,
   RefreshCw,
@@ -21,15 +23,19 @@ import {
   Trash,
   Truck,
   Unplug,
+  User,
   XCircle,
 } from "lucide-react";
 
 export const PlusIcon = (props: LucideProps) => <Plus {...props} />;
+export const ArrowBR = (props: LucideProps) => <CornerDownRight {...props} />;
+export const UserIcon = (props: LucideProps) => <User {...props} />;
 export const MinusIcon = (props: LucideProps) => <Minus {...props} />;
 export const PublicIcon = (props: LucideProps) => <Globe {...props} />;
 export const EyeIcon = (props: LucideProps) => <Eye {...props} />;
 export const LayoutIcon = (props: LucideProps) => <Layout {...props} />;
 export const EditIcon = (props: LucideProps) => <Edit {...props} />;
+export const PencilIcon = (props: LucideProps) => <Pencil {...props} />;
 export const XCircleIcon = (props: LucideProps) => <XCircle {...props} />;
 export const TrashIcon = (props: LucideProps) => <Trash {...props} />;
 export const RefreshIcon = (props: LucideProps) => <RefreshCw {...props} />;

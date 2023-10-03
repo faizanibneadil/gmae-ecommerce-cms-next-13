@@ -10,6 +10,7 @@ type BillItem = {
     regularPrice: number | null;
     salePrice: number | null;
     stock: number | null;
+    profit: number | null;
     qty?: number | undefined
 };
 
@@ -27,8 +28,10 @@ export interface BillStore {
     shopId: string
     companyId: string
     deliveryDate: Date
+    extraDiscount: string
     items: BillItem[] | undefined;
     shops: TShops[] | undefined
+    setExtraDiscount: (extraDiscount: string) => void
     setMessage: (message: string[] | undefined) => void
     setBookerId: (bookerId: string) => void
     setSaleManeId: (saleManeId: string) => void
@@ -56,6 +59,8 @@ const useBilling = create<BillStore>((set, get) => ({
     items: [],
     shops: [],
     companies: [],
+    extraDiscount: "",
+    setExtraDiscount: (extraDiscount) => set((state) => ({ extraDiscount })),
     setMessage: (message) => set((state) => ({ message })),
     setFetching: (isFetching) => set((state) => ({ isFetching })),
     setBookerId: (bookerId) => set((state) => ({ bookerId })),

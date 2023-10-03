@@ -66,6 +66,7 @@ export const createShopSchema = z.object({
     owner: z.string({ required_error: "Owner is required." }).trim().nonempty("Shop Owner is required."),
     phone: z.string().nonempty("Phone Number is required.").refine((value) => /^\d{11}$/.test(value), { message: "Phone Number must be exactly 11 numeric digits." }),
     address: z.string().trim().nonempty("Shop Address is required."),
+    areaId: z.string().trim().nonempty("Shop Area is required."),
     popType: z.enum(["RETAILER", "WHOLESALER"], { required_error: "Pop Type is required." }),
     payType: z.enum(["CASH", "CHEQUE", "BILL"], { required_error: "Payment Method is required." })
 })
@@ -84,10 +85,11 @@ export const createAddressSchema = z.object({
 
 export const createUserSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
+    distributionId: z.string({ required_error: "distributionId is required." }),
     name: z.string().nonempty("Name is required."),
     email: z.string().nonempty("Email is required."),
     cnic: z.string().optional(),
-    role: z.enum(["CUSTOMER", "SALES_MAN", "BOOKER", "INVENTORY_STAFF", "ADMIN", "BILLING", "INSIGHTS", "SHOP_OWNER"], { required_error: "User Role is required." }),
+    role: z.enum(["CUSTOMER", "SALES_MAN", "BOOKER", "KPO", "ADMIN"], { required_error: "User Role is required." }),
     phone: z.string().nonempty("Phone Number is required.").refine((value) => /^\d{11}$/.test(value), { message: "Phone Number must be exactly 11 numeric digits." })
 })
 
@@ -97,9 +99,14 @@ export const createBillingSchema = z.object({
     areaId: z.string().nonempty("Select Area."),
     shopId: z.string().nonempty("Select Shop."),
     companyId: z.string().nonempty("Select Company."),
+    distributionId: z.string().nonempty("Select Distributor."),
     deliveryDate: z.date({ required_error: "Select Delivery Date." }),
+    extraDiscount: z.coerce.number().nonnegative("Extra Discount is not allowed in negative numbers."),
     items: z.object({
         id: z.string(),
+        profit: z.number().nullable(),
+        regularPrice: z.number().nullable(),
+        salePrice: z.number().nullable(),
         qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
     }).array().min(1, "Minimum 1 item should be into a sale.")
 })
@@ -111,9 +118,16 @@ export const findBillBySaleManAndAreaId = z.object({
 
 export const updateBillReturn = z.object({
     billId: z.string(),
+    extraDiscount: z.coerce.number().nonnegative("Extra Discount is not allowed in negative numbers."),
     items: z.object({
         id: z.string(),
-        products: z.object({ title: z.string(), id: z.string() }).array(),
+        products: z.object({
+            title: z.string(),
+            id: z.string(),
+            salePrice: z.number().nullable(),
+            regularPrice: z.number().nullable(),
+            profit: z.number().nullable(),
+        }).array(),
         quantity: z.number(),
         qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
     }).array().min(1, "Minimum 1 Product should be return.")
