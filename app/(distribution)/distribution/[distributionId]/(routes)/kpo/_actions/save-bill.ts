@@ -1,13 +1,10 @@
 'use server'
 
-import { createBillingSchema } from "@/_schemas";
+import { createBillFormSchema } from "@/_schemas";
 import { prisma } from "@/config/db"
 
 type BillItem = {
     title: string | null;
-    images: {
-        src: string | null;
-    }[];
     id: string;
     regularPrice: number | null;
     salePrice: number | null;
@@ -30,58 +27,55 @@ interface SaveBillProps {
 
 
 export async function saveBill(props: SaveBillProps) {
-    const res = createBillingSchema.safeParse(props);
+    const res = createBillFormSchema.safeParse(props);
     if (!res.success) {
-        return Object.values(res.error.format())
+        return console.log(Object.values(res.error.format())
             .map((value) => {
                 // @ts-ignore
                 if (value && value._errors && Array.isArray(value._errors)) {
-                    // @ts-ignore
+                    // @ts-ignore(
                     return value._errors[0];
                 }
                 return null;
             })
-            .filter((message) => message !== null);
+            .filter((message) => message !== null));
     }
+    const bill_total_amount = res.data.products.filter(product => Number(product.qty) > 0).reduce((previous_total, incoming_item) => previous_total + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
+    const grossAmount = res.data.products.filter(product => Number(product.qty) > 0).reduce((previous_subtotal, incoming_item) => previous_subtotal + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
+    const bill_discount = res.data.products.filter(product => Number(product.qty) > 0).reduce((previous_discount, incoming_item) => previous_discount + (Number(incoming_item.qty) * (Number(incoming_item.regularPrice) - Number(incoming_item.salePrice))), 0)
+    const bill_net_amount = res.data.products.filter(product => Number(product.qty) > 0).reduce((previous_netAmount, incoming_item) => previous_netAmount + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
+    const bill_profit = res.data.products.filter(product => Number(product.qty) > 0).reduce((previous_profit, incoming_item) => previous_profit + (Number(incoming_item.qty) * Number(incoming_item.profit)), 0)
+    const final_net_amount = bill_net_amount - bill_discount - Number(res.data.extraDiscount)
 
-    const bill_total_amount = res.data.items.reduce((previous_total, incoming_item) => previous_total + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
-    const bill_sub_total = res.data.items.reduce((previous_subtotal, incoming_item) => previous_subtotal + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
-    const bill_discount = res.data.items.reduce((previous_discount, incoming_item) => previous_discount + (Number(incoming_item.qty) * (Number(incoming_item.regularPrice) - Number(incoming_item.salePrice))), 0)
-    const bill_net_amount = res.data.items.reduce((previous_netAmount, incoming_item) => previous_netAmount + (Number(incoming_item.qty) * (Number(incoming_item.salePrice) ?? Number(incoming_item.regularPrice))), 0)
-    const bill_profit = res.data.items.reduce((previous_profit, incoming_item) => previous_profit + (Number(incoming_item.qty) * Number(incoming_item.profit)), 0)
-    const final_net_amount = bill_net_amount - bill_discount - res.data.extraDiscount
     try {
         await prisma.$transaction(async tx => {
             await tx.billing.create({
                 data: {
                     booker: { connect: { id: res.data.bookerId } },
-                    saleMane: { connect: { id: res.data.saleManeId } },
+                    saleMane: { connect: { id: res.data.saleManId } },
                     area: { connect: { id: res.data.areaId } },
                     company: { connect: { id: res.data.companyId } },
                     shop: { connect: { id: res.data.shopId } },
                     distributor: { connect: { id: res.data.distributionId } },
                     deliveryDate: res.data.deliveryDate,
-                    extraDiscount: res.data.extraDiscount,
+                    extraDiscountAmount: res.data.extraDiscount,
                     items: {
-                        create: res.data.items.map(i => ({
-                            quantity: i.qty as number,
-                            subtotal: Number(i.qty) * Number(i.salePrice) ?? Number(i.regularPrice),
-                            profit: Number(i.qty) * Number(i.profit),
-                            discount: Number(i.qty) * (Number(i.regularPrice) - Number(i.salePrice)),
-                            products: { connect: { id: i.id } }
+                        create: res.data.products.map(i => ({
+                            issueQuantity: i.qty as number,
+                            products: { connect: { id: i.id } },
                         })),
                     },
-                    total: bill_total_amount - bill_discount,
-                    subtotal: bill_sub_total,
-                    discount: bill_discount,
+                    totalAmount: bill_total_amount - bill_discount,
+                    grossAmount: grossAmount,
+                    discountAmount: bill_discount,
                     netAmount: final_net_amount,
-                    profit: bill_profit,
+                    profitOfBill: bill_profit,
                 },
             })
-            for (let index = 0; index < res.data.items.length; index++) {
-                const bill_item = res.data.items[index];
+            for (let index = 0; index < res.data.products.length; index++) {
+                const bill_item = res.data.products[index];
                 await tx.products.update({
-                    data: { stock: { decrement: bill_item.qty } },
+                    data: { stock: { decrement: Number(bill_item.qty) } },
                     where: { id: bill_item.id }
                 })
             }
@@ -90,6 +84,5 @@ export async function saveBill(props: SaveBillProps) {
     } catch (error) {
         console.log("Something Wnt Wrong When Creating New Bill Entry. 👎")
         console.log(error)
-        return ['Something Went Wrong.']
     }
 }

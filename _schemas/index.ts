@@ -11,6 +11,7 @@ export const createCategorySchema = z.object({
 
 export const createProductSchema = z.object({
     id: z.string({ required_error: "Product ID is Required." }),
+    distributionId: z.string({ required_error: "distributionId is Required." }),
     title: z.string().trim().min(1, "Minimum 1 corrector is required.").max(100, "Maximum 100 correctors are allowed."),
     slug: z.string().trim().toLowerCase().transform(value => value.replace(/[^\w\s-]/g, "").replace(/\s+/g, " ").trim().replace(/\s+/g, "-")),
     description: z.string().trim().max(600, "Maximum 600 correctors are allowed.").optional(),
@@ -47,11 +48,13 @@ export const createAttributesSchema = z.object({
 
 export const createCompanySchema = z.object({
     id: z.string({ required_error: "Id is required." }),
+    distributionId: z.string({ required_error: "distributionId is required." }),
     name: z.string({ required_error: "Company Name is Required." }).trim().nonempty("Company Name is required.")
 })
 
 export const createAreaSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
+    distributionId: z.string({ required_error: "distributionId is required." }),
     name: z.string({ required_error: "Area Name is Required." }).trim().nonempty("Company Name is required.")
 })
 
@@ -60,13 +63,18 @@ export const createBrandSchema = z.object({
     name: z.string().trim().nonempty("Brand Name is Required.")
 })
 
+export const createDistributionSchema = z.object({
+    name: z.string().trim().nonempty("Distribution Name is Required.")
+})
+
 export const createShopSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
+    distributionId: z.string({ required_error: "distributionId is required." }),
     name: z.string({ required_error: "Name is required." }).trim().nonempty("Shop Name is required."),
-    owner: z.string({ required_error: "Owner is required." }).trim().nonempty("Shop Owner is required."),
-    phone: z.string().nonempty("Phone Number is required.").refine((value) => /^\d{11}$/.test(value), { message: "Phone Number must be exactly 11 numeric digits." }),
-    address: z.string().trim().nonempty("Shop Address is required."),
-    areaId: z.string().trim().nonempty("Shop Area is required."),
+    owner: z.string({ required_error: "Owner is required." }).trim().optional(),
+    phone: z.string().optional().refine((value) => value ? /^\d{11}$/.test(value) : true, { message: "Phone Number must be exactly 11 numeric digits." }),
+    address: z.string().trim().optional(),
+    areaId: z.string().trim().optional(),
     popType: z.enum(["RETAILER", "WHOLESALER"], { required_error: "Pop Type is required." }),
     payType: z.enum(["CASH", "CHEQUE", "BILL"], { required_error: "Payment Method is required." })
 })
@@ -109,6 +117,28 @@ export const createBillingSchema = z.object({
         salePrice: z.number().nullable(),
         qty: z.coerce.number().nonnegative("Negative numbers are not allowed.").optional()
     }).array().min(1, "Minimum 1 item should be into a sale.")
+})
+
+// repracice create bill schema
+export const createBillFormSchema = z.object({
+    id: z.string().nonempty("Select Booker."),
+    bookerId: z.string().nonempty("Select Booker."),
+    saleManId: z.string().nonempty("Select Sale Man."),
+    areaId: z.string().nonempty("Select Area."),
+    companyId: z.string().nonempty("Select Company."),
+    shopId: z.string().nonempty("Select Shop."),
+    distributionId: z.string().nonempty("Select Booker."),
+    deliveryDate: z.date({ required_error: "Select Delivery Date." }),
+    extraDiscount: z.coerce.number().nonnegative("Negative amount is not allowed.").nullable(),
+    products: z.object({
+        id: z.string(),
+        title: z.string().nullable(),
+        regularPrice: z.coerce.number().nullable(),
+        salePrice: z.coerce.number().nullable(),
+        profit: z.coerce.number().nullable(),
+        stock: z.coerce.number().nullable(),
+        qty: z.coerce.number().nonnegative("Negative amount is not allowed.").nullable(),
+    }).array().min(1, "Minimum 1 Product should into bill.")
 })
 
 export const findBillBySaleManAndAreaId = z.object({

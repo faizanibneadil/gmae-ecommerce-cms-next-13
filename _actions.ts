@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "./config/db";
-import { createAddressSchema, createAreaSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
+import { createAddressSchema, createAreaSchema, createAttributesSchema, createBrandSchema, createCategorySchema, createCompanySchema, createDistributionSchema, createImagesSchema, createProductSchema, createShopSchema, createUserSchema } from "./_schemas";
 import { redirect } from "next/navigation";
 import { calculatePercentage, calculateProfit } from "./lib/utils";
 import { z } from "zod";
@@ -23,6 +23,20 @@ export async function createCategoryAction(form: any) {
     }
 }
 
+export async function createDistribution({ values, session }: { values: typeof createDistributionSchema, session: Session | null }) {
+    const form = createDistributionSchema.safeParse(values)
+    if (form.success) {
+        try {
+            await prisma.distributors.create({ data: { name: form.data.name, users: { connect: { id: session?.user.id } } } })
+            console.log("Distribution has been successfully created.")
+            revalidatePath("/distribution")
+        } catch (error) {
+            console.log("Something Went Wrong when creating new Distribution")
+            console.log(error)
+        }
+    }
+}
+
 export async function deleteCategoryByIdAction(id: string) {
     await prisma.categories.delete({ where: { id } })
     revalidatePath("/admin/categories")
@@ -34,7 +48,7 @@ export async function deleteProductAction(id: string) {
 }
 
 export async function createProductAction(values: z.infer<typeof createProductSchema>) {
-    const { id, regularPrice, salePrice, purchasePrice, ...otherValues } = createProductSchema.parse(values)
+    const { id, regularPrice, salePrice, purchasePrice, distributionId, ...otherValues } = createProductSchema.parse(values)
     try {
         await prisma.products.upsert({
             create: {
@@ -42,6 +56,7 @@ export async function createProductAction(values: z.infer<typeof createProductSc
                 regularPrice,
                 salePrice,
                 purchasePrice,
+                distributors: { connect: { id: distributionId } },
                 discountInPercentage: calculatePercentage(regularPrice, salePrice),
                 profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
             },
@@ -50,6 +65,7 @@ export async function createProductAction(values: z.infer<typeof createProductSc
                 regularPrice,
                 salePrice,
                 purchasePrice,
+                distributors: { connect: { id: distributionId } },
                 discountInPercentage: calculatePercentage(regularPrice, salePrice),
                 profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
             },
@@ -295,14 +311,14 @@ export async function initImage() {
 
 
 export async function createCompany(form: typeof createCompanySchema) {
-    const { id, ...values } = createCompanySchema.parse(form)
+    const { id, distributionId, ...values } = createCompanySchema.parse(form)
     try {
         await prisma.companies.upsert({
-            create: { ...values },
-            update: { ...values },
+            create: { ...values, distributors: { connect: { id: distributionId } } },
+            update: { ...values, distributors: { connect: { id: distributionId } } },
             where: { id }
         })
-        revalidatePath(`/admin/companies/${id}`)
+        revalidatePath(`/distribution/${distributionId}/companies`)
         console.log("Company Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating company 👎")
@@ -311,14 +327,14 @@ export async function createCompany(form: typeof createCompanySchema) {
 }
 
 export async function createArea(form: typeof createAreaSchema) {
-    const { id, ...values } = createAreaSchema.parse(form)
+    const { id, distributionId, ...values } = createAreaSchema.parse(form)
     try {
         await prisma.areas.upsert({
-            create: { ...values },
-            update: { ...values },
+            create: { ...values, distributors: { connect: { id: distributionId } } },
+            update: { ...values, distributors: { connect: { id: distributionId } } },
             where: { id }
         })
-        revalidatePath(`/admin/areas/${id}`)
+        revalidatePath(`/distribution/${distributionId}/areas`)
         console.log("Area Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Area 👎")
@@ -359,20 +375,22 @@ export async function InitAddress(session: Session | null) {
 }
 
 export async function createShop(form: typeof createShopSchema) {
-    const { id, areaId, ...values } = createShopSchema.parse(form)
+    const { id, areaId, distributionId, ...values } = createShopSchema.parse(form)
     try {
         await prisma.shops.upsert({
             create: {
                 ...values,
-                Areas: { connect: { id: areaId } }
+                Areas: { connect: { id: areaId } },
+                distributors: { connect: { id: distributionId } }
             },
             update: {
                 ...values,
-                Areas: { connect: { id: areaId } }
+                Areas: { connect: { id: areaId } },
+                distributors: { connect: { id: distributionId } }
             },
             where: { id }
         })
-        revalidatePath(`/admin/shops/${id}`)
+        revalidatePath(`/distribution/${distributionId}/shops`)
         console.log("Shop Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Shop 👎")

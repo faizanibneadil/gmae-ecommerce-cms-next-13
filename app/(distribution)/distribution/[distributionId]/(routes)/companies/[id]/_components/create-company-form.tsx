@@ -38,6 +38,7 @@ const CreateCompanyForm: React.FC<{
     defaultValues: {
       id: company?.id?.toString() ?? uuidv4(),
       name: company?.name?.toString(),
+      distributionId: distributionId,
     },
   });
 
@@ -54,6 +55,11 @@ const CreateCompanyForm: React.FC<{
         <FormField
           control={form.control}
           name="id"
+          render={({ field }) => <Input type="hidden" {...field} />}
+        />
+        <FormField
+          control={form.control}
+          name="distributionId"
           render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField

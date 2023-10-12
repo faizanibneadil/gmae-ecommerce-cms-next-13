@@ -7,15 +7,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, memo, use } from "react";
 
-const getUsers = cache(async () => {
-  const users = await prisma.user.findMany();
+const getUsers = cache(async (distributionId: string) => {
+  const users = await prisma.user.findMany({
+    where: { distributors: { some: { id: distributionId } } },
+  });
   return users;
 });
 
 const Page: React.FC<{
   params: { distributionId: string };
 }> = memo(({ params }) => {
-  const users = use(getUsers());
+  const users = use(getUsers(params.distributionId));
   return users?.length ? (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
       {users?.map((c) => (

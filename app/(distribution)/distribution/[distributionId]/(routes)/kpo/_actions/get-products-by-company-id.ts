@@ -12,9 +12,8 @@ export async function getProductsByCompanyId(id: string) {
                 salePrice: true,
                 stock: true,
                 profit: true,
-                images: { select: { src: true }, take: 1 }
             },
-            where: { Companies: { id }, stock: { gt: 0 } }
+            where: { Companies: { id } }
         })
         return products
     } catch (error) {

@@ -21,18 +21,19 @@ const getShop = cache(async (id: string) => {
   return shop;
 });
 
-const getAreas = cache(async () => {
+const getAreas = cache(async (distributionId: string) => {
   const areas = await prisma.areas.findMany({
     select: { id: true, name: true, shops: { select: { id: true } } },
+    where: { distributors: { some: { id: distributionId } } },
   });
   return areas;
 });
 
 const Page: React.FC<{
-  params: { id: string };
+  params: { id: string; distributionId: string };
 }> = memo(({ params }) => {
   const shop = use(getShop(params?.id));
-  const areas = use(getAreas());
+  const areas = use(getAreas(params.distributionId));
   return (
     <div className="max-w-3xl pb-4 mx-auto">
       <CreateShopForm shop={shop} areas={areas} />

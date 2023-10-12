@@ -7,9 +7,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { EditIcon } from "@/app/_components/icons";
 
-const getAreas = cache(async () => {
+const getAreas = cache(async (distributionId: string) => {
   const areas = await prisma.areas.findMany({
     select: { id: true, name: true },
+    where: { distributors: { some: { id: distributionId } } },
   });
   return areas;
 });
@@ -17,7 +18,7 @@ const getAreas = cache(async () => {
 const Page: React.FC<{
   params: { distributionId: string };
 }> = memo(({ params }) => {
-  const areas = use(getAreas());
+  const areas = use(getAreas(params.distributionId));
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
       {areas?.map((area) => (

@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/theme-provider";
 import AuthSessionProvider from "@/providers/authSessionProvider";
 import ProgressBarProvider from "@/providers/progress-bar-provider";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +26,12 @@ export default async function RootLayout({
           <AuthSessionProvider>
             <ProgressBarProvider>{children}</ProgressBarProvider>
           </AuthSessionProvider>
-          <Toaster position="top-center" />
+          <Toaster
+            position="bottom-right"
+            theme="system"
+            richColors
+            closeButton
+          />
         </ThemeProvider>
       </body>
     </html>

@@ -8,15 +8,15 @@ import Spin from "@/app/_components/loading-spinner";
 import Link from "next/link";
 import { Lock } from "lucide-react";
 
-interface TBill {
+type TBills = {
   id: string;
   accessId: number;
-  createdAt: Date;
   isReturned: boolean;
-}
+  createdAt: Date;
+};
 
 const Bill: React.FC<{
-  bill: TBill;
+  bill: TBills;
 }> = memo(({ bill }) => {
   const distributionId = useParams()?.distributionId as string;
   return (

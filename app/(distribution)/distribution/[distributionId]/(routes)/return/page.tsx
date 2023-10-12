@@ -1,24 +1,31 @@
 import { prisma } from "@/config/db";
 import { cache, memo, use } from "react";
-import BillReturnForm from "./_components/bill-return-form";
+import SearchBills from "./_components/search-bills";
 
-const getSaleMen = cache(async () => {
+const getSaleMen = cache(async (distributionId: string) => {
   const saleMan = await prisma.user.findMany({
     select: { id: true, role: true, name: true },
-    where: { role: { in: ["SALES_MAN"] } },
+    where: {
+      role: { in: ["SALES_MAN"] },
+      distributors: { some: { id: distributionId } },
+    },
   });
   return saleMan;
 });
 
-const getAreas = cache(async () => {
-  const areas = await prisma.areas.findMany();
+const getAreas = cache(async (distributionId: string) => {
+  const areas = await prisma.areas.findMany({
+    where: { distributors: { some: { id: distributionId } } },
+  });
   return areas;
 });
 
-const Page: React.FC<{}> = memo(() => {
-  const saleMan = use(getSaleMen());
-  const areas = use(getAreas());
-  return <BillReturnForm saleMan={saleMan} areas={areas} />;
+const Page: React.FC<{
+  params: { distributionId: string };
+}> = memo(({ params }) => {
+  const saleMan = use(getSaleMen(params.distributionId));
+  const areas = use(getAreas(params.distributionId));
+  return <SearchBills saleMan={saleMan} areas={areas} />;
 });
 
 Page.displayName = "Page";

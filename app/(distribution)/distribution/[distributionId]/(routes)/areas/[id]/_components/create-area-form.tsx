@@ -38,6 +38,7 @@ const CreateAreaForm: React.FC<{
     defaultValues: {
       id: areas?.id?.toString() ?? uuidv4(),
       name: areas?.name?.toString(),
+      distributionId: distributionId,
     },
   });
 
@@ -54,6 +55,11 @@ const CreateAreaForm: React.FC<{
         <FormField
           control={form.control}
           name="id"
+          render={({ field }) => <Input type="hidden" {...field} />}
+        />
+        <FormField
+          control={form.control}
+          name="distributionId"
           render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField

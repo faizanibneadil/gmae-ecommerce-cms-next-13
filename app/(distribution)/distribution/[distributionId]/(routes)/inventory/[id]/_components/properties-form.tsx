@@ -26,6 +26,7 @@ import {
 import { InfoIcon } from "@/app/_components/icons";
 import { v4 as uuidv4 } from "uuid";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type TProperties = {
   id: string;
@@ -64,15 +65,23 @@ const CreateInventoryForm: React.FC<{
       isFeatured: properties?.isFeatured?.valueOf(),
       isReviewEnable: properties?.isReviewEnable?.valueOf(),
       isTrackStock: properties?.isTrackStock?.valueOf(),
+      distributionId: distributionId,
     },
   });
   const [isPending, startTransition] = useTransition();
 
   // Server Action
   const onSubmit = (values: any) => {
-    startTransition(async () => {
-      await createProductAction(values);
-      return replace(`/distribution/${distributionId}/inventory`);
+    // @ts-ignore
+    return startTransition(() => {
+      return toast.promise(createProductAction(values), {
+        loading: "Loading...",
+        success: (data) => {
+          replace(`/distribution/${distributionId}/inventory`);
+          return `Properties has been updated successfully.`;
+        },
+        error: "Something went wrong.",
+      });
     });
   };
 
@@ -82,9 +91,12 @@ const CreateInventoryForm: React.FC<{
         <FormField
           control={form.control}
           name="id"
-          render={({ field }) => (
-            <Input type="hidden" placeholder="Product Title" {...field} />
-          )}
+          render={({ field }) => <Input type="hidden" {...field} />}
+        />
+        <FormField
+          control={form.control}
+          name="distributionId"
+          render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField
           control={form.control}

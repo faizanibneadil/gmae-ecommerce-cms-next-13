@@ -3,11 +3,7 @@ import { prisma } from "@/config/db";
 import { cache, memo, use } from "react";
 import BillingProducts from "./_components/billing-products";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import SaveBill from "./_components/save-bill";
 import CancelBill from "./_components/cancel-bill";
-import { Input } from "@/components/ui/input";
-import DiscountInput from "./_components/discount-input";
 
 const getBillByBillId = cache(async (id: string) => {
   const bill = await prisma.billing.findUnique({
@@ -36,7 +32,7 @@ const getBillByBillId = cache(async (id: string) => {
               profit: true,
             },
           },
-          quantity: true,
+          issueQuantity: true,
         },
       },
     },
@@ -44,6 +40,7 @@ const getBillByBillId = cache(async (id: string) => {
   });
   return bill;
 });
+
 const Page: React.FC<{
   params: { id: string };
 }> = memo(({ params }) => {
@@ -51,67 +48,37 @@ const Page: React.FC<{
   return (
     <div className="space-y-1">
       <div className="grid content-center grid-cols-1 gap-x-1 gap-y-1 md:grid-cols-2">
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?.booker?.name}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Booker
           </Badge>
         </Button>
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?.saleMane?.name}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Sale Man
           </Badge>
         </Button>
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?.area?.name}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Area
           </Badge>
         </Button>
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?.shop?.name}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Shop
           </Badge>
         </Button>
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?.company?.name}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Shop
           </Badge>
         </Button>
-        <Button
-          disabled
-          variant="outline"
-          role="combobox"
-          className="justify-between w-full"
-        >
+        <Button disabled variant="outline" className="justify-between w-full">
           {bill?._count.items}
           <Badge variant="secondary" className="text-[0.50rem]/[0.8rem] py-0.5">
             Items
@@ -120,9 +87,6 @@ const Page: React.FC<{
       </div>
 
       <BillingProducts isReturned={bill?.isReturned} products={bill?.items} />
-      <DiscountInput isReturned={bill?.isReturned} />
-
-      {bill?.isReturned ? <CancelBill /> : <SaveBill />}
     </div>
   );
 });

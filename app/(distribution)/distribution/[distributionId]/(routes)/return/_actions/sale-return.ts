@@ -4,21 +4,10 @@ import { findBillBySaleManAndAreaId } from "@/_schemas";
 import { prisma } from "@/config/db"
 import { endOfDay, startOfDay } from "@/lib/utils";
 
-type BillItem = {
-    title: string | null;
-    images: {
-        src: string | null;
-    }[];
-    id: string;
-    regularPrice: number | null;
-    salePrice: number | null;
-    stock: number | null;
-    qty?: number | undefined
-};
-
 interface SaleReturnProps {
     saleManId: string
     areaId: string
+    distributionId: string
 }
 
 
@@ -48,6 +37,7 @@ export async function updateBill(props: SaleReturnProps) {
             where: {
                 saleMane: { id: res.data.saleManId },
                 area: { id: res.data.areaId },
+                distributor: { id: props.distributionId },
                 createdAt: {
                     gte: startOfDay(),
                     lte: endOfDay(),

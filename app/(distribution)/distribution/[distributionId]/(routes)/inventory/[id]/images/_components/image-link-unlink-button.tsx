@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { memo, useTransition } from "react";
 import Spin from "@/app/_components/loading-spinner";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 const ImageLinkUnlink: React.FC<{
   imageId: string;
@@ -17,14 +18,32 @@ const ImageLinkUnlink: React.FC<{
   const [pending, startTransition] = useTransition();
 
   const link = () => {
-    return startTransition(() => {
-      return connectImageToProductAction({ imageId, productId });
+    // @ts-ignore
+    startTransition(() => {
+      toast.promise(connectImageToProductAction({ imageId, productId }), {
+        loading: "Linking...",
+        success: "Linked successfully.",
+        error: "Something went wrong.",
+        action: {
+          label: "Undo",
+          onClick: () => link(),
+        },
+      });
     });
   };
 
   const unLink = () => {
-    return startTransition(() => {
-      return disconnectImageToProductAction({ imageId, productId });
+    // @ts-ignore
+    startTransition(() => {
+      toast.promise(disconnectImageToProductAction({ imageId, productId }), {
+        loading: "Un Linking...",
+        success: "Unlinked successfully.",
+        error: "Something went wrong.",
+        action: {
+          label: "Undo",
+          onClick: () => link(),
+        },
+      });
     });
   };
   return (

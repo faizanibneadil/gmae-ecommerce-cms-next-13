@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button";
 import { authOptions } from "@/config/authOptions";
 import { prisma } from "@/config/db";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { cache, memo, use } from "react";
+import CreateDistribution from "./[distributionId]/_components/create-distribution";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Store } from "lucide-react";
 
 const getDistributions = cache(async (userId: string | undefined) => {
   const distributions = await prisma.distributors.findMany({
@@ -17,12 +19,18 @@ const Page: React.FC<{}> = memo(() => {
   const distributions = use(getDistributions(session?.user.id as string));
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-      <div className="flex flex-col space-y-2">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-x-1 gap-y-1">
         {distributions?.map((d) => (
-          <Link key={d.id} href={`/distribution/${d.id}`} className="px-4 py-2">
-            {d.name}
+          <Link key={d.id} href={`/distribution/${d.id}`} className="">
+            <Card>
+              <CardHeader>
+                <Store />
+              </CardHeader>
+              <CardContent>{d.name}</CardContent>
+            </Card>
           </Link>
         ))}
+        <CreateDistribution />
       </div>
     </div>
   );

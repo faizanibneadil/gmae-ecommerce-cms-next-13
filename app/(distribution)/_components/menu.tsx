@@ -5,7 +5,10 @@ import {
   Building,
   Factory,
   Gauge,
-  Image,
+  Globe,
+  Image as ImageIcon,
+  List,
+  ListChecks,
   LogOut,
   Map,
   MapIcon,
@@ -13,6 +16,7 @@ import {
   Package,
   Sheet,
   Store,
+  Truck,
   UserCircleIcon,
   Users,
 } from "lucide-react";
@@ -64,7 +68,7 @@ const Menu: React.FC<{}> = memo(() => {
           </Link>
           <Link href={`/distribution/${distributionId}/images`}>
             <MenubarItem>
-              <Image className="w-4 h-4 mr-2" />
+              <ImageIcon className="w-4 h-4 mr-2" />
               Images
             </MenubarItem>
           </Link>
@@ -188,24 +192,39 @@ const Menu: React.FC<{}> = memo(() => {
             </Link>
             <Link href={`/distribution/${distributionId}/kpo`}>
               <MenubarItem>
-                <PlusIcon className="w-4 h-4 mr-2" /> Create Bill
+                <PlusIcon className="w-4 h-4 mr-2" /> Generate Invoice
               </MenubarItem>
             </Link>
             <Link href={`/distribution/${distributionId}/return`}>
               <MenubarItem>
-                <PlusIcon className="w-4 h-4 mr-2" /> Return Bill
+                <PlusIcon className="w-4 h-4 mr-2" /> Return Invoice
               </MenubarItem>
             </Link>
             <Link href={`/distribution/${distributionId}/dsr`}>
               <MenubarItem>
-                <Sheet className="w-4 h-4 mr-2" /> Create DSR
+                <Sheet className="w-4 h-4 mr-2" /> Generate DSR
               </MenubarItem>
             </Link>
             <Link href={`/distribution/${distributionId}/load-sheet`}>
               <MenubarItem>
-                <Sheet className="w-4 h-4 mr-2" /> Create Load Sheet
+                <Sheet className="w-4 h-4 mr-2" /> Generate Load Sheet
               </MenubarItem>
             </Link>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger className="">
+            <Globe className="w-5 h-5" />
+          </MenubarTrigger>
+          <MenubarContent forceMount>
+            <Link href={`/distribution/${distributionId}/me`}>
+              <MenubarItem>
+                <Truck className="w-4 h-4 mr-2" /> Orders
+              </MenubarItem>
+            </Link>
+            <MenubarItem>
+              <ListChecks className="w-4 h-4 mr-2" /> Categories
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>

@@ -73,6 +73,7 @@ const CreateShopForm: React.FC<{
       popType: shop?.popType?.toString(),
       payType: shop?.payType?.toString(),
       areaId: shop?.Areas?.id.toString(),
+      distributionId: distributionId,
     },
   });
   const [isPending, startTransition] = useTransition();
@@ -91,6 +92,11 @@ const CreateShopForm: React.FC<{
         <FormField
           control={form.control}
           name="id"
+          render={({ field }) => <Input type="hidden" {...field} />}
+        />
+        <FormField
+          control={form.control}
+          name="distributionId"
           render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField

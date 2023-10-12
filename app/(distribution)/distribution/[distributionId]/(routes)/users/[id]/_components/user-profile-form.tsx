@@ -20,6 +20,22 @@ import { updateUser } from "@/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "@/_schemas";
 import { useParams, useRouter } from "next/navigation";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { CheckIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const UserProfileForm: React.FC<{
   user:
@@ -38,17 +54,18 @@ const UserProfileForm: React.FC<{
         phone: string | null;
       })
     | null;
-}> = memo(({ user }) => {
+  distributions: {
+    id: string;
+    name: string;
+  }[];
+}> = memo(({ user, distributions }) => {
   const distributionId = useParams()?.distributionId as string;
   const { replace } = useRouter();
   const form = useForm({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       id: user?.id.toString() ?? uuidV4(),
-      distributionId:
-        user?.distributors
-          .find((d) => d.id === distributionId)
-          ?.id.toString() ?? distributionId,
+      distributionId: distributionId,
       name: user?.name?.toString(),
       email: user?.email?.toString(),
       role: user?.role?.toString(),

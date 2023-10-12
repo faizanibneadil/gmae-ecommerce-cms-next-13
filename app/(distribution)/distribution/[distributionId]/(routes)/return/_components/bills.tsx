@@ -1,11 +1,18 @@
 "use client";
 
-import useSaleReturn from "@/store/use-sale-return";
 import { memo } from "react";
 import Bill from "./bill";
 
-const Bills: React.FC<{}> = memo(() => {
-  const bills = useSaleReturn((state) => state.bills);
+type TBills = {
+  id: string;
+  accessId: number;
+  isReturned: boolean;
+  createdAt: Date;
+};
+
+const Bills: React.FC<{
+  bills: TBills[] | undefined;
+}> = memo(({ bills }) => {
   return (
     <div className="flex flex-col space-y-1">
       {bills?.map((bill) => (

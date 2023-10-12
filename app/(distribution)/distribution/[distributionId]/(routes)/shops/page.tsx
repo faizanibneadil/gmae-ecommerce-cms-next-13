@@ -4,14 +4,16 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const getShops = cache(async () => {
-  const shops = await prisma.shops.findMany();
+const getShops = cache(async (distributionId: string) => {
+  const shops = await prisma.shops.findMany({
+    where: { distributors: { some: { id: distributionId } } },
+  });
   return shops;
 });
 const Page: React.FC<{
   params: { distributionId: string };
 }> = memo(({ params }) => {
-  const shops = use(getShops());
+  const shops = use(getShops(params.distributionId));
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
       {shops?.map((shop) => (

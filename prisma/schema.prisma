@@ -29,31 +29,13 @@ model Distributors {
   companies Companies[]
 }
 
-model ReturnBillingItems {
-  id       String     @id @default(uuid())
-  products Products[]
-  quantity Int?
-  subtotal Int?
-  discount Int?
-  profit   Int?
-  Bill     Billing?   @relation(fields: [billId], references: [id])
-  billId   String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([billId])
-}
-
 model BillingItems {
-  id       String     @id @default(uuid())
-  products Products[]
-  quantity Int?
-  subtotal Int?
-  discount Int?
-  profit   Int?
-  Bill     Billing?   @relation(fields: [billId], references: [id])
-  billId   String?
+  id             String     @id @default(uuid())
+  products       Products[]
+  issueQuantity  Int?
+  returnQuantity Int?
+  Bill           Billing?   @relation(fields: [billId], references: [id])
+  billId         String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,32 +44,31 @@ model BillingItems {
 }
 
 model Billing {
-  id            String               @id @default(uuid())
-  accessId      Int                  @unique @default(autoincrement())
-  profit        Int?
-  total         Int?
-  discount      Int?
-  extraDiscount Int?
-  subtotal      Int?
-  netAmount     Int?
-  booker        User?                @relation(name: "bookingBy", fields: [bookerId], references: [id])
-  bookerId      String
-  saleMane      User?                @relation(name: "deliverBy", fields: [saleManeId], references: [id])
-  saleManeId    String
-  area          Areas?               @relation(fields: [areaId], references: [id])
-  areaId        String
-  company       Companies?           @relation(fields: [companyId], references: [id])
-  companyId     String
-  shop          Shops?               @relation(fields: [shopId], references: [id])
-  shopId        String
-  items         BillingItems[]
-  returnItems   ReturnBillingItems[]
-  distributorId String
-  distributor   Distributors?        @relation(fields: [distributorId], references: [id])
-  isReturned    Boolean              @default(false)
-  deliveryDate  DateTime
-  createdAt     DateTime             @default(now())
-  updatedAt     DateTime             @updatedAt
+  id                  String         @id @default(uuid())
+  accessId            Int            @unique @default(autoincrement())
+  profitOfBill        Int?
+  totalAmount         Int? // total before cutting discount_amount
+  discountAmount      Int? // the total amout of discount calculated from each products discount if has
+  extraDiscountAmount Int? // extra_discount_amount time has OR has not
+  grossAmount         Int? // amount before cutting extra discount amount
+  netAmount           Int? // Payable Amount
+  booker              User?          @relation(name: "bookingBy", fields: [bookerId], references: [id])
+  bookerId            String
+  saleMane            User?          @relation(name: "deliverBy", fields: [saleManeId], references: [id])
+  saleManeId          String
+  area                Areas?         @relation(fields: [areaId], references: [id])
+  areaId              String
+  company             Companies?     @relation(fields: [companyId], references: [id])
+  companyId           String
+  shop                Shops?         @relation(fields: [shopId], references: [id])
+  shopId              String
+  items               BillingItems[]
+  distributorId       String
+  distributor         Distributors?  @relation(fields: [distributorId], references: [id])
+  isReturned          Boolean        @default(false)
+  deliveryDate        DateTime
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   @@index([isReturned])
   @@index([bookerId])
@@ -96,6 +77,7 @@ model Billing {
   @@index([companyId])
   @@index([shopId])
   @@index([deliveryDate])
+  @@index([accessId])
 }
 
 model Areas {
@@ -250,36 +232,35 @@ model Images {
 }
 
 model Products {
-  id                   String               @id @default(uuid())
+  id                   String         @id @default(uuid())
   title                String?
-  slug                 String?              @unique
+  slug                 String?        @unique
   description          String?
   regularPrice         Int? // @default(0)
   salePrice            Int? // @default(0)
   purchasePrice        Int? // @default(0)
   purchaseLimit        Int? // @default(0)
   profit               Int?
-  isTrackStock         Boolean?             @default(false)
-  isReviewEnable       Boolean?             @default(true)
-  isPublished          Boolean?             @default(false)
-  isFeatured           Boolean?             @default(false)
+  isTrackStock         Boolean?       @default(false)
+  isReviewEnable       Boolean?       @default(true)
+  isPublished          Boolean?       @default(false)
+  isFeatured           Boolean?       @default(false)
   stock                Int? // @default(0)
   ytVideosIds          String[]
-  discountInPercentage Float                @default(0)
-  variantBy            Products[]           @relation("variants")
-  variants             Products[]           @relation("variants")
-  createdAt            DateTime?            @default(now())
-  updatedAt            DateTime?            @updatedAt
+  discountInPercentage Float          @default(0)
+  variantBy            Products[]     @relation("variants")
+  variants             Products[]     @relation("variants")
+  createdAt            DateTime?      @default(now())
+  updatedAt            DateTime?      @updatedAt
   images               Images[]
   Categories           Categories[]
   Attributes           Attributes[]
-  Brands               Brands?              @relation(fields: [brandId], references: [id])
+  Brands               Brands?        @relation(fields: [brandId], references: [id])
   brandId              String?
-  Companies            Companies?           @relation(fields: [companyId], references: [id])
+  Companies            Companies?     @relation(fields: [companyId], references: [id])
   companyId            String?
   OrderItems           OrderItems[]
   BillingItems         BillingItems[]
-  returnItems          ReturnBillingItems[]
   distributors         Distributors[]
 
   @@index([slug])

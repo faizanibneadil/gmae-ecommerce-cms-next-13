@@ -5,16 +5,17 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const getCompanies = cache(async () => {
+const getCompanies = cache(async (distributionId: string) => {
   const companies = await prisma.companies.findMany({
     select: { id: true, name: true, _count: { select: { products: true } } },
+    where: { distributors: { some: { id: distributionId } } },
   });
   return companies;
 });
 const Page: React.FC<{
   params: { distributionId: string };
 }> = memo(({ params }) => {
-  const companies = use(getCompanies());
+  const companies = use(getCompanies(params.distributionId));
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
       {companies?.map((company) => (
