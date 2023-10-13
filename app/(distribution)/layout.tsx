@@ -15,9 +15,8 @@ const getDistributions = cache(async (userId: string | undefined) => {
 
 const Layout: React.FC<{ children: React.ReactNode }> = memo(({ children }) => {
   const session = use(getServerSession(authOptions));
-  const isAdmin = session && session.user.role === "ADMIN";
-  const distributions = isAdmin ? use(getDistributions(session.user.id)) : [];
-  return isAdmin ? (
+  const distributions = session ? use(getDistributions(session.user.id)) : [];
+  return session ? (
     distributions ? (
       children
     ) : (
