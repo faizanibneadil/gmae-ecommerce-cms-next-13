@@ -3,7 +3,6 @@ import { prisma } from "@/config/db";
 import { cache, memo, use } from "react";
 import BillingProducts from "./_components/billing-products";
 import { Button } from "@/components/ui/button";
-import CancelBill from "./_components/cancel-bill";
 
 const getBillByBillId = cache(async (id: string) => {
   const bill = await prisma.billing.findUnique({
@@ -15,6 +14,7 @@ const getBillByBillId = cache(async (id: string) => {
       },
       id: true,
       isReturned: true,
+      netAmount: true,
       area: { select: { name: true } },
       booker: { select: { name: true } },
       company: { select: { name: true } },
@@ -85,7 +85,6 @@ const Page: React.FC<{
           </Badge>
         </Button>
       </div>
-
       <BillingProducts isReturned={bill?.isReturned} products={bill?.items} />
     </div>
   );

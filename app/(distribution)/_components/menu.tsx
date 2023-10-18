@@ -181,6 +181,13 @@ const Menu: React.FC<{}> = memo(() => {
           </Link>
         </MenubarMenu>
         <MenubarMenu>
+          <Link href={`/distribution/${distributionId}/ledger`}>
+            <MenubarTrigger className="relative hidden md:block">
+              Ledger
+            </MenubarTrigger>
+          </Link>
+        </MenubarMenu>
+        <MenubarMenu>
           <MenubarTrigger className="relative hidden md:block">
             Transactions
           </MenubarTrigger>

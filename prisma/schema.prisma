@@ -11,11 +11,30 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
   // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
   // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+  // relationMode = "prisma"
 }
 
 model Example {
   id   String @id @default(uuid())
   name String
+}
+
+model Recoveries {
+  id        String   @id @default(uuid())
+  inCash    Int?
+  inCheque  Int?
+  inCredit  Int?
+  Billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
+
+  @@index([billingId])
+}
+
+model Ledger {
+  id        String    @id @default(uuid())
+  bills     Billing[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Distributors {
@@ -69,7 +88,11 @@ model Billing {
   deliveryDate        DateTime
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
+  Ledger              Ledger?        @relation(fields: [ledgerId], references: [id])
+  ledgerId            String?
+  recoveries          Recoveries[]
 
+  @@index([ledgerId])
   @@index([isReturned])
   @@index([bookerId])
   @@index([saleManeId])
