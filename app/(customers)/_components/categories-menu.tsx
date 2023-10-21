@@ -76,6 +76,7 @@ const CategoriesMenu: React.FC<{}> = memo(() => {
       const categories = await getCategories();
       setCategories(categories);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <DropdownMenu>

@@ -26,6 +26,7 @@ const FindByTransactionId: React.FC<{}> = memo(() => {
       };
       action();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionId]);
   return (
     <Input

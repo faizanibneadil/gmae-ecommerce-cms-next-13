@@ -1,16 +1,13 @@
-import { prisma } from "@/config/db";
-import { cache, memo, use } from "react";
+import { memo, use } from "react";
 import CreateAreaForm from "./_components/create-area-form";
+import { _getAreaById } from "@/queries";
 
-const getAreaById = cache(async (id: string) => {
-  const area = await prisma.areas.findUnique({ where: { id } });
-  return area;
-});
-
-const Page: React.FC<{
+interface Props {
   params: { id: string };
-}> = memo(({ params }) => {
-  const area = use(getAreaById(params?.id));
+}
+
+const Page: React.FC<Props> = memo(({ params }) => {
+  const area = use(_getAreaById(params?.id));
   return (
     <div className="max-w-4xl mx-auto">
       <CreateAreaForm areas={area} />

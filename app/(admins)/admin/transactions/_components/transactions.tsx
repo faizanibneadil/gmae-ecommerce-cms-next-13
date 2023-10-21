@@ -20,7 +20,11 @@ const Transactions: React.FC<{
   const deliveryDate = useTransaction((state) => state.deliveryDate);
   const issueDate = useTransaction((state) => state.issueDate);
   const shopId = useTransaction((state) => state.shopId);
-  useEffect(() => setTransactions(initialTransactions), []);
+  useEffect(
+    () => setTransactions(initialTransactions),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   useEffect(() => {
     if (
       transactionId.trim() === "" ||
@@ -33,6 +37,7 @@ const Transactions: React.FC<{
     ) {
       setTransactions(initialTransactions);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionId]);
   return (
     <div className="flex flex-col space-y-1">

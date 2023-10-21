@@ -26,12 +26,10 @@ import { Button } from "@/components/ui/button";
 import { createDistributionSchema } from "@/_schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PlusIcon } from "@/app/_components/icons";
 
 const CreateDistribution: React.FC<{}> = memo(() => {
-  const { data: session } = useSession();
   const { replace } = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -46,7 +44,7 @@ const CreateDistribution: React.FC<{}> = memo(() => {
   // submit action
   const onSubmit = (values: any) => {
     return startTransition(async () => {
-      await createDistribution({ values, session });
+      await createDistribution({ values });
       return replace(`/distribution/`);
     });
   };

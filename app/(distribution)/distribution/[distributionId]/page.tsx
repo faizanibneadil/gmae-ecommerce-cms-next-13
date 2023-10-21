@@ -4,42 +4,13 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { prisma } from "@/config/db";
-import { endOfDay, startOfDay } from "@/lib/utils";
-import { cache, memo, use } from "react";
-
-const getDistribution = cache(async (distributionId: string) => {
-  const distribution = await prisma.distributors.findUnique({
-    select: {
-      _count: {
-        select: {
-          areas: true,
-          bills: {
-            where: {
-              createdAt: {
-                gte: startOfDay(),
-                lte: endOfDay(),
-              },
-            },
-          },
-          companies: true,
-          products: true,
-          shops: true,
-          users: true,
-        },
-      },
-    },
-    where: {
-      id: distributionId,
-    },
-  });
-  return distribution;
-});
+import { _getDistributionInfo } from "@/queries";
+import { memo, use } from "react";
 
 const Page: React.FC<{
   params: { distributionId: string };
 }> = memo(({ params }) => {
-  const distribution = use(getDistribution(params.distributionId));
+  const distribution = use(_getDistributionInfo(params.distributionId));
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-1 gap-y-1">
       <Card>

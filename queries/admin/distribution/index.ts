@@ -1,13 +1,17 @@
 'use server'
 
+import { authOptions } from "@/config/authOptions"
 import { prisma } from "@/config/db"
 import { endOfDay, startOfDay } from "@/lib/utils"
+import { getServerSession } from "next-auth"
 import { unstable_cache } from "next/cache"
 
-export async function _getDistribution(userId: string) {
+export async function _getDistribution() {
+    const session = await getServerSession(authOptions)
+    if (!session) return []
     const distribution = await unstable_cache(
         async () => {
-            const data = await prisma.distributors.findMany({ where: { users: { some: { id: userId } } } })
+            const data = await prisma.distributors.findMany({ where: { users: { some: { id: session.user.id } } } })
             return data
         },
         ['distribution'],
@@ -37,7 +41,7 @@ export async function _getDistributionById(id: string) {
 export async function _getDistributionInfo(distributionId: string) {
     const distribution = await unstable_cache(
         async () => {
-            const data = await prisma.distributors.findMany({
+            const data = await prisma.distributors.findUnique({
                 select: {
                     _count: {
                         select: {

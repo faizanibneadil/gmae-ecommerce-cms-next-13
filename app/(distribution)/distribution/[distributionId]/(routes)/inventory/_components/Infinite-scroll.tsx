@@ -3,9 +3,9 @@
 import { memo, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Spin from "@/app/_components/loading-spinner";
-import { Card } from "@/components/ui/card";
 import InfiniteScrollCard from "./infinite-scroll-card";
 import { getInventory } from "../_actions";
+import { useParams } from "next/navigation";
 
 interface InitialInventoryTypes {
   title: string | null;
@@ -20,11 +20,10 @@ interface InitialInventoryTypes {
 }
 
 const InfiniteScroll: React.FC<{
-  initialInventory: InitialInventoryTypes[];
-  distributionId: string;
-}> = memo(({ initialInventory, distributionId }) => {
-  const [inventory, setInventory] =
-    useState<InitialInventoryTypes[]>(initialInventory);
+  initial: InitialInventoryTypes[];
+}> = memo(({ initial }) => {
+  const distributionId = useParams()?.distributionId as string;
+  const [inventory, setInventory] = useState<InitialInventoryTypes[]>(initial);
   const [end, setEnd] = useState(true);
   const [ref, inView] = useInView();
 

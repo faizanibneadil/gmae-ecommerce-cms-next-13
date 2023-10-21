@@ -118,6 +118,7 @@ const CreateBillForm: React.FC<{
         setShops(shops);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("areaId")]);
 
   useEffect(() => {
@@ -131,6 +132,7 @@ const CreateBillForm: React.FC<{
         form.setValue("products", productsWithQty);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("companyId")]);
 
   return (

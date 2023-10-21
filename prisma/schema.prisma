@@ -65,12 +65,12 @@ model BillingItems {
 model Billing {
   id                  String         @id @default(uuid())
   accessId            Int            @unique @default(autoincrement())
-  profitOfBill        Int?
-  totalAmount         Int? // total before cutting discount_amount
-  discountAmount      Int? // the total amout of discount calculated from each products discount if has
+  // profitOfBill        Int?
+  // totalAmount         Int? // total before cutting discount_amount
+  // discountAmount      Int? // the total amout of discount calculated from each products discount if has
   extraDiscountAmount Int? // extra_discount_amount time has OR has not
-  grossAmount         Int? // amount before cutting extra discount amount
-  netAmount           Int? // Payable Amount
+  // grossAmount         Int? // amount before cutting extra discount amount
+  // netAmount           Int? // Payable Amount
   booker              User?          @relation(name: "bookingBy", fields: [bookerId], references: [id])
   bookerId            String
   saleMane            User?          @relation(name: "deliverBy", fields: [saleManeId], references: [id])

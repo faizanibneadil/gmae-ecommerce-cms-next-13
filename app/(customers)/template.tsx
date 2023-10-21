@@ -44,6 +44,7 @@ const Template: React.FC<{
         window.removeEventListener("resize", handleResize);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return windowWidth <= 768 ? (

@@ -1,16 +1,11 @@
-import { cache, memo, use } from "react";
-import { prisma } from "@/config/db";
+import { memo, use } from "react";
 import InfiniteScroll from "./_components/Infinite-scroll";
+import { _getImages } from "@/queries";
 
-const getImages = cache(async () => {
-  const images = await prisma.images.findMany({ take: 24 });
-  return images;
-});
-
-const ImageGalleryPage: React.FC<{}> = memo(() => {
-  const images = use(getImages());
+const Page: React.FC<{}> = memo(() => {
+  const images = use(_getImages());
   return <InfiniteScroll initialImages={images} />;
 });
 
-ImageGalleryPage.displayName = "ImageGalleryPage";
-export default ImageGalleryPage;
+Page.displayName = "Page";
+export default Page;

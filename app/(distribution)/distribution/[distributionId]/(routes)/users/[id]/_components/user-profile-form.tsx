@@ -14,51 +14,18 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { $Enums } from "@prisma/client";
+import { User } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { updateUser } from "@/_actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "@/_schemas";
 import { useParams, useRouter } from "next/navigation";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import { CheckIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
 
-const UserProfileForm: React.FC<{
-  user:
-    | ({
-        distributors: {
-          id: string;
-        }[];
-      } & {
-        id: string;
-        name: string | null;
-        email: string | null;
-        emailVerified: Date | null;
-        image: string | null;
-        role: $Enums.Role | null;
-        cnic: string | null;
-        phone: string | null;
-      })
-    | null;
-  distributions: {
-    id: string;
-    name: string;
-  }[];
-}> = memo(({ user, distributions }) => {
+interface Props {
+  user: User | null;
+}
+
+const UserProfileForm: React.FC<Props> = memo(({ user }) => {
   const distributionId = useParams()?.distributionId as string;
   const { replace } = useRouter();
   const form = useForm({
@@ -89,16 +56,12 @@ const UserProfileForm: React.FC<{
         <FormField
           control={form.control}
           name="id"
-          render={({ field }) => (
-            <Input type="hidden" placeholder="Product Title" {...field} />
-          )}
+          render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField
           control={form.control}
           name="distributionId"
-          render={({ field }) => (
-            <Input type="hidden" placeholder="Product Title" {...field} />
-          )}
+          render={({ field }) => <Input type="hidden" {...field} />}
         />
         <FormField
           control={form.control}

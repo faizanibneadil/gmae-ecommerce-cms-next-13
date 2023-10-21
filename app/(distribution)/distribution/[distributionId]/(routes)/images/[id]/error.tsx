@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { XOctagon } from "lucide-react";
 import { useEffect } from "react";
 
 export default function Error({
@@ -14,6 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error(error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   return (

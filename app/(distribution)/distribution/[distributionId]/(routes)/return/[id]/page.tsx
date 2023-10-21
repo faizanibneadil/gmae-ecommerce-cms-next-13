@@ -14,7 +14,6 @@ const getBillByBillId = cache(async (id: string) => {
       },
       id: true,
       isReturned: true,
-      netAmount: true,
       area: { select: { name: true } },
       booker: { select: { name: true } },
       company: { select: { name: true } },

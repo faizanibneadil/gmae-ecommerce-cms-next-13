@@ -16,9 +16,8 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import useDSR from "@/store/use-dsr";
-import { $Enums } from "@prisma/client";
 import { Check } from "lucide-react";
-import { memo, useEffect, useTransition } from "react";
+import { memo } from "react";
 
 type TAreas = {
   id: string;

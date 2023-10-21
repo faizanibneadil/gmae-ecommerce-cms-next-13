@@ -41,6 +41,7 @@ const FindByShop: React.FC<{}> = memo(() => {
       };
       action();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shopId]);
   return (
     <Popover>

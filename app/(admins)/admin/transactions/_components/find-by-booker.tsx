@@ -48,6 +48,7 @@ const FindByBooker: React.FC<{
       };
       action();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookerId]);
   return (
     <Popover>

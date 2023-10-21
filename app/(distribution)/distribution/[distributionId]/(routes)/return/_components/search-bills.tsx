@@ -81,6 +81,7 @@ const SearchBills: React.FC<{
         }
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("areaId"), form.watch("saleManId")]);
   return (
     <div className="space-y-2">

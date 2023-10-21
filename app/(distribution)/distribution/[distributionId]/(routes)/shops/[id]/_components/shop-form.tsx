@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Spin from "@/app/_components/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { $Enums } from "@prisma/client";
+import { Areas, Shops } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createShopSchema } from "@/_schemas";
@@ -28,37 +28,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type TShop = {
-  id: string;
-  accessId: number | null;
-  name: string | null;
-  owner: string | null;
-  phone: string | null;
-  address: string | null;
-  popType: $Enums.PopType | null;
-  payType: $Enums.ShopPaymentType | null;
-};
-
 const CreateShopForm: React.FC<{
-  shop: {
-    Areas: {
-      id: string;
-    } | null;
-    id: string;
-    name: string | null;
-    owner: string | null;
-    phone: string | null;
-    address: string | null;
-    popType: $Enums.PopType | null;
-    payType: $Enums.ShopPaymentType | null;
-  } | null;
-  areas: {
-    shops: {
-      id: string;
-    }[];
-    id: string;
-    name: string | null;
-  }[];
+  shop: (Shops & { Areas: Areas | null }) | null;
+  areas: Areas[];
 }> = memo(({ shop, areas }) => {
   const distributionId = useParams()?.distributionId as string;
   const { replace } = useRouter();

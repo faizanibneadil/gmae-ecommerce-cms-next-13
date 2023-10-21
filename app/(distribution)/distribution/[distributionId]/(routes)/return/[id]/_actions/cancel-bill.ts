@@ -37,12 +37,12 @@ export async function cancelBill({ billId, distributorId }: SaveBillProps) {
                 where: { Bill: { id: billId } }
             })
 
-            const bill_total_amount = returnItems?.reduce((previous_total, incoming_item) => previous_total + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-            const grossAmount = returnItems?.reduce((previous_subtotal, incoming_item) => previous_subtotal + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-            const bill_discount = returnItems?.reduce((previous_discount, incoming_item) => previous_discount + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.regularPrice) - Number(incoming_item.products[0]?.salePrice))), 0)
-            const bill_net_amount = returnItems?.reduce((previous_netAmount, incoming_item) => previous_netAmount + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-            const bill_profit = returnItems?.reduce((previous_profit, incoming_item) => previous_profit + (Number(incoming_item.issueQuantity) * Number(incoming_item.products[0]?.profit)), 0)
-            const final_net_amount = Number(bill_net_amount) - Number(bill_discount)
+            // const bill_total_amount = returnItems?.reduce((previous_total, incoming_item) => previous_total + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
+            // const grossAmount = returnItems?.reduce((previous_subtotal, incoming_item) => previous_subtotal + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
+            // const bill_discount = returnItems?.reduce((previous_discount, incoming_item) => previous_discount + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.regularPrice) - Number(incoming_item.products[0]?.salePrice))), 0)
+            // const bill_net_amount = returnItems?.reduce((previous_netAmount, incoming_item) => previous_netAmount + (Number(incoming_item.issueQuantity) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
+            // const bill_profit = returnItems?.reduce((previous_profit, incoming_item) => previous_profit + (Number(incoming_item.issueQuantity) * Number(incoming_item.products[0]?.profit)), 0)
+            // const final_net_amount = Number(bill_net_amount) - Number(bill_discount)
 
             await tx.billing.update({
                 data: {
@@ -61,11 +61,11 @@ export async function cancelBill({ billId, distributorId }: SaveBillProps) {
                         }))
                     },
                     isReturned: false,
-                    totalAmount: Number(bill_total_amount) - Number(bill_discount),
-                    grossAmount: Number(grossAmount),
-                    discountAmount: Number(bill_discount),
-                    netAmount: Number(final_net_amount),
-                    profitOfBill: Number(bill_profit),
+                    // totalAmount: Number(bill_total_amount) - Number(bill_discount),
+                    // grossAmount: Number(grossAmount),
+                    // discountAmount: Number(bill_discount),
+                    // netAmount: Number(final_net_amount),
+                    // profitOfBill: Number(bill_profit),
                     extraDiscountAmount: { set: 0 }
                 }, where: { id: billId }
             })

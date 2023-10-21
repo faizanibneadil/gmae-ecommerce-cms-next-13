@@ -46,7 +46,7 @@ const Menu: React.FC<{}> = memo(() => {
   return (
     <Menubar className="flex items-center justify-between border-b border-none rounded-none ">
       <MenubarMenu>
-        <MenubarTrigger className="font-bold">easypease</MenubarTrigger>
+        <MenubarTrigger className="font-bold">easypeasy</MenubarTrigger>
         <MenubarContent className="relative">
           <Link href={`/distribution`}>
             <MenubarItem>

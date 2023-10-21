@@ -47,9 +47,6 @@ const BillingProducts: React.FC<{
       distributionId: useParams()?.distributionId as string,
       items: products,
       extraDiscount: "",
-      creditAmount: "",
-      chequeAmount: "",
-      cashAmount: "",
     },
   });
 
@@ -98,84 +95,25 @@ const BillingProducts: React.FC<{
           </CommandList>
         </Command>
 
-        <div className="grid content-center grid-cols-1 gap-x-1 gap-y-1 md:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="extraDiscount"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Extra Discount Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isReturned}
-                    onChange={field.onChange}
-                    value={field.value}
-                    placeholder="Extra Discount amount."
-                  />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="cashAmount"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Cash Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    onChange={field.onChange}
-                    value={field.value}
-                    placeholder="in Cash amount."
-                  />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="creditAmount"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Credit Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    onChange={field.onChange}
-                    value={field.value}
-                    placeholder="in Credit amount."
-                  />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="chequeAmount"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Cheque Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    onChange={field.onChange}
-                    value={field.value}
-                    placeholder="in Cheque amount."
-                  />
-                </FormControl>
-                {/* <FormDescription></FormDescription> */}
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="extraDiscount"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Extra Discount Amount</FormLabel>
+              <FormControl>
+                <Input
+                  disabled={isReturned}
+                  onChange={field.onChange}
+                  value={field.value}
+                  placeholder="Extra Discount amount."
+                />
+              </FormControl>
+              {/* <FormDescription></FormDescription> */}
+              <FormMessage className="text-xs" />
+            </FormItem>
+          )}
+        />
 
         {isReturned ? (
           <CancelBill />

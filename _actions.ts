@@ -5,7 +5,8 @@ import { createAddressSchema, createAreaSchema, createAttributesSchema, createBr
 import { redirect } from "next/navigation";
 import { calculatePercentage, calculateProfit } from "./lib/utils";
 import { z } from "zod";
-import { Session } from "next-auth";
+import { Session, getServerSession } from "next-auth";
+import { authOptions } from "./config/authOptions";
 
 export async function createCategoryAction(form: any) {
     const res = createCategorySchema.parse(form)
@@ -23,7 +24,9 @@ export async function createCategoryAction(form: any) {
     }
 }
 
-export async function createDistribution({ values, session }: { values: typeof createDistributionSchema, session: Session | null }) {
+export async function createDistribution({ values }: { values: typeof createDistributionSchema }) {
+    const session = await getServerSession(authOptions)
+    if (!session) return
     const form = createDistributionSchema.safeParse(values)
     if (form.success) {
         try {

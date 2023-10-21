@@ -49,6 +49,7 @@ const FindBySaleMan: React.FC<{
       };
       action();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saleManId]);
   return (
     <Popover>

@@ -3,7 +3,6 @@
 import { memo, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Spin from "@/app/_components/loading-spinner";
-import { Card } from "@/components/ui/card";
 import InfiniteScrollCard from "./infinite-scroll-card";
 import { getImages } from "../_actions";
 

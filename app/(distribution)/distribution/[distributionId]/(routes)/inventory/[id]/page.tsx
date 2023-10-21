@@ -1,34 +1,14 @@
-import { prisma } from "@/config/db";
-import { use, cache } from "react";
+import { use } from "react";
 import PropertiesForm from "./_components/properties-form";
+import { _getInventoryById } from "@/queries";
 
-const getProperties = cache(async (id: string) => {
-  const properties = await prisma.products.findUnique({
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      description: true,
-      regularPrice: true,
-      salePrice: true,
-      purchasePrice: true,
-      purchaseLimit: true,
-      stock: true,
-      isFeatured: true,
-      isPublished: true,
-      isReviewEnable: true,
-      isTrackStock: true,
-    },
-    where: { id },
-  });
-  return properties;
-});
-
-const Page: React.FC<{
+interface Props {
   params: { id: string };
   searchParams: { [key: string]: string };
-}> = ({ params, searchParams }) => {
-  const properties = use(getProperties(params.id));
+}
+
+const Page: React.FC<Props> = ({ params, searchParams }) => {
+  const properties = use(_getInventoryById(params.id));
   return <PropertiesForm properties={properties} />;
 };
 

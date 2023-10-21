@@ -38,6 +38,7 @@ const LoadSheetForm: React.FC<{
       };
       action();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saleManId, areaId]);
   return (
     <div className="space-y-2">
