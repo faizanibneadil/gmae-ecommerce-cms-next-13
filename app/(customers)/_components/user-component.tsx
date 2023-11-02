@@ -81,7 +81,7 @@ const UserComponent: React.FC<{
               Default
             </Button>
           </div>
-          {session && session.user.role === "ADMIN" && (
+          {session && (
             <Button
               onClick={() => replace("/distribution")}
               variant="default"
