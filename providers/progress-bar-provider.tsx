@@ -11,7 +11,7 @@ const ProgressBarProvider: React.FC<{
       {children}
       <ProgressBar
         height="4px"
-        color="#000000"
+        color="#FF0000"
         options={{ showSpinner: false }}
         shallowRouting
       />

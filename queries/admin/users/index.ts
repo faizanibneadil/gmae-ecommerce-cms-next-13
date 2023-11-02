@@ -1,4 +1,5 @@
 'use server'
+import "server-only"
 
 import { prisma } from "@/config/db"
 import { unstable_cache } from "next/cache"
@@ -6,12 +7,12 @@ import { unstable_cache } from "next/cache"
 export async function _getUsers(distributionId: string) {
     const users = await unstable_cache(
         async () => {
-            const data = await prisma.user.findMany({ where: { distributors: { some: { id: distributionId } } } });
+            const data = await prisma.user.findMany({ where: { distributors: { some: { id: distributionId } } }, orderBy: { createdAt: "desc" } });
             return data
         },
-        ['users', distributionId],
+        ["_getUsers"],
         {
-            tags: ['users', distributionId],
+            tags: ["_getUsers"],
             revalidate: 10,
         }
     )()

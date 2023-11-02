@@ -5,12 +5,14 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import AuthSessionProvider from "@/providers/authSessionProvider";
 import ProgressBarProvider from "@/providers/progress-bar-provider";
 import { Toaster } from "sonner";
+import ReactQueryProvider from "@/providers/react-query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Home - gmae Mobile Accessories Enterprise",
-  description: "Buy mobie Accessories here.",
+  title: "easypeasy",
+  description:
+    "easypeasy is a sales and distribution management system and also you can manage your ecommerce store.",
   manifest: "./manifest.json",
   icons: { apple: "./logo.png" },
   metadataBase: new URL(process.env.BASE_URL as string),
@@ -22,11 +24,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+    <html lang="en">
+      <body
+        className={`${inter.className} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthSessionProvider>
-            <ProgressBarProvider>{children}</ProgressBarProvider>
+            <ProgressBarProvider>
+              <ReactQueryProvider>{children}</ReactQueryProvider>
+            </ProgressBarProvider>
           </AuthSessionProvider>
           <Toaster
             position="bottom-right"

@@ -26,13 +26,10 @@ interface SaveBillProps {
 }
 
 export async function saveBill(props: SaveBillProps) {
-    // const bill_total_amount = props?.items?.reduce((previous_total, incoming_item) => previous_total + ((incoming_item.issueQuantity - Number(incoming_item.return_quantity)) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-    // const grossAmount = props?.items?.reduce((previous_subtotal, incoming_item) => previous_subtotal + ((incoming_item.issueQuantity - Number(incoming_item.return_quantity)) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-    // const bill_discount = props?.items?.reduce((previous_discount, incoming_item) => previous_discount + ((incoming_item.issueQuantity - Number(incoming_item.return_quantity)) * (Number(incoming_item.products[0]?.regularPrice) - Number(incoming_item.products[0]?.salePrice))), 0)
-    // const bill_net_amount = props?.items?.reduce((previous_netAmount, incoming_item) => previous_netAmount + ((incoming_item.issueQuantity - Number(incoming_item.return_quantity)) * (Number(incoming_item.products[0]?.salePrice) ?? Number(incoming_item.products[0]?.regularPrice))), 0)
-    // const bill_profit = props?.items?.reduce((previous_profit, incoming_item) => previous_profit + ((incoming_item.issueQuantity - Number(incoming_item.return_quantity)) * Number(incoming_item.products[0]?.profit)), 0)
-    // const final_net_amount = Number(bill_net_amount) - Number(bill_discount) - Number(props?.extraDiscount)
-
+    const session = await getServerSession(authOptions)
+    if (!session) {
+        throw new Error("Authorization required.")
+    }
     try {
         await prisma.billing.update({
             data: {
@@ -40,7 +37,6 @@ export async function saveBill(props: SaveBillProps) {
                     update: props?.items?.map((item) => ({
                         data: {
                             returnQuantity: Number(item.return_quantity),
-                            // issueQuantity: { decrement: Number(item.return_quantity) },
                             products: {
                                 update: item.products.map((product) => ({
                                     data: { stock: { increment: Number(item.return_quantity) } },
@@ -54,11 +50,6 @@ export async function saveBill(props: SaveBillProps) {
                 distributor: { connect: { id: props.distributionId } },
                 isReturned: true,
                 extraDiscountAmount: Number(props?.extraDiscount),
-                // totalAmount: Number(bill_total_amount) - Number(bill_discount),
-                // grossAmount: Number(grossAmount),
-                // discountAmount: Number(bill_discount),
-                // netAmount: Number(final_net_amount),
-                // profitOfBill: Number(bill_profit),
             },
             where: { id: props.billId }
         })

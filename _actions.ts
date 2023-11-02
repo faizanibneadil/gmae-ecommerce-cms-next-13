@@ -129,114 +129,6 @@ export async function connectImageToProductAction({ imageId, productId }: { imag
     }
 }
 
-export async function connectVariantAction({ variantId, productId }: { variantId: string, productId?: string }) {
-    try {
-        await prisma.products.update({
-            data: {
-                variants: {
-                    connect: {
-                        id: variantId
-                    }
-                }
-            },
-            where: {
-                id: productId
-            }
-        })
-        revalidateTag("admin-product-variants")
-        console.log("Successfully connected variant 👍")
-    } catch (e) {
-        console.log("Something went wrong when connecting image to production 👎")
-        console.log(e)
-    }
-}
-
-export async function disconnectVariantAction({ variantId, productId }: { variantId: string, productId?: string }) {
-    try {
-        await prisma.products.update({
-            data: {
-                variants: {
-                    disconnect: {
-                        id: variantId
-                    }
-                }
-            },
-            where: {
-                id: productId
-            }
-        })
-        revalidateTag("admin-product-variants")
-        console.log("Successfully connected variant 👍")
-    } catch (e) {
-        console.log("Something went wrong when connecting image to production 👎")
-        console.log(e)
-    }
-}
-
-export async function connectImageToCategoryAction({ imageId, categoryId }: { imageId: string, categoryId: string }) {
-    try {
-        await prisma.images.update({
-            data: {
-                Categories: {
-                    connect: {
-                        id: categoryId
-                    }
-                }
-            },
-            where: {
-                id: imageId
-            }
-        })
-        revalidatePath("/admin/categories")
-        console.log("Successfully connected image with product 👍")
-    } catch (e) {
-        console.log("Something went wrong when connecting image to production 👎")
-        console.log(e)
-    }
-}
-
-export async function disconnectImageToProductAction({ imageId, productId }: { imageId: string, productId: string }) {
-    try {
-        await prisma.images.update({
-            data: {
-                Products: {
-                    disconnect: {
-                        id: productId
-                    }
-                }
-            },
-            where: {
-                id: imageId
-            }
-        })
-        revalidatePath(`admin/inventory/${productId}`)
-        console.log("Successfully connected category with product 👍")
-    } catch (e) {
-        console.log("Something went wrong when connecting image to production 👎")
-        console.log(e)
-    }
-}
-
-export async function connectCategories({ categoriesIds, productId }: { categoriesIds: string[], productId: string }) {
-    try {
-        await prisma.products.update({
-            data: {
-                Categories: {
-                    set: categoriesIds?.map(p => ({ id: p }))
-                }
-            },
-            where: {
-                id: productId
-            }
-        })
-        revalidatePath(`/admin/inventory/${productId}/categories`)
-        console.log("Successfully updated product categories 👍")
-    } catch (e) {
-        console.log("Something went wrong when connecting image to production 👎")
-        console.log(e)
-    }
-}
-
 export async function connectSubCategories({ categoriesIds, categoryId }: { categoriesIds: string[], categoryId: string }) {
     try {
         await prisma.categories.update({
@@ -275,23 +167,6 @@ export async function connectShopsWithArea({ shopIds, areaId }: { shopIds: strin
         console.log("Successfully updated Shop 👍")
     } catch (e) {
         console.log("Something went wrong when connecting Shops wih single area. 👎")
-        console.log(e)
-    }
-}
-
-export async function createAttributesAction(form: typeof createAttributesSchema) {
-    const { productId, ...values } = createAttributesSchema.parse(form)
-    try {
-        await prisma.attributes.create({
-            data: {
-                ...values,
-                product: { connect: { id: productId } }
-
-            }
-        })
-        revalidatePath(`/admin/inventory/${productId}/attributes`)
-    } catch (e) {
-        console.log("Something went wrong when Updating with this error 👎")
         console.log(e)
     }
 }
@@ -585,24 +460,6 @@ export async function updateUser(form: typeof createUserSchema) {
         console.log("User Profile has been updated successfully. 👍")
     } catch (error) {
         console.log("Something Went Wrong when updating user's info 👎")
-        console.log(error)
-    }
-}
-
-export async function updateProductCompany(values: any) {
-    try {
-        await prisma.products.update({
-            data: {
-                Companies: { connect: { id: values.id } }
-            },
-            where: {
-                id: values.productId
-            }
-        })
-        revalidatePath(`/admin/inventory/${values.productId}/companies`)
-        console.log("product company updated successfully. 👍")
-    } catch (error) {
-        console.log("Something Went Wrong when updating product company. 👎")
         console.log(error)
     }
 }

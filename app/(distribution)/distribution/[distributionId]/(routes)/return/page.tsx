@@ -1,30 +1,14 @@
-import { prisma } from "@/config/db";
-import { cache, memo, use } from "react";
+import { memo, use } from "react";
 import SearchBills from "./_components/search-bills";
+import { _getAreas, _getSalesMen } from "@/queries";
 
-const getSaleMen = cache(async (distributionId: string) => {
-  const saleMan = await prisma.user.findMany({
-    select: { id: true, role: true, name: true },
-    where: {
-      role: { in: ["SALES_MAN"] },
-      distributors: { some: { id: distributionId } },
-    },
-  });
-  return saleMan;
-});
-
-const getAreas = cache(async (distributionId: string) => {
-  const areas = await prisma.areas.findMany({
-    where: { distributors: { some: { id: distributionId } } },
-  });
-  return areas;
-});
-
-const Page: React.FC<{
+interface Props {
   params: { distributionId: string };
-}> = memo(({ params }) => {
-  const saleMan = use(getSaleMen(params.distributionId));
-  const areas = use(getAreas(params.distributionId));
+}
+
+const Page: React.FC<Props> = memo(({ params }) => {
+  const saleMan = use(_getSalesMen(params.distributionId));
+  const areas = use(_getAreas(params.distributionId));
   return <SearchBills saleMan={saleMan} areas={areas} />;
 });
 

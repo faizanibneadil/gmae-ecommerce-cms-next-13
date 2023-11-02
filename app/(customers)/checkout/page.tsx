@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/authOptions";
-import { cache, memo, use } from "react";
+import { Suspense, cache, memo, use } from "react";
 import { prisma } from "@/config/db";
 import CartItems from "./_components/cart-items";
 import CartSummary from "./_components/cart-summary";
@@ -19,12 +19,14 @@ const Page: React.FC<{}> = memo(() => {
   const session = use(getServerSession(authOptions));
   const address = use(getAddress(session?.user.id));
   return (
-    <div className="flex flex-col max-w-4xl mx-auto space-y-2">
-      <CartItems checkout={false} />
-      <CartSummary />
-      <CartAddress address={address} />
-      <PlaceOrder session={session} />
-    </div>
+    <Suspense fallback={<div>Loading ...</div>}>
+      <div className="flex flex-col max-w-4xl mx-auto space-y-2">
+        <CartItems checkout={false} />
+        <CartSummary />
+        <CartAddress address={address} />
+        <PlaceOrder session={session} />
+      </div>
+    </Suspense>
   );
 });
 

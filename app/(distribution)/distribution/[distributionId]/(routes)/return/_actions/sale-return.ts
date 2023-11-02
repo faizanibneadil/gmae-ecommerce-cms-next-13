@@ -48,5 +48,6 @@ export async function updateBill(props: SaleReturnProps) {
     } catch (error) {
         console.log("Something Wnt Wrong When fetching Bill by areaId and Sale Man Id. 👎")
         console.log(error)
+        throw new Error("Something Went Wrong When Returning Bill. 👎")
     }
 }

@@ -1,4 +1,5 @@
 'use server'
+import "server-only"
 
 import { prisma } from "@/config/db"
 import { unstable_cache } from "next/cache"
@@ -25,9 +26,9 @@ export async function _getInventory(distributionId: string) {
             })
             return data
         },
-        ['inventory', distributionId],
+        ['_getInventory'],
         {
-            tags: ['inventory', distributionId],
+            tags: ['_getInventory'],
             revalidate: 10,
         }
     )()

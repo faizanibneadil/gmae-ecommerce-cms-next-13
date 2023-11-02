@@ -39,7 +39,7 @@ const InfiniteScroll: React.FC<{
 
   return (
     <div className="">
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-8">
         {images?.map((p) => (
           <InfiniteScrollCard key={p.id} item={p} />
         ))}

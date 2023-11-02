@@ -1,49 +1,15 @@
 import { Badge } from "@/components/ui/badge";
-import { prisma } from "@/config/db";
-import { cache, memo, use } from "react";
+import { memo, use } from "react";
 import BillingProducts from "./_components/billing-products";
 import { Button } from "@/components/ui/button";
+import { _getBillByBillId } from "@/queries";
 
-const getBillByBillId = cache(async (id: string) => {
-  const bill = await prisma.billing.findUnique({
-    select: {
-      _count: {
-        select: {
-          items: true,
-        },
-      },
-      id: true,
-      isReturned: true,
-      area: { select: { name: true } },
-      booker: { select: { name: true } },
-      company: { select: { name: true } },
-      saleMane: { select: { name: true } },
-      shop: { select: { name: true } },
-      items: {
-        select: {
-          id: true,
-          products: {
-            select: {
-              id: true,
-              title: true,
-              salePrice: true,
-              regularPrice: true,
-              profit: true,
-            },
-          },
-          issueQuantity: true,
-        },
-      },
-    },
-    where: { id },
-  });
-  return bill;
-});
-
-const Page: React.FC<{
+interface Props {
   params: { id: string };
-}> = memo(({ params }) => {
-  const bill = use(getBillByBillId(params.id));
+}
+
+const Page: React.FC<Props> = memo(({ params }) => {
+  const bill = use(_getBillByBillId(params.id));
   return (
     <div className="space-y-1">
       <div className="grid content-center grid-cols-1 gap-x-1 gap-y-1 md:grid-cols-2">

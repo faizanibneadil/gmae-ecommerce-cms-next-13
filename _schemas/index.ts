@@ -1,5 +1,11 @@
 import z from "zod"
 
+export const initialImageCreateSchema = z.object({
+    src: z.string().nonempty("Image Source can not be empty."),
+    searchText: z.string().nonempty("Image search text can not be empty."),
+    altText: z.string().optional(),
+});
+
 export const createCategorySchema = z.object({
     id: z.string(),
     name: z.string().trim().min(1, "Minimum 1 correctors are required.").max(40, "Maximum 40 correctors are allowed."),
@@ -163,3 +169,9 @@ export const updateBillReturn = z.object({
     }).array().min(1, "Minimum 1 Product should be return.")
 })
 
+
+
+export const connectBillToLedgerSchema = z.object({
+    billId: z.coerce.number().nonnegative("Negative numbers are not allowed."),
+    distributionId: z.string({ required_error: "distributionId is required." }),
+})

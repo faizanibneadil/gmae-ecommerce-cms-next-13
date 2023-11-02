@@ -15,41 +15,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowLeftRight,
-  BarChart,
-  ChevronsUpDown,
-  Cloud,
-  CreditCard,
-  Factory,
-  Gauge,
-  Github,
-  ImageIcon,
-  ImagePlus,
-  Keyboard,
-  LifeBuoy,
-  ListChecks,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Package,
-  PackagePlus,
-  Palette,
-  Plus,
-  PlusCircle,
-  PlusIcon,
-  Settings,
-  Store,
-  Target,
-  Truck,
-  User,
-  UserPlus,
-  Users,
-  Users2,
-} from "lucide-react";
-import { getCategories } from "../_actions/getCategories";
 import Spin from "@/app/_components/loading-spinner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { _getCategoryDesktop } from "@/queries";
 
 type TCategories = {
   images: {
@@ -73,7 +41,7 @@ const CategoriesMenu: React.FC<{}> = memo(() => {
   const [pending, startTransition] = useTransition();
   useEffect(() => {
     return startTransition(async () => {
-      const categories = await getCategories();
+      const categories = await _getCategoryDesktop();
       setCategories(categories);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

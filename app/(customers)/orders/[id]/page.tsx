@@ -1,7 +1,7 @@
 import { prisma } from "@/config/db";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { cache, memo, use } from "react";
+import { Suspense, cache, memo, use } from "react";
 import ReOrderButton from "./_components/re-order-button";
 import CancelOrderButton from "./_components/cancel-order-button";
 import OrderStatus from "./_components/order-status";
@@ -93,12 +93,14 @@ const Page: React.FC<{
   const isOnHold = order?.status.name === "ON_HOLD";
   const isCancelOrder = isPending || isProcessing || isOnHold;
   return order ? (
-    <div className="flex flex-col items-center justify-center mt-4">
-      <OrderStatus status={order.status} statusWillChange={isCancelOrder} />
-      <OrderSummery discount={order.discount} total={order.total} />
-      <OrderItems items={order.orderItems} />
-      {isReOrder ? <ReOrderButton /> : <CancelOrderButton />}
-    </div>
+    <Suspense fallback={<div>Loading ...</div>}>
+      <div className="flex flex-col items-center justify-center mt-4">
+        <OrderStatus status={order.status} statusWillChange={isCancelOrder} />
+        <OrderSummery discount={order.discount} total={order.total} />
+        <OrderItems items={order.orderItems} />
+        {isReOrder ? <ReOrderButton /> : <CancelOrderButton />}
+      </div>
+    </Suspense>
   ) : (
     notFound()
   );

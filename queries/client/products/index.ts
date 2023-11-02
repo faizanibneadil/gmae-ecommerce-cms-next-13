@@ -1,4 +1,5 @@
 'use server'
+import "server-only"
 
 import { prisma } from "@/config/db"
 import { unstable_cache } from "next/cache"

@@ -2,18 +2,8 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Search, ShoppingCart } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { memo, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Search } from "lucide-react";
+import { memo, useLayoutEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import CategoriesMenu from "./_components/categories-menu";
@@ -30,7 +20,7 @@ const Template: React.FC<{
     typeof window !== "undefined" ? window.innerWidth : 0
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

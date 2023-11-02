@@ -6,15 +6,23 @@ import {
   CornerDownRight,
   Edit,
   Eye,
+  Factory,
   Globe,
+  Image as LucideImage,
   Info,
   Layout,
+  List,
+  ListChecks,
   Loader,
   LucideProps,
   MapPin,
   Minus,
+  MoreVertical,
   MoveLeft,
+  PackagePlus,
+  PackageSearch,
   Pencil,
+  PieChart,
   Plug,
   Plus,
   RefreshCw,
@@ -49,6 +57,14 @@ export const StarIcon = (props: LucideProps) => <Star {...props} />;
 export const AddressIcon = (props: LucideProps) => <MapPin {...props} />;
 export const TruckIcon = (props: LucideProps) => <Truck {...props} />;
 export const InfoIcon = (props: LucideProps) => <Info {...props} />;
+export const SeoIcon = (props: LucideProps) => <PackageSearch {...props} />;
+export const FactoryIcon = (props: LucideProps) => <Factory {...props} />;
+export const CategoriesIcon = (props: LucideProps) => <ListChecks {...props} />;
+export const VariantsIcon = (props: LucideProps) => <PackagePlus {...props} />;
+export const AttributesIcon = (props: LucideProps) => <List {...props} />;
+export const OptionsY = (props: LucideProps) => <MoreVertical {...props} />;
+export const InventoryReports = (props: LucideProps) => <PieChart {...props} />;
+export const ImageIcon = (props: LucideProps) => <LucideImage {...props} />;
 export const NoIcon = () => null;
 export const Spin = (props: LucideProps) => (
   <Loader className="w-4 h-4 animate-spin`" />

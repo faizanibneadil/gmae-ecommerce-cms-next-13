@@ -2,6 +2,7 @@
 import {
   ArrowLeft,
   ArrowLeftRight,
+  BookOpen,
   Building,
   Factory,
   Gauge,
@@ -11,9 +12,9 @@ import {
   ListChecks,
   LogOut,
   Map,
-  MapIcon,
   MenuIcon,
   Package,
+  Paperclip,
   Sheet,
   Store,
   Truck,
@@ -46,7 +47,10 @@ const Menu: React.FC<{}> = memo(() => {
   return (
     <Menubar className="flex items-center justify-between border-b border-none rounded-none ">
       <MenubarMenu>
-        <MenubarTrigger className="font-bold">easypeasy</MenubarTrigger>
+        <MenubarTrigger className="font-bold">
+          <MenuIcon className="w-4 h-4 mr-2 md:hidden" />
+          <span>easypeasy</span>
+        </MenubarTrigger>
         <MenubarContent className="relative">
           <Link href={`/distribution`}>
             <MenubarItem>
@@ -181,11 +185,21 @@ const Menu: React.FC<{}> = memo(() => {
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/ledger`}>
-            <MenubarTrigger className="relative hidden md:block">
-              Ledger
-            </MenubarTrigger>
-          </Link>
+          <MenubarTrigger className="relative hidden md:block">
+            Ledger
+          </MenubarTrigger>
+          <MenubarContent>
+            <Link href={`/distribution/${distributionId}/ledger`}>
+              <MenubarItem>
+                <BookOpen className="w-4 h-4 mr-2" /> Open Ledger
+              </MenubarItem>
+            </Link>
+            <Link href={`/distribution/${distributionId}/ledger/invoice`}>
+              <MenubarItem>
+                <BookOpen className="w-4 h-4 mr-2" /> Open Invoice
+              </MenubarItem>
+            </Link>
+          </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
           <MenubarTrigger className="relative hidden md:block">
@@ -220,11 +234,11 @@ const Menu: React.FC<{}> = memo(() => {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger className="">
+          <MenubarTrigger className="pl-1.5 pr-1.5">
             <Globe className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent forceMount>
-            <Link href={`/distribution/${distributionId}/me`}>
+            <Link href={`/distribution/${distributionId}/orders`}>
               <MenubarItem>
                 <Truck className="w-4 h-4 mr-2" /> Orders
               </MenubarItem>
@@ -235,7 +249,7 @@ const Menu: React.FC<{}> = memo(() => {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger className="">
+          <MenubarTrigger className="pl-1.5 pr-1.5">
             <UserIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent forceMount>

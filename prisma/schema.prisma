@@ -31,10 +31,11 @@ model Recoveries {
 }
 
 model Ledger {
-  id        String    @id @default(uuid())
-  bills     Billing[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id           String         @id @default(uuid())
+  bills        Billing[]
+  distributors Distributors[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model Distributors {
@@ -46,6 +47,8 @@ model Distributors {
   areas     Areas[]
   shops     Shops[]
   companies Companies[]
+  Ledger    Ledger?     @relation(fields: [ledgerId], references: [id])
+  ledgerId  String?
 }
 
 model BillingItems {
@@ -65,12 +68,7 @@ model BillingItems {
 model Billing {
   id                  String         @id @default(uuid())
   accessId            Int            @unique @default(autoincrement())
-  // profitOfBill        Int?
-  // totalAmount         Int? // total before cutting discount_amount
-  // discountAmount      Int? // the total amout of discount calculated from each products discount if has
-  extraDiscountAmount Int? // extra_discount_amount time has OR has not
-  // grossAmount         Int? // amount before cutting extra discount amount
-  // netAmount           Int? // Payable Amount
+  extraDiscountAmount Int?
   booker              User?          @relation(name: "bookingBy", fields: [bookerId], references: [id])
   bookerId            String
   saleMane            User?          @relation(name: "deliverBy", fields: [saleManeId], references: [id])
@@ -374,4 +372,7 @@ model User {
   bookingBy     Billing[]       @relation(name: "bookingBy")
   deliverBy     Billing[]       @relation(name: "deliverBy")
   distributors  Distributors[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

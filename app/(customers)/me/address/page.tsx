@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/config/db";
 import { notFound } from "next/navigation";
-import { cache, memo, use } from "react";
+import { Suspense, cache, memo, use } from "react";
 import EditAddress from "./_components/edit-address-button";
 import AddNewAddress from "./_components/Init-address";
 import { AddressIcon } from "@/app/_components/icons";
@@ -41,18 +41,20 @@ Addresses.displayName = "Addresses";
 
 const Address: React.FC<{ address: TAddress[number] }> = memo(({ address }) => {
   return (
-    <div className="flex flex-row items-center justify-between p-4 border rounded-lg">
-      <div className="flex flex-row items-center space-x-2">
-        <AddressIcon />
-        <div className="flex flex-col space-y-1">
-          <h2 className="text-base">{address.streetAddress1}</h2>
-          <div className="flex flex-row space-x-2">
-            <Badge>{address.label}</Badge>
+    <Suspense fallback={<div>Loading ...</div>}>
+      <div className="flex flex-row items-center justify-between p-4 border rounded-lg">
+        <div className="flex flex-row items-center space-x-2">
+          <AddressIcon />
+          <div className="flex flex-col space-y-1">
+            <h2 className="text-base">{address.streetAddress1}</h2>
+            <div className="flex flex-row space-x-2">
+              <Badge>{address.label}</Badge>
+            </div>
           </div>
         </div>
+        <EditAddress id={address.id} />
       </div>
-      <EditAddress id={address.id} />
-    </div>
+    </Suspense>
   );
 });
 Address.displayName = "Address";

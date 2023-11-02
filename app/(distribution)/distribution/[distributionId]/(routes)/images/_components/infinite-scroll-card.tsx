@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/context-menu";
 import Link from "next/link";
 import { PencilIcon } from "@/app/_components/icons";
-import { Package } from "lucide-react";
+import { Package, Trash } from "lucide-react";
 import { useParams } from "next/navigation";
 
 interface Image {
@@ -57,6 +57,9 @@ const InfiniteScrollCard: React.FC<{
             <PencilIcon className="w-4 h-4 mr-2" /> Categories
           </ContextMenuItem>
         </Link>
+        <ContextMenuItem className="text-red-600">
+          <Trash className="w-4 h-4 mr-2 " /> Delete
+        </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );

@@ -1,4 +1,5 @@
 'use server'
+import "server-only"
 
 import { authOptions } from "@/config/authOptions"
 import { prisma } from "@/config/db"

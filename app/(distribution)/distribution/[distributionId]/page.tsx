@@ -5,12 +5,13 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { _getDistributionInfo } from "@/queries";
-import { memo, use } from "react";
 
-const Page: React.FC<{
+interface Props {
   params: { distributionId: string };
-}> = memo(({ params }) => {
-  const distribution = use(_getDistributionInfo(params.distributionId));
+}
+
+const Page: React.FC<Props> = async ({ params }) => {
+  const distribution = await _getDistributionInfo(params.distributionId);
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-1 gap-y-1">
       <Card>
@@ -57,6 +58,5 @@ const Page: React.FC<{
       </Card>
     </div>
   );
-});
-Page.displayName = "Page";
+};
 export default Page;

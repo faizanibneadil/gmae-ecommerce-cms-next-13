@@ -1,4 +1,5 @@
 'use server'
+import "server-only"
 
 import { prisma } from "@/config/db"
 import { unstable_cache } from "next/cache"
@@ -16,6 +17,77 @@ export async function _getCategories() {
         }
     )()
     return categories
+}
+
+export async function _getCategoriesProducts() {
+    const categoriesProducts = await unstable_cache(
+        async () => {
+            const data = await prisma.categories.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    Products: {
+                        select: {
+                            id: true,
+                            title: true,
+                            slug: true,
+                            regularPrice: true,
+                            salePrice: true,
+                            discountInPercentage: true,
+                            images: { select: { src: true }, take: 1 },
+                        },
+                    },
+                    images: { select: { src: true } },
+                },
+                where: {
+                    Products: { some: { isFeatured: true, isPublished: true } },
+                    isPublished: true,
+                    displayOnLandingPage: true,
+                },
+                take: 8,
+                orderBy: { order: "asc" },
+            })
+            return data
+        },
+        ['_getCategoriesProducts'],
+        {
+            tags: ['_getCategoriesProducts'],
+            revalidate: 60 * 30,
+        }
+    )()
+    return categoriesProducts
+}
+
+export async function _getCategoryDesktop() {
+    const categoryDesktop = await unstable_cache(
+        async () => {
+            const data = await prisma.categories.findMany({
+                select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    images: { select: { src: true } },
+                    subCategories: { select: { name: true, id: true, slug: true, images: { select: { src: true } } } }
+                },
+                where: {
+                    subCategories: { some: { id: {} } },
+                    Products: { some: { isFeatured: true, isPublished: true } },
+                    isPublished: true,
+                    displayOnLandingPage: true,
+                },
+                take: 8,
+                orderBy: { order: "asc" },
+            })
+            return data
+        },
+        ['_getCategoryDesktop'],
+        {
+            tags: ['_getCategoryDesktop'],
+            revalidate: 60 * 30,
+        }
+    )()
+    return categoryDesktop
 }
 
 export async function _getCategoryById(id: string) {

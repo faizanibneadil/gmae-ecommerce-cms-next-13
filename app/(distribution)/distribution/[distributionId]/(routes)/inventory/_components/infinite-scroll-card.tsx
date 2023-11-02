@@ -1,5 +1,4 @@
 import { memo } from "react";
-import MoreOptions from "./more-options";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import {
@@ -12,7 +11,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { EditIcon, PencilIcon, PlusIcon } from "@/app/_components/icons";
+import { PencilIcon } from "@/app/_components/icons";
 import Link from "next/link";
 
 interface InfiniteScrollCardTypes {
@@ -74,7 +73,7 @@ const InfiniteScrollCard: React.FC<{
             <PencilIcon className="w-4 h-4 mr-2" /> Attributes
           </ContextMenuItem>
         </Link>
-        <Link href={`/distribution/${distributionId}/inventory/${item.id}`}>
+        <Link href={`/distribution/${distributionId}/inventory/${item.id}/`}>
           <ContextMenuItem>
             <PencilIcon className="w-4 h-4 mr-2" /> Properties
           </ContextMenuItem>
