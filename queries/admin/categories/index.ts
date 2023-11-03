@@ -6,11 +6,7 @@ import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache"
 
-export const _getCategoriesOfProduct = async ({
-    productId
-}: {
-    productId: string
-}) => {
+export async function _getCategoriesOfProduct({ productId }: { productId: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -40,4 +36,49 @@ export const _getCategoriesOfProduct = async ({
         }
     )()
     return categories
+}
+
+
+export async function _getAdminCategories(distributionId: string) {
+    const categories = await unstable_cache(
+        async () => {
+            const data = await prisma.categories.findMany({
+                select: { _count: { select: { subCategories: true } }, id: true, name: true, slug: true, order: true, displayOnLandingPage: true, isPublished: true, images: { select: { id: true, src: true } }, },
+                where: { distributors: { some: { id: distributionId } } },
+                orderBy: { order: "asc" },
+            });
+            return data
+        },
+        ['_getAdminCategories'],
+        {
+            tags: ['_getAdminCategories'],
+            revalidate: 60 * 30,
+        }
+    )()
+    return categories
+}
+
+
+export async function _searchCategories({ query, distributionId }: { query: string, distributionId: string }) {
+    const session = await getServerSession(authOptions)
+
+    if (!session) throw Error("Unauthorized")
+    if (!query) return []
+
+    try {
+        const categories = await prisma.categories.findMany({
+            select: { _count: { select: { subCategories: true } }, id: true, name: true, slug: true, order: true, displayOnLandingPage: true, isPublished: true, images: { select: { id: true, src: true } }, },
+            where: {
+                AND: [
+                    { distributors: { some: { id: distributionId } } },
+                    { name: { search: query.split(" ").join(" | ") } }
+                ]
+            }
+        });
+        return categories
+    } catch (error) {
+        console.log(error)
+        throw Error("Something Went Wrong")
+    }
+
 }

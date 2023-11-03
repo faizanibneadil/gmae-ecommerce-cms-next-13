@@ -1,4 +1,6 @@
-const Loading: React.FC<{}> = () => {
+import React from "react";
+
+const Loading = () => {
   return <div>Loading ...</div>;
 };
 

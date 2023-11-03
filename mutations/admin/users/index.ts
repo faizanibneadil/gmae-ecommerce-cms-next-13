@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache"
 import { initialImageCreateSchema } from "@/_schemas";
 import { redirect } from "next/navigation";
 
-export const $initialUserCreateAction = async (values: any) => {
+export async function $initialUserCreateAction(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")

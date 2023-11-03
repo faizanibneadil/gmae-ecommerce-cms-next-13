@@ -39,16 +39,17 @@ model Ledger {
 }
 
 model Distributors {
-  id        String      @id @default(uuid())
-  name      String
-  users     User[]
-  products  Products[]
-  bills     Billing[]
-  areas     Areas[]
-  shops     Shops[]
-  companies Companies[]
-  Ledger    Ledger?     @relation(fields: [ledgerId], references: [id])
-  ledgerId  String?
+  id         String       @id @default(uuid())
+  name       String
+  users      User[]
+  products   Products[]
+  bills      Billing[]
+  areas      Areas[]
+  shops      Shops[]
+  companies  Companies[]
+  caregories Categories[]
+  Ledger     Ledger?      @relation(fields: [ledgerId], references: [id])
+  ledgerId   String?
 }
 
 model BillingItems {
@@ -296,18 +297,19 @@ model Products {
 }
 
 model Categories {
-  id                   String       @id @default(uuid())
+  id                   String         @id @default(uuid())
   name                 String?
-  images               Images?      @relation(fields: [imageId], references: [id])
-  slug                 String?      @unique
-  order                Int?         @default(0)
-  displayOnLandingPage Boolean?     @default(false)
-  isPublished          Boolean?     @default(false)
-  categoriesBy         Categories[] @relation("subCategories")
-  subCategories        Categories[] @relation("subCategories")
+  images               Images?        @relation(fields: [imageId], references: [id])
+  slug                 String?        @unique
+  order                Int?           @default(0)
+  displayOnLandingPage Boolean?       @default(false)
+  isPublished          Boolean?       @default(false)
+  categoriesBy         Categories[]   @relation("subCategories")
+  subCategories        Categories[]   @relation("subCategories")
   Products             Products[]
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  distributors         Distributors[]
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
   imageId              String?
 
   @@index([slug])

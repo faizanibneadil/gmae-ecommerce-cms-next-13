@@ -1,21 +1,37 @@
 import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import SearchInput from "./search-input";
 
+const SearchInput = dynamic(() => import("./search-input"), {
+  ssr: false,
+  loading: () => <div>Loading ...</div>,
+});
 const ActionsButtons = dynamic(() => import("./main-actions-buttons"), {
   ssr: false,
+  loading: () => <div>Loading ...</div>,
 });
 const InventoryActions = dynamic(() => import("./inventory-actions"), {
   ssr: false,
+  loading: () => <div>Loading ...</div>,
 });
-const AreasActions = dynamic(() => import("./areas-actions"), { ssr: false });
+const AreasActions = dynamic(() => import("./areas-actions"), {
+  ssr: false,
+  loading: () => <div>Loading ...</div>,
+});
 const CompanyActions = dynamic(() => import("./company-actions"), {
   ssr: false,
+  loading: () => <div>Loading ...</div>,
 });
-const ShopsActions = dynamic(() => import("./shop-actions"), { ssr: false });
-const ImagesActions = dynamic(() => import("./images-actions"), { ssr: false });
+const ShopsActions = dynamic(() => import("./shop-actions"), {
+  ssr: false,
+  loading: () => <div>Loading ...</div>,
+});
+const ImagesActions = dynamic(() => import("./images-actions"), {
+  ssr: false,
+  loading: () => <div>Loading ...</div>,
+});
 const CategoriesActions = dynamic(() => import("./categories-actions"), {
   ssr: false,
+  loading: () => <div>Loading ...</div>,
 });
 
 const ToolBar: React.FC<{}> = () => {

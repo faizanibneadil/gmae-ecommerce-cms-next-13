@@ -6,7 +6,7 @@ import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache"
 
-export const $updateCategoriesOfProduct = async (values: any) => {
+export async function $updateCategoriesOfProduct(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -34,20 +34,22 @@ export const $updateCategoriesOfProduct = async (values: any) => {
 }
 
 
-export const $initialCategoryCreateAction = async (values: any) => {
+export async function $initialCategoryCreateAction(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
     if (!values?.name) throw Error("alt text Id is required.")
+    if (!values?.distributionId) throw Error("distribution Id is required.")
 
     try {
         await prisma.categories.create({
             data: {
-                name: values.name
+                name: values.name,
+                distributors: { connect: { id: values.distributionId } }
             }
         })
         console.log("Category updated successfully. 👍")
-        // revalidateTag(`_getImages`)
+        revalidateTag(`_getAdminCategories`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating category. 👎")
         console.log(error)

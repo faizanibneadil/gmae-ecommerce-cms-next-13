@@ -30,6 +30,7 @@ import { z } from "zod";
 
 const schema = z.object({
   name: z.string().nonempty("Name can not empty"),
+  distributionId: z.string().nonempty("Distribution Id is required."),
 });
 
 const CreateCategoryCard: React.FC<{}> = () => {
@@ -40,6 +41,7 @@ const CreateCategoryCard: React.FC<{}> = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
+      distributionId,
     },
   });
 

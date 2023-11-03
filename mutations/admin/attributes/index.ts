@@ -7,7 +7,7 @@ import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache"
 
-export const $updateAttributesOfProduct = async (values: any) => {
+export async function $updateAttributesOfProduct(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")

@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache"
 import { initialImageCreateSchema } from "@/_schemas";
 import { redirect } from "next/navigation";
 
-export const $linkImagesWithProduct = async (values: any) => {
+export async function $linkImagesWithProduct(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -38,7 +38,7 @@ export const $linkImagesWithProduct = async (values: any) => {
     }
 }
 
-export const $unLinkImagesWithProduct = async (values: any) => {
+export async function $unLinkImagesWithProduct(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -68,7 +68,7 @@ export const $unLinkImagesWithProduct = async (values: any) => {
     }
 }
 
-export const $initialImageCreateAction = async (values: any) => {
+export async function $initialImageCreateAction(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")

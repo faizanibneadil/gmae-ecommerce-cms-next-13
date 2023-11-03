@@ -24,6 +24,30 @@ export async function _getCompanies(distributionId: string) {
     return companies
 }
 
+export async function _searchCompanies({ query, distributionId }: { query: string, distributionId: string }) {
+    const session = await getServerSession(authOptions)
+
+    if (!session) throw Error("Unauthorized")
+    if (!query) return []
+
+    try {
+        const companies = await prisma.companies.findMany({
+            select: { id: true, name: true, _count: { select: { products: true } } },
+            where: {
+                AND: [
+                    { distributors: { some: { id: distributionId } } },
+                    { name: { search: query.split(" ").join(" | ") } }
+                ]
+            }
+        });
+        return companies
+    } catch (error) {
+        console.log(error)
+        throw Error("Something Went Wrong")
+    }
+
+}
+
 export const _getCompaniesWithProductsCount = async ({
     distributionId,
     productId

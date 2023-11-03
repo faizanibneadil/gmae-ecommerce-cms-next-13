@@ -74,7 +74,7 @@ export async function createProductAction(values: z.infer<typeof createProductSc
             },
             where: { id }
         })
-        revalidatePath(`/admin/inventory/${id}`)
+        revalidateTag(`_getInventory`)
         console.log("Updated Successfully 👍")
     } catch (e) {
         console.log("Something went wrong when Updating Product with this error 👎")
@@ -444,7 +444,6 @@ export async function statusAction({ orderId, statusId }: { orderId: string, sta
 
 export async function updateUser(form: typeof createUserSchema) {
     const { id, distributionId, ...values } = createUserSchema.parse(form)
-    console.log("distributionId => ", distributionId)
     try {
         await prisma.user.upsert({
             create: {
@@ -457,6 +456,7 @@ export async function updateUser(form: typeof createUserSchema) {
             },
             where: { id }
         })
+        revalidateTag("_getUsers")
         console.log("User Profile has been updated successfully. 👍")
     } catch (error) {
         console.log("Something Went Wrong when updating user's info 👎")

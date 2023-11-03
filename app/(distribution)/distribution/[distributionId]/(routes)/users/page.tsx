@@ -1,5 +1,4 @@
-import { _getUsers } from "@/queries";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { _getUsers, _searchUsers } from "@/queries";
 import {
   Table,
   TableBody,
@@ -12,35 +11,39 @@ import { PencilIcon } from "@/app/_components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { distributionId: string };
+  searchParams: { [key: string]: string };
 }
 
-const Page: React.FC<Props> = async ({ params }) => {
-  const users = await _getUsers(params.distributionId);
+const Page: React.FC<Props> = async ({ params, searchParams }) => {
+  const users = searchParams?.query
+    ? await _searchUsers({
+        distributionId: params.distributionId,
+        query: searchParams?.query,
+      })
+    : await _getUsers(params.distributionId);
+
+  if (users.length === 0) return notFound();
+
   return (
     <Suspense fallback={<div>fallBack Loading ...</div>}>
-      <ScrollArea className="w-full h-auto border rounded-md">
-        <ScrollBar orientation="horizontal" />
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-left w-96">Name</TableHead>
-              <TableHead className="w-40 text-center">Role</TableHead>
-              <TableHead className="w-10 text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+      <div className="w-full h-[calc(100vh-33px)] overflow-x-auto overflow-y-auto">
+        <Table className="table-auto">
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="font-medium text-left w-96">
+                <TableCell className="py-1 font-medium text-left w-96">
                   {user.name}
                 </TableCell>
-                <TableCell className="w-20 text-center">{user.role}</TableCell>
-                <TableCell className="w-10 text-center">
+                <TableCell className="w-40 py-1 text-center">
+                  {user.role}
+                </TableCell>
+                <TableCell className="w-10 py-1 text-center">
                   <Link
-                    href={`/distribution/${params.distributionId}/shops/${user.id}`}
+                    href={`/distribution/${params.distributionId}/users/${user.id}`}
                     className={buttonVariants({
                       variant: "secondary",
                       size: "sm",
@@ -54,7 +57,7 @@ const Page: React.FC<Props> = async ({ params }) => {
             ))}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
     </Suspense>
   );
 };

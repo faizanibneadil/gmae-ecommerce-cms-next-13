@@ -5,13 +5,7 @@ import { authOptions } from "@/config/authOptions"
 import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth"
 
-export const $addBillToLedger = async ({
-    billId,
-    distributionId
-}: {
-    billId: number
-    distributionId: string
-}) => {
+export async function $addBillToLedger({ billId, distributionId }: { billId: number, distributionId: string }) {
     const session = await getServerSession(authOptions)
     if (!session) {
         throw new Error("Unauthorized")

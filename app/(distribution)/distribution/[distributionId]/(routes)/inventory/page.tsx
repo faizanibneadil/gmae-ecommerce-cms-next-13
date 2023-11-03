@@ -1,4 +1,3 @@
-import { memo, use } from "react";
 import { notFound } from "next/navigation";
 import InfiniteScroll from "./_components/Infinite-scroll";
 import { _getInventory } from "@/queries";
@@ -8,13 +7,14 @@ interface Props {
   params: { id: string; distributionId: string };
 }
 
-const Page: React.FC<Props> = memo(({ params, searchParams }) => {
-  const products = use(_getInventory(params.distributionId));
-  return !!products?.length ? (
-    <InfiniteScroll initial={products} />
-  ) : (
-    notFound()
-  );
-});
-Page.displayName = "Page";
+const Page: React.FC<Props> = async ({ params, searchParams }) => {
+  const products = await _getInventory(params.distributionId);
+
+  if (products?.length === 0) return notFound();
+
+  if (searchParams?.query) return <div>Searching : {searchParams?.query}</div>;
+
+  return <InfiniteScroll initial={products} />;
+};
+
 export default Page;

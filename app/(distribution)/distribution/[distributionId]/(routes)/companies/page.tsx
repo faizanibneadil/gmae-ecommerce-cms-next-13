@@ -1,5 +1,4 @@
-import { _getCompanies } from "@/queries";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { _getCompanies, _searchCompanies } from "@/queries";
 import {
   Table,
   TableBody,
@@ -12,35 +11,37 @@ import { PencilIcon } from "@/app/_components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { distributionId: string };
+  searchParams: { [key: string]: string };
 }
 
-const Page: React.FC<Props> = async ({ params }) => {
-  const companies = await _getCompanies(params.distributionId);
+const Page: React.FC<Props> = async ({ params, searchParams }) => {
+  const companies = searchParams?.query
+    ? await _searchCompanies({
+        distributionId: params.distributionId,
+        query: searchParams?.query,
+      })
+    : await _getCompanies(params.distributionId);
+
+  if (companies.length === 0) return notFound();
+
   return (
     <Suspense fallback={<div>fallBack Loading ...</div>}>
-      <ScrollArea className="w-full h-auto border rounded-md">
-        <ScrollBar orientation="horizontal" />
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-left w-96">Name</TableHead>
-              <TableHead className="w-20 text-center">Products</TableHead>
-              <TableHead className="w-10 text-center">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+      <div className="w-full h-[calc(100vh-33px)] overflow-x-auto overflow-y-auto">
+        <Table className="table-auto">
           <TableBody>
             {companies.map((company) => (
               <TableRow key={company.id}>
-                <TableCell className="font-medium text-left w-96">
+                <TableCell className="py-1 font-medium text-left w-96">
                   {company.name}
                 </TableCell>
-                <TableCell className="w-20 text-center">
+                <TableCell className="w-40 py-1 text-center">
                   {company._count.products} Products
                 </TableCell>
-                <TableCell className="w-10 text-center">
+                <TableCell className="w-10 py-1 text-center">
                   <Link
                     href={`/distribution/${params.distributionId}/companies/${company.id}`}
                     className={buttonVariants({
@@ -56,7 +57,7 @@ const Page: React.FC<Props> = async ({ params }) => {
             ))}
           </TableBody>
         </Table>
-      </ScrollArea>
+      </div>
     </Suspense>
   );
 };

@@ -9,108 +9,120 @@ import {
   ListChecks,
   Map,
   Package,
+  Settings,
   Store,
+  Target,
+  Truck,
   Users,
 } from "lucide-react";
-import { ComboboxDemo } from "./select-distribution";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
+import DistributionSwitcher from "./distribution-switcher";
 
-const SideBar: React.FC<{}> = () => {
+interface Props {
+  distributions: {
+    id: string;
+    name: string;
+    ledgerId: string | null;
+  }[];
+}
+
+const SideBar: React.FC<Props> = ({ distributions }) => {
+  const pathname = usePathname();
   const distributionId = useParams()?.distributionId as string;
+  const MENU = [
+    {
+      icon: <Gauge className="w-5 h-5" />,
+      name: "Dashboard",
+      href: `/distribution/${distributionId}`,
+    },
+    {
+      icon: <Package className="w-5 h-5" />,
+      name: "Inventory",
+      href: `/distribution/${distributionId}/inventory`,
+    },
+    {
+      icon: <ImageIcon className="w-5 h-5" />,
+      name: "Images",
+      href: `/distribution/${distributionId}/images`,
+    },
+    {
+      icon: <FactoryIcon className="w-5 h-5" />,
+      name: "Companies",
+      href: `/distribution/${distributionId}/companies`,
+    },
+    {
+      icon: <Target className="w-5 h-5" />,
+      name: "Brands",
+      href: `/distribution/${distributionId}/brands`,
+    },
+    {
+      icon: <Map className="w-5 h-5" />,
+      name: "Areas",
+      href: `/distribution/${distributionId}/areas`,
+    },
+    {
+      icon: <Store className="w-5 h-5" />,
+      name: "Shops",
+      href: `/distribution/${distributionId}/shops`,
+    },
+    {
+      icon: <ListChecks className="w-5 h-5" />,
+      name: "Categories",
+      href: `/distribution/${distributionId}/categories`,
+    },
+    {
+      icon: <Truck className="w-5 h-5" />,
+      name: "Orders",
+      href: `/distribution/${distributionId}/orders`,
+    },
+    {
+      icon: <ArrowLeftRight className="w-5 h-5" />,
+      name: "Transactions",
+      href: `/distribution/${distributionId}/transactions`,
+    },
+    {
+      icon: <Users className="w-5 h-5" />,
+      name: "Users",
+      href: `/distribution/${distributionId}/users`,
+    },
+    {
+      icon: <Settings className="w-5 h-5" />,
+      name: "Settings",
+      href: `/distribution/${distributionId}/settings`,
+    },
+  ];
+
   return (
-    <aside className="w-12 h-screen p-1 overflow-hidden border-r shadow-inner md:px-1 md:py-2 md:w-48">
+    <aside className="w-12 h-screen overflow-hidden border-r shadow-inner md:py-2 md:w-48">
       <div className="flex flex-col justify-between h-full">
-        <div className="space-y-2 md:flex md:flex-col md:items-center">
+        <div className="p-1 space-y-2 md:flex md:flex-col md:items-center">
           <Avatar className="md:w-20 md:h-20">
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <h1 className="hidden font-semibold md:block">easypeasy</h1>
-          <ComboboxDemo />
         </div>
-        <ScrollArea className="w-full h-full mt-5 mb-5">
-          <div className="flex flex-col space-y-1">
-            <Link
-              href={`/distribution/${distributionId}`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <Gauge className="w-4 h-4" />
-              <span className="hidden md:block">Dashboard</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/inventory`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <Package className="w-4 h-4" />
-              <span className="hidden md:block">Inventory</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/images`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <ImageIcon className="w-4 h-4" />
-              <span className="hidden md:block">Images</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/companies`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <FactoryIcon className="w-4 h-4" />
-              <span className="hidden md:block">Companies</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/areas`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <Map className="w-4 h-4" />
-              <span className="hidden md:block">Areas</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/shops`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <Store className="w-4 h-4" />
-              <span className="hidden md:block">Shops</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/categories`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <ListChecks className="w-4 h-4" />
-              <span className="hidden md:block">Categories</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/transactions`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <ArrowLeftRight className="w-4 h-4" />
-              <span className="hidden md:block">Transactions</span>
-            </Link>
-            <Link
-              href={`/distribution/${distributionId}/users`}
-              className="flex items-center space-x-1 h-8 px-2 py-1.5 rounded-none"
-            >
-              <Users className="w-4 h-4" />
-              <span className="hidden md:block">Users</span>
-            </Link>
+        <ScrollArea className="w-full h-full mt-1 mb-1">
+          <div className="flex flex-col space-y-0.5">
+            {MENU.map((m) => (
+              <Link
+                key={m.href}
+                className={buttonVariants({
+                  variant: m.href === pathname ? "default" : "secondary",
+                  className: `w-full flex items-center justify-between pl-3 rounded-none`,
+                  size: "sm",
+                })}
+                href={m.href}
+              >
+                {m.icon}
+                <span className="hidden md:block">{m.name}</span>
+              </Link>
+            ))}
           </div>
         </ScrollArea>
 
-        <div className="flex items-center space-x-1 cursor-pointer">
-          <div className="flex-shrink-0">
-            <Avatar>
-              <AvatarImage
-                src="https://github.com/faizanibneadil.png"
-                alt="@shadcn"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
-          <div className="flex-1 min-w-0 ">
-            <p className="text-sm font-medium truncate">username</p>
-            <p className="text-sm truncate">faizanibneadil@gmail.com</p>
-          </div>
-        </div>
+        <DistributionSwitcher distributions={distributions} />
       </div>
     </aside>
   );

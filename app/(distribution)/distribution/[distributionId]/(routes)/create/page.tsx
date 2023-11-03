@@ -11,14 +11,16 @@ interface Props {
 }
 const Page: React.FC<Props> = ({ params }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-x-1 gap-y-1">
-      <CreateInventoryCard />
-      <CreateCompanyCard />
-      <CreateAreaCard />
-      <CreateShopCard />
-      <CreateUserCard />
-      <CreateCategoryCard />
-      <CreateImageCard />
+    <div className="w-full h-[calc(100vh-33px)] overflow-x-auto overflow-y-auto">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-1 gap-y-1">
+        <CreateInventoryCard />
+        <CreateCompanyCard />
+        <CreateAreaCard />
+        <CreateShopCard />
+        <CreateUserCard />
+        <CreateCategoryCard />
+        <CreateImageCard />
+      </div>
     </div>
   );
 };
