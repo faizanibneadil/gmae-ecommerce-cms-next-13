@@ -12,7 +12,12 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverComponentsExternalPackages: ["@prisma/client", "date-fns", "prisma"],
+    serverComponentsExternalPackages: [
+      "@prisma/client",
+      "date-fns",
+      "prisma",
+      "autoprefixer",
+    ],
   },
   compiler: {
     removeConsole: {

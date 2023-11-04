@@ -38,7 +38,7 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {
+interface DistributionSwitcherProps extends PopoverTriggerProps {
   distributions: {
     id: string;
     name: string;
@@ -47,9 +47,8 @@ interface TeamSwitcherProps extends PopoverTriggerProps {
 }
 
 export default function DistributionSwitcher({
-  className,
   distributions,
-}: TeamSwitcherProps) {
+}: DistributionSwitcherProps) {
   const distributionId = useParams()?.distributionId as string;
   const router = useRouter();
   const { data: session } = useSession();
@@ -59,10 +58,6 @@ export default function DistributionSwitcher({
   const [selectedDistribution, setDistribution] = React.useState(
     distributions.find((d) => d.id === distributionId)
   );
-
-  React.useEffect(() => {
-    router.replace(`/distribution/${selectedDistribution?.id}`);
-  }, [selectedDistribution]);
 
   return (
     <Dialog
@@ -103,6 +98,7 @@ export default function DistributionSwitcher({
                 <CommandItem
                   key={distribution.id}
                   onSelect={() => {
+                    router.replace(`/distribution/${distribution?.id}`);
                     setDistribution(distribution);
                     setOpen(false);
                   }}
