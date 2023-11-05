@@ -49,7 +49,8 @@ export async function $initialCategoryCreateAction(values: any) {
             }
         })
         console.log("Category updated successfully. 👍")
-        revalidateTag(`_getAdminCategories`)
+        revalidateTag(`_getAdminCategories-${values.distributionId}`)
+        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating category. 👎")
         console.log(error)

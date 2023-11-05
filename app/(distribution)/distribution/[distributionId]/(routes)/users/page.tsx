@@ -29,36 +29,30 @@ const Page: React.FC<Props> = async ({ params, searchParams }) => {
   if (users.length === 0) return notFound();
 
   return (
-    <Suspense fallback={<div>fallBack Loading ...</div>}>
-      <div className="w-full h-[calc(100vh-33px)] overflow-x-auto overflow-y-auto">
-        <Table className="table-auto">
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="py-1 font-medium text-left w-96">
-                  {user.name}
-                </TableCell>
-                <TableCell className="w-40 py-1 text-center">
-                  {user.role}
-                </TableCell>
-                <TableCell className="w-10 py-1 text-center">
-                  <Link
-                    href={`/distribution/${params.distributionId}/users/${user.id}`}
-                    className={buttonVariants({
-                      variant: "secondary",
-                      size: "sm",
-                      className: "flex w-full",
-                    })}
-                  >
-                    <PencilIcon className="w-4 h-4 mr-2" /> Edit
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </Suspense>
+    <Table>
+      <TableBody>
+        {users.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell className="py-1 font-medium text-left w-96">
+              {user.name}
+            </TableCell>
+            <TableCell className="w-40 py-1 text-center">{user.role}</TableCell>
+            <TableCell className="w-10 py-1 text-center">
+              <Link
+                href={`/distribution/${params.distributionId}/users/${user.id}`}
+                className={buttonVariants({
+                  variant: "secondary",
+                  size: "sm",
+                  className: "flex w-full",
+                })}
+              >
+                <PencilIcon className="w-4 h-4 mr-2" /> Edit
+              </Link>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 export default Page;

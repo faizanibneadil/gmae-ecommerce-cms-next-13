@@ -98,7 +98,7 @@ export default function DistributionSwitcher({
                 <CommandItem
                   key={distribution.id}
                   onSelect={() => {
-                    router.replace(`/distribution/${distribution?.id}`);
+                    router.push(`/distribution/${distribution?.id}`);
                     setDistribution(distribution);
                     setOpen(false);
                   }}

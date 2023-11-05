@@ -12,9 +12,9 @@ export async function _getShops(distributionId: string) {
             const data = prisma.shops.findMany({ where: { distributors: { some: { id: distributionId } } } });
             return data
         },
-        ["_getShops"],
+        [`_getShops-${distributionId}`],
         {
-            tags: ["_getShops"],
+            tags: [`_getShops-${distributionId}`],
             revalidate: 60 * 30,
         }
     )()

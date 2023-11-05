@@ -1,32 +1,31 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useAutosave } from "react-autosave";
+import { useEffect, useState, useTransition } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
 import { Search } from "lucide-react";
 import Spin from "@/app/_components/loading-spinner";
 
 const SearchInput: React.FC<{}> = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams?.get("query"));
 
-  useAutosave({
-    data: searchQuery,
-    onSave: (query) => {
-      if (searchQuery) {
-        setLoading(true);
-        setTimeout(() => {
-          router.replace(pathname + "?query=" + query);
-          setLoading(false);
-        }, 2000);
+  const debouncedSearchTerm = useDebounce(searchQuery, 300);
+
+  useEffect(() => {
+    const searchHN = async () => {
+      if (debouncedSearchTerm) {
+        router.push(`${pathname}?query=${searchQuery}`);
       } else {
-        router.replace(`${pathname}`);
+        router.push(`${pathname}`);
       }
-    },
-  });
+    };
+
+    startTransition(() => searchHN());
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="flex-1">

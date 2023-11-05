@@ -68,10 +68,10 @@ export async function _getDistributionInfo(distributionId: string) {
             })
             return data
         },
-        ['distribution_info', distributionId],
+        [`_getDistributionInfo-${distributionId}`],
         {
-            tags: ['distribution_info', distributionId],
-            revalidate: 10,
+            tags: [`_getDistributionInfo-${distributionId}`],
+            revalidate: 60 * 30,
         }
     )()
     return distribution

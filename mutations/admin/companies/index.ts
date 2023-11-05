@@ -46,7 +46,8 @@ export async function $initialCompanyCreateAction(values: any) {
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getCompanies`)
+        revalidateTag(`_getCompanies-${values.distributionId}`)
+        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)

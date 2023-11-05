@@ -49,9 +49,9 @@ export async function _getAdminCategories(distributionId: string) {
             });
             return data
         },
-        ['_getAdminCategories'],
+        [`_getAdminCategories-${distributionId}`],
         {
-            tags: ['_getAdminCategories'],
+            tags: [`_getAdminCategories-${distributionId}`],
             revalidate: 60 * 30,
         }
     )()

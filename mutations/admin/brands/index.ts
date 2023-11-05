@@ -8,7 +8,7 @@ import { revalidateTag } from "next/cache"
 import { initialImageCreateSchema } from "@/_schemas";
 import { redirect } from "next/navigation";
 
-export async function $initialShopCreateAction(values: any) {
+export async function $initialBrandCreateAction(values: any) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -16,15 +16,14 @@ export async function $initialShopCreateAction(values: any) {
     if (!values?.distributionId) throw Error("Distribution Id is required.")
 
     try {
-        await prisma.shops.create({
+        await prisma.brands.create({
             data: {
                 name: values.name,
                 distributors: { connect: { id: values.distributionId } }
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getShops-${values.distributionId}`)
-        revalidateTag(`_getAreas-${values.distributionId}`)
+        revalidateTag(`_getBrands-${values?.distributionId}`)
         revalidateTag(`_getDistributionInfo-${values.distributionId}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")

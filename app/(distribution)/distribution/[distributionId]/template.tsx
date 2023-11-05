@@ -1,5 +1,6 @@
 "use client";
 import ToolBar from "./_components/tool-bar";
+import SimpleBar from "simplebar-react";
 
 interface Props {
   children: React.ReactNode;
@@ -7,12 +8,12 @@ interface Props {
 
 const Template: React.FC<Props> = ({ children }) => {
   return (
-    <div>
+    <>
       <ToolBar />
-      <div className="w-full h-[calc(100vh-33px)] overflow-x-auto overflow-y-auto">
+      <SimpleBar style={{ height: `95vh`, width: `100%` }}>
         {children}
-      </div>
-    </div>
+      </SimpleBar>
+    </>
   );
 };
 

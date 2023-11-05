@@ -23,7 +23,8 @@ export async function $initialAreaCreateAction(values: any) {
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getAreas`)
+        revalidateTag(`_getAreas-${values?.distributionId}`)
+        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)

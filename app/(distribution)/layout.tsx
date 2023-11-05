@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { use } from "react";
 import CreateDistributionForm from "./_components/create-distribution-form";
 import { _getDistribution } from "@/queries";
+import "simplebar-react/dist/simplebar.min.css";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const session = use(getServerSession(authOptions));

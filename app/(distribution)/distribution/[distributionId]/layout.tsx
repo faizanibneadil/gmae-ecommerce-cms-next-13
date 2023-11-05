@@ -1,6 +1,6 @@
 import Wrapper from "../../_components/wrapper";
 import Command from "../../_components/cmd/command";
-
+import { unstable_noStore as noStore } from "next/cache";
 import dynamic from "next/dynamic";
 import { _getDistribution } from "@/queries";
 
@@ -18,6 +18,7 @@ interface Props {
   children: React.ReactNode;
 }
 const Layout: React.FC<Props> = async ({ children, params }) => {
+  noStore();
   const distributions = await _getDistribution();
   return (
     <div className="flex">

@@ -48,6 +48,7 @@ model Distributors {
   shops      Shops[]
   companies  Companies[]
   caregories Categories[]
+  brands     Brands[]
   Ledger     Ledger?      @relation(fields: [ledgerId], references: [id])
   ledgerId   String?
 }
@@ -159,9 +160,10 @@ model Shops {
 }
 
 model Brands {
-  id       String     @id @default(uuid())
-  name     String?
-  products Products[]
+  id           String         @id @default(uuid())
+  name         String?
+  products     Products[]
+  distributors Distributors[]
 }
 
 model Companies {

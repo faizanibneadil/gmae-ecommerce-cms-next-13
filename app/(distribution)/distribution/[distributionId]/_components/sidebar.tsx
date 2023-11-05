@@ -2,13 +2,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FactoryIcon, ImageIcon } from "@/app/_components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   ArrowLeftRight,
+  Book,
   Gauge,
   ListChecks,
   Map,
   Package,
+  Receipt,
   Settings,
   Store,
   Target,
@@ -17,7 +20,10 @@ import {
 } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
-import DistributionSwitcher from "./distribution-switcher";
+const DistributionSwitcher = dynamic(() => import("./distribution-switcher"), {
+  ssr: false,
+  loading: () => <div>Loading ..</div>,
+});
 
 interface Props {
   distributions: {
@@ -80,6 +86,16 @@ const SideBar: React.FC<Props> = ({ distributions }) => {
       icon: <ArrowLeftRight className="w-5 h-5" />,
       name: "Transactions",
       href: `/distribution/${distributionId}/transactions`,
+    },
+    {
+      icon: <Receipt className="w-5 h-5" />,
+      name: "Generate Invoice",
+      href: `/distribution/${distributionId}/transactions/invoice`,
+    },
+    {
+      icon: <Book className="w-5 h-5" />,
+      name: "Ledger",
+      href: `/distribution/${distributionId}/ledger`,
     },
     {
       icon: <Users className="w-5 h-5" />,

@@ -50,9 +50,9 @@ export async function _getCategoriesProducts() {
             })
             return data
         },
-        ['_getCategoriesProducts'],
+        ['_getCategoriesWithThereProducts'],
         {
-            tags: ['_getCategoriesProducts'],
+            tags: ['_getCategoriesWithThereProducts'],
             revalidate: 60 * 30,
         }
     )()

@@ -26,9 +26,9 @@ export async function _getInventory(distributionId: string) {
             })
             return data
         },
-        ['_getInventory'],
+        [`_getInventory-${distributionId}`],
         {
-            tags: ['_getInventory'],
+            tags: [`_getInventory-${distributionId}`],
             revalidate: 10,
         }
     )()

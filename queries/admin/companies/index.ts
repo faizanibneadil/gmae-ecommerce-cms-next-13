@@ -15,9 +15,9 @@ export async function _getCompanies(distributionId: string) {
             });
             return data
         },
-        ['_getCompanies'],
+        [`_getCompanies-${distributionId}`],
         {
-            tags: ['_getCompanies'],
+            tags: [`_getCompanies-${distributionId}`],
             revalidate: 10,
         }
     )()

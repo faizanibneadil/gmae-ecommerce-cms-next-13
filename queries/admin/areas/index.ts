@@ -12,10 +12,10 @@ export async function _getAreas(distributionId: string) {
             const data = prisma.areas.findMany({ select: { _count: { select: { shops: true } }, id: true, name: true }, where: { distributors: { some: { id: distributionId } } } });
             return data
         },
-        ['_getAreas'],
+        [`_getAreas-${distributionId}`],
         {
-            tags: ['_getAreas'],
-            revalidate: 10,
+            tags: [`_getAreas-${distributionId}`],
+            revalidate: 60 * 30,
         }
     )()
     return areas

@@ -25,7 +25,8 @@ export async function $initialInventoryCreateAction(values: any) {
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getInventory`)
+        revalidateTag(`_getInventory-${values.distributionId}`)
+        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)
