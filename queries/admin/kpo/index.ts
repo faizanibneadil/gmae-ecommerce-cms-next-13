@@ -4,21 +4,21 @@ import "server-only"
 import { prisma } from "@/config/db"
 import { unstable_cache } from "next/cache"
 
-export async function _getSalesMen(distributionId: string) {
+export async function _getSalesMen(did: string) {
     const salesMen = await unstable_cache(
         async () => {
             const data = await prisma.user.findMany({
                 select: { id: true, role: true, name: true },
                 where: {
                     role: { in: ["SALES_MAN"] },
-                    distributors: { some: { id: distributionId } },
+                    distributors: { some: { id: did } },
                 },
             });
             return data
         },
-        ['salesMen', distributionId],
+        ['salesMen', did],
         {
-            tags: ['salesMen', distributionId],
+            tags: ['salesMen', did],
             revalidate: 10,
         }
     )()
@@ -62,9 +62,9 @@ export async function _getBillByBillId(billId: string) {
             });
             return data
         },
-        ['bill', billId],
+        [`bill-${billId}`],
         {
-            tags: ['bill', billId],
+            tags: [`bill-${billId}`],
             revalidate: 10,
         }
     )()

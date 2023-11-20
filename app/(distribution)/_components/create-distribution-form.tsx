@@ -16,9 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createDistribution } from "../_actions/distribution";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
+import { $createDistributionAction } from "@/mutations";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -38,11 +38,10 @@ const CreateDistributionForm: React.FC<{
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const id = await createDistribution({
-      name: values.name,
-      session: session,
+    const id = await $createDistributionAction({
+      values: values.name,
     });
-    return push(`/distribution/${id}`);
+    return push(`/d/${id}`);
   };
 
   return (

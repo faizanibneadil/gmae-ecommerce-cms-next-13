@@ -9,7 +9,7 @@ export async function createDistribution({ name, session }: { session: Session |
         console.log(session)
         const { id } = await prisma.distributors.create({ data: { name, users: { connect: { id: session?.user.id } } }, select: { id: true } })
         console.log("Distribution Successfully Created. 👍")
-        revalidatePath("/distribution", "layout")
+        revalidatePath("/d", "layout")
         return id
     } catch (error) {
         console.log("Something Went Wrong When Creating Distribution. 👎")

@@ -36,18 +36,18 @@ export async function $initialCompanyCreateAction(values: any) {
 
     if (!session) throw Error("Unauthorized")
     if (!values?.name) throw Error("Name is required.")
-    if (!values?.distributionId) throw Error("Distribution Id is required.")
+    if (!values?.did) throw Error("Distribution Id is required.")
 
     try {
         await prisma.companies.create({
             data: {
                 name: values.name,
-                distributors: { connect: { id: values.distributionId } }
+                distributors: { connect: { id: values.did } }
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getCompanies-${values.distributionId}`)
-        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
+        revalidateTag(`_getCompanies-${values.did}`)
+        revalidateTag(`_getDistributionInfo-${values.did}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)

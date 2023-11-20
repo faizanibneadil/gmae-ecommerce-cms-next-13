@@ -29,7 +29,7 @@ import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
 
 const Command = memo(() => {
-  const distributionId = useParams()?.distributionId as string;
+  const did = useParams()?.did as string;
   const { setTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -55,7 +55,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Dashboard"
-            route={`/distribution/${distributionId}`}
+            route={`/d/${did}`}
           >
             <Gauge width={4} height={4} />
           </CMDItem>
@@ -63,7 +63,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Inventory"
-            route={`/distribution/${distributionId}/inventory`}
+            route={`/d/${did}/inventory`}
           >
             <Package width={4} height={4} />
           </CMDItem>
@@ -71,7 +71,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Categories"
-            route={`/distribution/${distributionId}/categories`}
+            route={`/d/${did}/categories`}
           >
             <List width={4} height={4} />
           </CMDItem>
@@ -79,7 +79,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Image Gallery"
-            route={`/distribution/${distributionId}/images`}
+            route={`/d/${did}/images`}
           >
             <ImageIcon width={4} height={4} />
           </CMDItem>
@@ -87,7 +87,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Orders"
-            route={`/distribution/${distributionId}/orders`}
+            route={`/d/${did}/orders`}
           >
             <Truck width={4} height={4} />
           </CMDItem>
@@ -95,7 +95,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Transactions"
-            route={`/distribution/${distributionId}/transactions`}
+            route={`/d/${did}/transactions`}
           >
             <ArrowRightLeft width={4} height={4} />
           </CMDItem>
@@ -103,7 +103,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Coupons / Discounts"
-            route={`/distribution/${distributionId}`}
+            route={`/d/${did}`}
           >
             <Percent width={4} height={4} />
           </CMDItem>
@@ -111,7 +111,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Customers"
-            route={`/distribution/${distributionId}`}
+            route={`/d/${did}`}
           >
             <Users2 width={4} height={4} />
           </CMDItem>
@@ -119,7 +119,7 @@ const Command = memo(() => {
             open={open}
             setOpen={setOpen}
             label="Settings"
-            route={`/distribution/${distributionId}`}
+            route={`/d/${did}`}
           >
             <Settings width={4} height={4} />
           </CMDItem>

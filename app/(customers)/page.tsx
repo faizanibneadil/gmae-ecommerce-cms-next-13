@@ -1,6 +1,4 @@
 import Image from "next/image";
-// import Carousel from "./_components/carousel";
-import { memo, use } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
@@ -9,18 +7,14 @@ import { priceFormatter } from "@/lib/utils";
 import { ArrowRightIcon } from "../_components/icons";
 import { _getCategoriesProducts } from "@/queries";
 import dynamic from "next/dynamic";
+import { PageProps } from "@/types";
 
 const Carousel = dynamic(() => import("./_components/carousel"), {
   ssr: false,
 });
 
-interface Props {
-  searchParams: { [key: string]: string };
-  params: {};
-}
-
-const Page: React.FC<Props> = memo(() => {
-  const categories = use(_getCategoriesProducts());
+const Page: React.FC<PageProps> = async () => {
+  const categories = await _getCategoriesProducts();
   return (
     <div>
       <Carousel />
@@ -109,6 +103,5 @@ const Page: React.FC<Props> = memo(() => {
       </div>
     </div>
   );
-});
-Page.displayName = "Page";
+};
 export default Page;

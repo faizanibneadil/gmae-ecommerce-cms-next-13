@@ -83,7 +83,7 @@ const UserComponent: React.FC<{
           </div>
           {session && (
             <Button
-              onClick={() => replace("/distribution")}
+              onClick={() => replace("/d")}
               variant="default"
               className="w-full"
             >

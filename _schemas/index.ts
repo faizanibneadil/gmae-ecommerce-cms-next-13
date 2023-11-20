@@ -17,7 +17,7 @@ export const createCategorySchema = z.object({
 
 export const createProductSchema = z.object({
     id: z.string({ required_error: "Product ID is Required." }),
-    distributionId: z.string({ required_error: "distributionId is Required." }),
+    did: z.string({ required_error: "did is Required." }),
     title: z.string().trim().min(1, "Minimum 1 corrector is required.").max(100, "Maximum 100 correctors are allowed."),
     slug: z.string().trim().toLowerCase().transform(value => value.replace(/[^\w\s-]/g, "").replace(/\s+/g, " ").trim().replace(/\s+/g, "-")),
     description: z.string().trim().max(600, "Maximum 600 correctors are allowed.").optional(),
@@ -54,18 +54,18 @@ export const createAttributesSchema = z.object({
 
 export const createCompanySchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
     name: z.string({ required_error: "Company Name is Required." }).trim().nonempty("Company Name is required.")
 })
 
 export const createAreaSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
     name: z.string({ required_error: "Area Name is Required." }).trim().nonempty("Company Name is required.")
 })
 export const createBrandSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
     name: z.string({ required_error: "Area Name is Required." }).trim().nonempty("Company Name is required.")
 })
 
@@ -76,7 +76,7 @@ export const createDistributionSchema = z.object({
 
 export const createShopSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
     name: z.string({ required_error: "Name is required." }).trim().nonempty("Shop Name is required."),
     owner: z.string({ required_error: "Owner is required." }).trim().optional(),
     phone: z.string().optional().refine((value) => value ? /^\d{11}$/.test(value) : true, { message: "Phone Number must be exactly 11 numeric digits." }),
@@ -100,7 +100,7 @@ export const createAddressSchema = z.object({
 
 export const createUserSchema = z.object({
     id: z.string({ required_error: "Id is required." }),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
     name: z.string().nonempty("Name is required."),
     email: z.string().nonempty("Email is required."),
     cnic: z.string().optional(),
@@ -114,7 +114,7 @@ export const createBillingSchema = z.object({
     areaId: z.string().nonempty("Select Area."),
     shopId: z.string().nonempty("Select Shop."),
     companyId: z.string().nonempty("Select Company."),
-    distributionId: z.string().nonempty("Select Distributor."),
+    did: z.string().nonempty("Select Distributor."),
     deliveryDate: z.date({ required_error: "Select Delivery Date." }),
     extraDiscount: z.coerce.number().nonnegative("Extra Discount is not allowed in negative numbers."),
     items: z.object({
@@ -134,7 +134,7 @@ export const createBillFormSchema = z.object({
     areaId: z.string().nonempty("Select Area."),
     companyId: z.string().nonempty("Select Company."),
     shopId: z.string().nonempty("Select Shop."),
-    distributionId: z.string().nonempty("Select Booker."),
+    did: z.string().nonempty("Select Booker."),
     deliveryDate: z.date({ required_error: "Select Delivery Date." }),
     extraDiscount: z.coerce.number().nonnegative("Negative amount is not allowed.").nullable(),
     products: z.object({
@@ -142,7 +142,6 @@ export const createBillFormSchema = z.object({
         title: z.string().nullable(),
         regularPrice: z.coerce.number().nullable(),
         salePrice: z.coerce.number().nullable(),
-        profit: z.coerce.number().nullable(),
         stock: z.coerce.number().nullable(),
         qty: z.coerce.number().nonnegative("Negative amount is not allowed.").nullable(),
     }).array().min(1, "Minimum 1 Product should into bill.")
@@ -174,5 +173,5 @@ export const updateBillReturn = z.object({
 
 export const connectBillToLedgerSchema = z.object({
     billId: z.coerce.number().nonnegative("Negative numbers are not allowed."),
-    distributionId: z.string({ required_error: "distributionId is required." }),
+    did: z.string({ required_error: "did is required." }),
 })

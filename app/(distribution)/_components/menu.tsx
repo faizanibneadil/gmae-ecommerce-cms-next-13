@@ -43,7 +43,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const Menu: React.FC<{}> = memo(() => {
-  const distributionId = useParams()?.distributionId as string;
+  const did = useParams()?.did as string;
   return (
     <Menubar className="flex items-center justify-between border-b border-none rounded-none ">
       <MenubarMenu>
@@ -52,75 +52,75 @@ const Menu: React.FC<{}> = memo(() => {
           <span>easypeasy</span>
         </MenubarTrigger>
         <MenubarContent className="relative">
-          <Link href={`/distribution`}>
+          <Link href={`/d`}>
             <MenubarItem>
               <Building className="w-4 h-4 mr-2" />
               Distributions
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}`}>
+          <Link href={`/d/${did}`}>
             <MenubarItem>
               <Gauge className="w-4 h-4 mr-2" />
               Dashboard
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/inventory`}>
+          <Link href={`/d/${did}/inventory`}>
             <MenubarItem>
               <Package className="w-4 h-4 mr-2" />
               Inventory
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/images`}>
+          <Link href={`/d/${did}/images`}>
             <MenubarItem>
               <ImageIcon className="w-4 h-4 mr-2" />
               Images
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/users`}>
+          <Link href={`/d/${did}/users`}>
             <MenubarItem>
               <Users className="w-4 h-4 mr-2" />
               Users
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/areas`}>
+          <Link href={`/d/${did}/areas`}>
             <MenubarItem>
               <Map className="w-4 h-4 mr-2" />
               Areas
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/companies`}>
+          <Link href={`/d/${did}/companies`}>
             <MenubarItem>
               <Factory className="w-4 h-4 mr-2" />
               Companies
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/shops`}>
+          <Link href={`/d/${did}/shops`}>
             <MenubarItem>
               <Store className="w-4 h-4 mr-2" />
               Shops
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}`}>
+          <Link href={`/d/${did}`}>
             <MenubarItem>
               <Package className="w-4 h-4 mr-2" /> All Transactions
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/kpo`}>
+          <Link href={`/d/${did}/kpo`}>
             <MenubarItem>
               <PlusIcon className="w-4 h-4 mr-2" /> Create Bill
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/return`}>
+          <Link href={`/d/${did}/return`}>
             <MenubarItem>
               <ArrowLeft className="w-4 h-4 mr-2" /> Return Bill
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/dsr`}>
+          <Link href={`/d/${did}/dsr`}>
             <MenubarItem>
               <Sheet className="w-4 h-4 mr-2" /> Create DSR
             </MenubarItem>
           </Link>
-          <Link href={`/distribution/${distributionId}/load-sheet`}>
+          <Link href={`/d/${did}/load-sheet`}>
             <MenubarItem>
               <Sheet className="w-4 h-4 mr-2" /> Create Load Sheet
             </MenubarItem>
@@ -129,56 +129,56 @@ const Menu: React.FC<{}> = memo(() => {
       </MenubarMenu>
       <div className="flex flex-row">
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}`}>
+          <Link href={`/d/${did}`}>
             <MenubarTrigger className="relative hidden md:block">
               Dashboard
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/inventory`}>
+          <Link href={`/d/${did}/inventory`}>
             <MenubarTrigger className="relative hidden md:block">
               Inventory
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/images`}>
+          <Link href={`/d/${did}/images`}>
             <MenubarTrigger className="relative hidden md:block">
               Images
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/users`}>
+          <Link href={`/d/${did}/users`}>
             <MenubarTrigger className="relative hidden md:block">
               Users
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution`}>
+          <Link href={`/d`}>
             <MenubarTrigger className="relative hidden md:block">
               Distributions
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/areas`}>
+          <Link href={`/d/${did}/areas`}>
             <MenubarTrigger className="relative hidden md:block">
               Areas
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/companies`}>
+          <Link href={`/d/${did}/companies`}>
             <MenubarTrigger className="relative hidden md:block">
               Companies
             </MenubarTrigger>
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={`/distribution/${distributionId}/shops`}>
+          <Link href={`/d/${did}/shops`}>
             <MenubarTrigger className="relative hidden md:block">
               Shops
             </MenubarTrigger>
@@ -189,12 +189,12 @@ const Menu: React.FC<{}> = memo(() => {
             Ledger
           </MenubarTrigger>
           <MenubarContent>
-            <Link href={`/distribution/${distributionId}/ledger`}>
+            <Link href={`/d/${did}/ledger`}>
               <MenubarItem>
                 <BookOpen className="w-4 h-4 mr-2" /> Open Ledger
               </MenubarItem>
             </Link>
-            <Link href={`/distribution/${distributionId}/ledger/invoice`}>
+            <Link href={`/d/${did}/ledger/invoice`}>
               <MenubarItem>
                 <BookOpen className="w-4 h-4 mr-2" /> Open Invoice
               </MenubarItem>
@@ -206,27 +206,27 @@ const Menu: React.FC<{}> = memo(() => {
             Transactions
           </MenubarTrigger>
           <MenubarContent>
-            <Link href={`/distribution/${distributionId}`}>
+            <Link href={`/d/${did}`}>
               <MenubarItem>
                 <Package className="w-4 h-4 mr-2" /> All Transactions
               </MenubarItem>
             </Link>
-            <Link href={`/distribution/${distributionId}/kpo`}>
+            <Link href={`/d/${did}/kpo`}>
               <MenubarItem>
                 <PlusIcon className="w-4 h-4 mr-2" /> Generate Invoice
               </MenubarItem>
             </Link>
-            <Link href={`/distribution/${distributionId}/return`}>
+            <Link href={`/d/${did}/return`}>
               <MenubarItem>
                 <PlusIcon className="w-4 h-4 mr-2" /> Return Invoice
               </MenubarItem>
             </Link>
-            <Link href={`/distribution/${distributionId}/dsr`}>
+            <Link href={`/d/${did}/dsr`}>
               <MenubarItem>
                 <Sheet className="w-4 h-4 mr-2" /> Generate DSR
               </MenubarItem>
             </Link>
-            <Link href={`/distribution/${distributionId}/load-sheet`}>
+            <Link href={`/d/${did}/load-sheet`}>
               <MenubarItem>
                 <Sheet className="w-4 h-4 mr-2" /> Generate Load Sheet
               </MenubarItem>
@@ -238,7 +238,7 @@ const Menu: React.FC<{}> = memo(() => {
             <Globe className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent forceMount>
-            <Link href={`/distribution/${distributionId}/orders`}>
+            <Link href={`/d/${did}/orders`}>
               <MenubarItem>
                 <Truck className="w-4 h-4 mr-2" /> Orders
               </MenubarItem>
@@ -253,7 +253,7 @@ const Menu: React.FC<{}> = memo(() => {
             <UserIcon className="w-5 h-5" />
           </MenubarTrigger>
           <MenubarContent forceMount>
-            <Link href={`/distribution/${distributionId}/me`}>
+            <Link href={`/d/${did}/me`}>
               <MenubarItem>
                 <UserCircleIcon className="w-4 h-4 mr-2" /> Profile
               </MenubarItem>

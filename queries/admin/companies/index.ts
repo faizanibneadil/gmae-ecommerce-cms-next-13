@@ -6,25 +6,25 @@ import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache"
 
-export async function _getCompanies(distributionId: string) {
+export async function _getCompanies(did: string) {
     const companies = await unstable_cache(
         async () => {
             const data = await prisma.companies.findMany({
                 select: { id: true, name: true, _count: { select: { products: true } } },
-                where: { distributors: { some: { id: distributionId } } },
+                where: { distributors: { some: { id: did } } },
             });
             return data
         },
-        [`_getCompanies-${distributionId}`],
+        [`_getCompanies-${did}`],
         {
-            tags: [`_getCompanies-${distributionId}`],
+            tags: [`_getCompanies-${did}`],
             revalidate: 10,
         }
     )()
     return companies
 }
 
-export async function _searchCompanies({ query, distributionId }: { query: string, distributionId: string }) {
+export async function _searchCompanies({ query, did }: { query: string, did: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -35,7 +35,7 @@ export async function _searchCompanies({ query, distributionId }: { query: strin
             select: { id: true, name: true, _count: { select: { products: true } } },
             where: {
                 AND: [
-                    { distributors: { some: { id: distributionId } } },
+                    { distributors: { some: { id: did } } },
                     { name: { search: query.split(" ").join(" | ") } }
                 ]
             }
@@ -49,10 +49,10 @@ export async function _searchCompanies({ query, distributionId }: { query: strin
 }
 
 export const _getCompaniesWithProductsCount = async ({
-    distributionId,
+    did,
     productId
 }: {
-    distributionId: string,
+    did: string,
     productId: string
 }) => {
     const session = await getServerSession(authOptions)
@@ -60,7 +60,7 @@ export const _getCompaniesWithProductsCount = async ({
         throw new Error("Unauthorized")
     }
 
-    if (!distributionId) {
+    if (!did) {
         throw new Error("Distribution Id is required.")
     }
 
@@ -88,7 +88,7 @@ export const _getCompaniesWithProductsCount = async ({
                         },
                     },
                 },
-                where: { distributors: { some: { id: distributionId } } },
+                where: { distributors: { some: { id: did } } },
             });
             return data
         },

@@ -4,11 +4,33 @@ const withPWA = require("next-pwa");
 
 const nextConfig = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "referrer-policy",
+            value: "no-referrer",
+          },
+        ],
+      },
+    ];
+  },
   images: {
-    domains: [
-      "lh3.googleusercontent.com",
-      "drive.google.com",
-      "img.freepik.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
     ],
   },
   experimental: {
@@ -18,11 +40,6 @@ const nextConfig = {
       "prisma",
       "autoprefixer",
     ],
-  },
-  compiler: {
-    removeConsole: {
-      exclude: ["error"],
-    },
   },
   ...withPWA({
     dest: "public",

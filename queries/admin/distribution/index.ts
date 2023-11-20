@@ -15,9 +15,9 @@ export async function _getDistribution() {
             const data = await prisma.distributors.findMany({ where: { users: { some: { id: session.user.id } } } })
             return data
         },
-        ['distribution'],
+        ['_getDistribution'],
         {
-            tags: ['distribution'],
+            tags: ['_getDistribution'],
             revalidate: 10,
         }
     )()
@@ -39,7 +39,7 @@ export async function _getDistributionById(id: string) {
     return distribution
 }
 
-export async function _getDistributionInfo(distributionId: string) {
+export async function _getDistributionInfo(did: string) {
     const distribution = await unstable_cache(
         async () => {
             const data = await prisma.distributors.findUnique({
@@ -63,14 +63,14 @@ export async function _getDistributionInfo(distributionId: string) {
                     },
                 },
                 where: {
-                    id: distributionId,
+                    id: did,
                 },
             })
             return data
         },
-        [`_getDistributionInfo-${distributionId}`],
+        [`_getDistributionInfo-${did}`],
         {
-            tags: [`_getDistributionInfo-${distributionId}`],
+            tags: [`_getDistributionInfo-${did}`],
             revalidate: 60 * 30,
         }
     )()

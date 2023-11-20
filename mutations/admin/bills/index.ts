@@ -5,7 +5,7 @@ import { authOptions } from "@/config/authOptions"
 import { prisma } from "@/config/db"
 import { getServerSession } from "next-auth"
 
-export async function $addBillToLedger({ billId, distributionId }: { billId: number, distributionId: string }) {
+export async function $addBillToLedger({ billId, did }: { billId: number, did: string }) {
     const session = await getServerSession(authOptions)
     if (!session) {
         throw new Error("Unauthorized")
@@ -30,7 +30,7 @@ export async function $addBillToLedger({ billId, distributionId }: { billId: num
             await tx.ledger.create({
                 data: {
                     bills: { connect: { id: bill.id } },
-                    distributors: { connect: { id: distributionId } }
+                    distributors: { connect: { id: did } }
                 }
             })
         })

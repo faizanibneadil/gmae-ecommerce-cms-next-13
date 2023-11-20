@@ -6,22 +6,41 @@ import { unstable_cache } from "next/cache"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/config/authOptions"
 
-export async function _getShops(distributionId: string) {
+export async function _getShops(did: string) {
     const shops = await unstable_cache(
         async () => {
-            const data = prisma.shops.findMany({ where: { distributors: { some: { id: distributionId } } } });
+            const data = prisma.shops.findMany({ where: { distributors: { some: { id: did } } } });
             return data
         },
-        [`_getShops-${distributionId}`],
+        [`_getShops-${did}`],
         {
-            tags: [`_getShops-${distributionId}`],
+            tags: [`_getShops-${did}`],
+            revalidate: 60 * 30,
+        }
+    )()
+    return shops
+}
+export async function _getShopsByAreaId({ areaId, did }: { did: string, areaId: string }) {
+    const shops = await unstable_cache(
+        async () => {
+            const data = prisma.shops.findMany({
+                where: {
+                    Areas: { id: areaId },
+                    distributors: { some: { id: did } }
+                }
+            });
+            return data
+        },
+        [`_getShops-${did}-${areaId}`],
+        {
+            tags: [`_getShops-${did}-${areaId}`],
             revalidate: 60 * 30,
         }
     )()
     return shops
 }
 
-export async function _searchShops({ query, distributionId }: { query: string, distributionId: string }) {
+export async function _searchShops({ query, did }: { query: string, did: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -31,7 +50,7 @@ export async function _searchShops({ query, distributionId }: { query: string, d
         const shops = await prisma.shops.findMany({
             where: {
                 AND: [
-                    { distributors: { some: { id: distributionId } } },
+                    { distributors: { some: { id: did } } },
                     { name: { search: query.split(" ").join(" | ") } }
                 ]
             }

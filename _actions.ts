@@ -24,22 +24,6 @@ export async function createCategoryAction(form: any) {
     }
 }
 
-export async function createDistribution({ values }: { values: typeof createDistributionSchema }) {
-    const session = await getServerSession(authOptions)
-    if (!session) return
-    const form = createDistributionSchema.safeParse(values)
-    if (form.success) {
-        try {
-            await prisma.distributors.create({ data: { name: form.data.name, users: { connect: { id: session?.user.id } } } })
-            console.log("Distribution has been successfully created.")
-            revalidatePath("/distribution")
-        } catch (error) {
-            console.log("Something Went Wrong when creating new Distribution")
-            console.log(error)
-        }
-    }
-}
-
 export async function deleteCategoryByIdAction(id: string) {
     await prisma.categories.delete({ where: { id } })
     revalidatePath("/admin/categories")
@@ -51,7 +35,7 @@ export async function deleteProductAction(id: string) {
 }
 
 export async function createProductAction(values: z.infer<typeof createProductSchema>) {
-    const { id, regularPrice, salePrice, purchasePrice, distributionId, ...otherValues } = createProductSchema.parse(values)
+    const { id, regularPrice, salePrice, purchasePrice, did, ...otherValues } = createProductSchema.parse(values)
     try {
         await prisma.products.upsert({
             create: {
@@ -59,7 +43,7 @@ export async function createProductAction(values: z.infer<typeof createProductSc
                 regularPrice,
                 salePrice,
                 purchasePrice,
-                distributors: { connect: { id: distributionId } },
+                distributors: { connect: { id: did } },
                 discountInPercentage: calculatePercentage(regularPrice, salePrice),
                 profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
             },
@@ -68,7 +52,7 @@ export async function createProductAction(values: z.infer<typeof createProductSc
                 regularPrice,
                 salePrice,
                 purchasePrice,
-                distributors: { connect: { id: distributionId } },
+                distributors: { connect: { id: did } },
                 discountInPercentage: calculatePercentage(regularPrice, salePrice),
                 profit: calculateProfit({ purchasePrice, regularPrice, salePrice })
             },
@@ -189,14 +173,14 @@ export async function initImage() {
 
 
 export async function createCompany(form: typeof createCompanySchema) {
-    const { id, distributionId, ...values } = createCompanySchema.parse(form)
+    const { id, did, ...values } = createCompanySchema.parse(form)
     try {
         await prisma.companies.upsert({
-            create: { ...values, distributors: { connect: { id: distributionId } } },
-            update: { ...values, distributors: { connect: { id: distributionId } } },
+            create: { ...values, distributors: { connect: { id: did } } },
+            update: { ...values, distributors: { connect: { id: did } } },
             where: { id }
         })
-        revalidatePath(`/distribution/${distributionId}/companies`)
+        revalidatePath(`/d/${did}/companies`)
         console.log("Company Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating company 👎")
@@ -205,14 +189,14 @@ export async function createCompany(form: typeof createCompanySchema) {
 }
 
 export async function createArea(form: typeof createAreaSchema) {
-    const { id, distributionId, ...values } = createAreaSchema.parse(form)
+    const { id, did, ...values } = createAreaSchema.parse(form)
     try {
         await prisma.areas.upsert({
-            create: { ...values, distributors: { connect: { id: distributionId } } },
-            update: { ...values, distributors: { connect: { id: distributionId } } },
+            create: { ...values, distributors: { connect: { id: did } } },
+            update: { ...values, distributors: { connect: { id: did } } },
             where: { id }
         })
-        revalidatePath(`/distribution/${distributionId}/areas`)
+        revalidatePath(`/d/${did}/areas`)
         console.log("Area Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Area 👎")
@@ -253,22 +237,22 @@ export async function InitAddress(session: Session | null) {
 }
 
 export async function createShop(form: typeof createShopSchema) {
-    const { id, areaId, distributionId, ...values } = createShopSchema.parse(form)
+    const { id, areaId, did, ...values } = createShopSchema.parse(form)
     try {
         await prisma.shops.upsert({
             create: {
                 ...values,
                 Areas: { connect: { id: areaId } },
-                distributors: { connect: { id: distributionId } }
+                distributors: { connect: { id: did } }
             },
             update: {
                 ...values,
                 Areas: { connect: { id: areaId } },
-                distributors: { connect: { id: distributionId } }
+                distributors: { connect: { id: did } }
             },
             where: { id }
         })
-        revalidatePath(`/distribution/${distributionId}/shops`)
+        revalidatePath(`/d/${did}/shops`)
         console.log("Shop Successful Created Or Updated 👍")
     } catch (e) {
         console.log("Something went wrong when creating new or updating Shop 👎")
@@ -443,16 +427,16 @@ export async function statusAction({ orderId, statusId }: { orderId: string, sta
 
 
 export async function updateUser(form: typeof createUserSchema) {
-    const { id, distributionId, ...values } = createUserSchema.parse(form)
+    const { id, did, ...values } = createUserSchema.parse(form)
     try {
         await prisma.user.upsert({
             create: {
                 ...values,
-                distributors: { connect: { id: distributionId } }
+                distributors: { connect: { id: did } }
             },
             update: {
                 ...values,
-                distributors: { connect: { id: distributionId } }
+                distributors: { connect: { id: did } }
             },
             where: { id }
         })

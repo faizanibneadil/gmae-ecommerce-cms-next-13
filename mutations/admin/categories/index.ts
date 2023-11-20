@@ -39,18 +39,18 @@ export async function $initialCategoryCreateAction(values: any) {
 
     if (!session) throw Error("Unauthorized")
     if (!values?.name) throw Error("alt text Id is required.")
-    if (!values?.distributionId) throw Error("distribution Id is required.")
+    if (!values?.did) throw Error("distribution Id is required.")
 
     try {
         await prisma.categories.create({
             data: {
                 name: values.name,
-                distributors: { connect: { id: values.distributionId } }
+                distributors: { connect: { id: values.did } }
             }
         })
         console.log("Category updated successfully. 👍")
-        revalidateTag(`_getAdminCategories-${values.distributionId}`)
-        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
+        revalidateTag(`_getAdminCategories-${values.did}`)
+        revalidateTag(`_getDistributionInfo-${values.did}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating category. 👎")
         console.log(error)

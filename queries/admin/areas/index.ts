@@ -6,15 +6,15 @@ import { unstable_cache } from "next/cache"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/config/authOptions"
 
-export async function _getAreas(distributionId: string) {
+export async function _getAreas(did: string) {
     const areas = await unstable_cache(
         async () => {
-            const data = prisma.areas.findMany({ select: { _count: { select: { shops: true } }, id: true, name: true }, where: { distributors: { some: { id: distributionId } } } });
+            const data = prisma.areas.findMany({ select: { _count: { select: { shops: true } }, id: true, name: true }, where: { distributors: { some: { id: did } } } });
             return data
         },
-        [`_getAreas-${distributionId}`],
+        [`_getAreas-${did}`],
         {
-            tags: [`_getAreas-${distributionId}`],
+            tags: [`_getAreas-${did}`],
             revalidate: 60 * 30,
         }
     )()
@@ -22,7 +22,7 @@ export async function _getAreas(distributionId: string) {
 }
 
 
-export async function _searchAreas({ query, distributionId }: { query: string, distributionId: string }) {
+export async function _searchAreas({ query, did }: { query: string, did: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -33,7 +33,7 @@ export async function _searchAreas({ query, distributionId }: { query: string, d
             select: { _count: { select: { shops: true } }, id: true, name: true },
             where: {
                 AND: [
-                    { distributors: { some: { id: distributionId } } },
+                    { distributors: { some: { id: did } } },
                     { name: { search: query.split(" ").join(" | ") } }
                 ]
             }

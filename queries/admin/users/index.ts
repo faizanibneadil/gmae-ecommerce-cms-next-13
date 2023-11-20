@@ -6,10 +6,10 @@ import { unstable_cache } from "next/cache"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/config/authOptions"
 
-export async function _getUsers(distributionId: string) {
+export async function _getUsers(did: string) {
     const users = await unstable_cache(
         async () => {
-            const data = await prisma.user.findMany({ where: { distributors: { some: { id: distributionId } } }, orderBy: { createdAt: "desc" } });
+            const data = await prisma.user.findMany({ where: { distributors: { some: { id: did } } }, orderBy: { createdAt: "desc" } });
             return data
         },
         ["_getUsers"],
@@ -22,7 +22,7 @@ export async function _getUsers(distributionId: string) {
 }
 
 
-export async function _searchUsers({ query, distributionId }: { query: string, distributionId: string }) {
+export async function _searchUsers({ query, did }: { query: string, did: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -32,7 +32,7 @@ export async function _searchUsers({ query, distributionId }: { query: string, d
         const users = await prisma.user.findMany({
             where: {
                 AND: [
-                    { distributors: { some: { id: distributionId } } },
+                    { distributors: { some: { id: did } } },
                     { name: { search: query.split(" ").join(" | ") } }
                 ]
             }, orderBy: { createdAt: "desc" }

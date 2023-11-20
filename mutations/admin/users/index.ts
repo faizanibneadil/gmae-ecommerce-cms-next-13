@@ -13,13 +13,13 @@ export async function $initialUserCreateAction(values: any) {
 
     if (!session) throw Error("Unauthorized")
     if (!values?.name) throw Error("Name is required.")
-    if (!values?.distributionId) throw Error("Distribution Id is required.")
+    if (!values?.did) throw Error("Distribution Id is required.")
 
     try {
         await prisma.user.create({
             data: {
                 name: values.name,
-                distributors: { connect: { id: values.distributionId } }
+                distributors: { connect: { id: values.did } }
             }
         })
         console.log("Image updated successfully. 👍")

@@ -13,19 +13,19 @@ export async function $initialShopCreateAction(values: any) {
 
     if (!session) throw Error("Unauthorized")
     if (!values?.name) throw Error("Name is required.")
-    if (!values?.distributionId) throw Error("Distribution Id is required.")
+    if (!values?.did) throw Error("Distribution Id is required.")
 
     try {
         await prisma.shops.create({
             data: {
                 name: values.name,
-                distributors: { connect: { id: values.distributionId } }
+                distributors: { connect: { id: values.did } }
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getShops-${values.distributionId}`)
-        revalidateTag(`_getAreas-${values.distributionId}`)
-        revalidateTag(`_getDistributionInfo-${values.distributionId}`)
+        revalidateTag(`_getShops-${values.did}`)
+        revalidateTag(`_getAreas-${values.did}`)
+        revalidateTag(`_getDistributionInfo-${values.did}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)

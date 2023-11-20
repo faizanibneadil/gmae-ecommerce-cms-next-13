@@ -27,6 +27,9 @@ model Recoveries {
   Billing   Billing? @relation(fields: [billingId], references: [id])
   billingId String?
 
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([billingId])
 }
 
@@ -51,6 +54,9 @@ model Distributors {
   brands     Brands[]
   Ledger     Ledger?      @relation(fields: [ledgerId], references: [id])
   ledgerId   String?
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BillingItems {
@@ -109,6 +115,9 @@ model Areas {
   shops        Shops[]
   bills        Billing[]
   distributors Distributors[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserAddresses {
@@ -124,6 +133,9 @@ model UserAddresses {
   User           User?    @relation(fields: [userId], references: [id])
   userId         String?
   orders         Orders[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
@@ -153,6 +165,9 @@ model Shops {
   bills        Billing[]
   distributors Distributors[]
 
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([areaId])
   @@index([accessId])
   @@index([popType])
@@ -164,6 +179,9 @@ model Brands {
   name         String?
   products     Products[]
   distributors Distributors[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Companies {
@@ -172,6 +190,9 @@ model Companies {
   products     Products[]
   bills        Billing[]
   distributors Distributors[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum OrderStatus {
@@ -188,6 +209,9 @@ model OrderStatuses {
   id     String      @id @default(uuid())
   name   OrderStatus @default(PENDING)
   orders Orders[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model OrderItems {
@@ -199,6 +223,9 @@ model OrderItems {
   orderId   String?
   Products  Products? @relation(fields: [productId], references: [id])
   productId String?
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([orderId])
   @@index([productId])
@@ -230,6 +257,9 @@ model Attributes {
   product   Products? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String?
 
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([productId])
 }
 
@@ -238,6 +268,9 @@ model Favorites {
   productId String[]
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?  @unique
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([productId])
   @@index([userId])
@@ -250,6 +283,9 @@ model Images {
   altText    String?
   Products   Products[]
   Categories Categories[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([src])
   @@index([searchText])

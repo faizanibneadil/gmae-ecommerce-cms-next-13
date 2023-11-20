@@ -39,19 +39,19 @@ export async function _getCategoriesOfProduct({ productId }: { productId: string
 }
 
 
-export async function _getAdminCategories(distributionId: string) {
+export async function _getAdminCategories(did: string) {
     const categories = await unstable_cache(
         async () => {
             const data = await prisma.categories.findMany({
                 select: { _count: { select: { subCategories: true } }, id: true, name: true, slug: true, order: true, displayOnLandingPage: true, isPublished: true, images: { select: { id: true, src: true } }, },
-                where: { distributors: { some: { id: distributionId } } },
+                where: { distributors: { some: { id: did } } },
                 orderBy: { order: "asc" },
             });
             return data
         },
-        [`_getAdminCategories-${distributionId}`],
+        [`_getAdminCategories-${did}`],
         {
-            tags: [`_getAdminCategories-${distributionId}`],
+            tags: [`_getAdminCategories-${did}`],
             revalidate: 60 * 30,
         }
     )()
@@ -59,7 +59,7 @@ export async function _getAdminCategories(distributionId: string) {
 }
 
 
-export async function _searchCategories({ query, distributionId }: { query: string, distributionId: string }) {
+export async function _searchCategories({ query, did }: { query: string, did: string }) {
     const session = await getServerSession(authOptions)
 
     if (!session) throw Error("Unauthorized")
@@ -70,7 +70,7 @@ export async function _searchCategories({ query, distributionId }: { query: stri
             select: { _count: { select: { subCategories: true } }, id: true, name: true, slug: true, order: true, displayOnLandingPage: true, isPublished: true, images: { select: { id: true, src: true } }, },
             where: {
                 AND: [
-                    { distributors: { some: { id: distributionId } } },
+                    { distributors: { some: { id: did } } },
                     { name: { search: query.split(" ").join(" | ") } }
                 ]
             }

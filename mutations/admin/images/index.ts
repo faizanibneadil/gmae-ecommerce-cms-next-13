@@ -14,6 +14,7 @@ export async function $linkImagesWithProduct(values: any) {
     if (!session) throw Error("Unauthorized")
     if (!values?.productId) throw Error("Product Id is required.")
     if (!values?.imageId) throw Error("Image Id is required.")
+    if (!values?.did) throw Error("Distribution Id is required.")
 
     try {
         await prisma.images.update({
@@ -28,8 +29,8 @@ export async function $linkImagesWithProduct(values: any) {
                 id: values.imageId
             }
         })
-        revalidateTag(`_getImages`)
-        revalidateTag(`_getInventory`)
+        revalidateTag(`_getImages-${values.did}`)
+        revalidateTag(`_getInventory-${values.did}`)
         console.log("Image updated successfully. 👍")
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
@@ -44,6 +45,8 @@ export async function $unLinkImagesWithProduct(values: any) {
     if (!session) throw Error("Unauthorized")
     if (!values?.productId) throw Error("Product Id is required.")
     if (!values?.imageId) throw Error("Image Id is required.")
+    if (!values?.did) throw Error("Distribution Id is required.")
+
 
     try {
         await prisma.images.update({
@@ -58,8 +61,8 @@ export async function $unLinkImagesWithProduct(values: any) {
                 id: values.imageId
             }
         })
-        revalidateTag(`_getImages`)
-        revalidateTag(`_getInventory`)
+        revalidateTag(`_getImages-${values.did}`)
+        revalidateTag(`_getInventory-${values.did}`)
         console.log("Image updated successfully. 👍")
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
