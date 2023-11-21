@@ -22,7 +22,7 @@ export async function $createDistributionAction(values: any) {
         console.log("Distribution has been successfully. 👍")
         revalidateTag(`_getDistribution`)
     } catch (error: any) {
-        console.log("Something Went Wrong when updating image. 👎")
+        console.log("Something Went Wrong when updating distribution. 👎")
         console.log(error)
         throw new Error(error?.message)
     }

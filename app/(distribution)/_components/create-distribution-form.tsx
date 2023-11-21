@@ -16,7 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { $createDistributionAction } from "@/mutations";
 
@@ -25,9 +24,7 @@ const formSchema = z.object({
     message: "Distribution Name must be at least 2 characters.",
   }),
 });
-const CreateDistributionForm: React.FC<{
-  session: Session | null;
-}> = memo(({ session }) => {
+const CreateDistributionForm: React.FC<{}> = memo(({}) => {
   const { push } = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,9 +35,7 @@ const CreateDistributionForm: React.FC<{
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const id = await $createDistributionAction({
-      values: values.name,
-    });
+    const id = await $createDistributionAction({ ...values });
     return push(`/d/${id}`);
   };
 

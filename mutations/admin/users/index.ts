@@ -23,7 +23,7 @@ export async function $initialUserCreateAction(values: any) {
             }
         })
         console.log("Image updated successfully. 👍")
-        revalidateTag(`_getUsers`)
+        revalidateTag(`_getUsers-${values?.did}`)
     } catch (error: any) {
         console.log("Something Went Wrong when updating image. 👎")
         console.log(error)

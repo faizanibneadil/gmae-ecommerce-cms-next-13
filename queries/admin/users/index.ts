@@ -12,9 +12,9 @@ export async function _getUsers(did: string) {
             const data = await prisma.user.findMany({ where: { distributors: { some: { id: did } } }, orderBy: { createdAt: "desc" } });
             return data
         },
-        ["_getUsers"],
+        [`_getUsers-${did}`],
         {
-            tags: ["_getUsers"],
+            tags: [`_getUsers-${did}`],
             revalidate: 60 * 30,
         }
     )()

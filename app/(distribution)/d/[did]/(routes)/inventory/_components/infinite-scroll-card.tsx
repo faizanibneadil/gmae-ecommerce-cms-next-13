@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/context-menu";
 import { PencilIcon } from "@/app/_components/icons";
 import Link from "next/link";
+import { ListChecks } from "lucide-react";
 
 interface InfiniteScrollCardTypes {
   title: string | null;
@@ -50,6 +51,11 @@ const InfiniteScrollCard: React.FC<{
         <Link href={`/d/${did}/inventory/${item.id}/images`}>
           <ContextMenuItem className="cursor-pointer">
             <PencilIcon className="w-4 h-4 mr-2" /> Images
+          </ContextMenuItem>
+        </Link>
+        <Link href={`/d/${did}/inventory/${item.id}/categories`}>
+          <ContextMenuItem className="cursor-pointer">
+            <ListChecks className="w-4 h-4 mr-2" /> Categories
           </ContextMenuItem>
         </Link>
         <Link href={`/d/${did}/inventory/${item.id}/companies`}>
