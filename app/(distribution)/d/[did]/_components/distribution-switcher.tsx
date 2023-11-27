@@ -84,7 +84,10 @@ export default function DistributionSwitcher({
     },
   });
 
-  const onSubmit = (values: any) => $createDistributionAction(values);
+  const onSubmit = async (values: any) => {
+    const id = await $createDistributionAction(values);
+    router.replace(`/d/${id}`);
+  };
 
   return (
     <Dialog
