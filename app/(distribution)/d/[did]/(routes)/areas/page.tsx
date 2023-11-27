@@ -10,7 +10,6 @@ import {
 import { PencilIcon } from "@/app/_components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { PageProps } from "@/types";
 
 const Page: React.FC<PageProps> = async ({ params, searchParams }) => {
