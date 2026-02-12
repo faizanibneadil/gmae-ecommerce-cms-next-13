@@ -7,19 +7,26 @@ import type { Config } from "payload"
 
 export const multiTenancy = multiTenantPlugin<Config>({
     // debug: true,
-    enabled:true,
+    enabled: true,
     collections: {
         media: {},
         pages: {},
         categories: {},
         companies: {},
         areas: {},
-        brands:{},
+        brands: {},
         shops: {},
-        billing: { }
+        billing: {},
+        "order-status": {},
+        addresses: {},
+        favorites: {},
+        users: {},
+        "payment-methods": {},
+        "shop-types": {},
+        orders: {}
     },
     tenantField: {
-        hasMany: true,
+        // hasMany: true,
         access: {
             read: () => true,
             update: ({ req }) => {

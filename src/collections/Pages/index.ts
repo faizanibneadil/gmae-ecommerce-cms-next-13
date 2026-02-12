@@ -28,6 +28,7 @@ export const Pages: CollectionConfig<'pages'> = {
     admin: {
         useAsTitle: 'title'
     },
+    enableQueryPresets: true,
     fields: [
         {
             type: 'text',

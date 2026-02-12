@@ -93,11 +93,36 @@ export interface Config {
     brands: Brand;
     shops: Shop;
     billing: Billing;
+    'order-status': OrderStatus;
+    favorites: Favorite;
+    addresses: Address;
+    'payment-methods': PaymentMethod;
+    'shop-types': ShopType;
+    transactions: Transaction;
+    orders: Order;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
+    'payload-query-presets': PayloadQueryPreset;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    users: {
+      addresses: 'addresses';
+      favorites: 'favorites';
+      bookingBy: 'billing';
+      deliverBy: 'billing';
+    };
+    companies: {
+      bills: 'billing';
+    };
+    areas: {
+      shops: 'shops';
+      bills: 'billing';
+    };
+    shops: {
+      bills: 'billing';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -109,9 +134,17 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     shops: ShopsSelect<false> | ShopsSelect<true>;
     billing: BillingSelect<false> | BillingSelect<true>;
+    'order-status': OrderStatusSelect<false> | OrderStatusSelect<true>;
+    favorites: FavoritesSelect<false> | FavoritesSelect<true>;
+    addresses: AddressesSelect<false> | AddressesSelect<true>;
+    'payment-methods': PaymentMethodsSelect<false> | PaymentMethodsSelect<true>;
+    'shop-types': ShopTypesSelect<false> | ShopTypesSelect<true>;
+    transactions: TransactionsSelect<false> | TransactionsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+    'payload-query-presets': PayloadQueryPresetsSelect<false> | PayloadQueryPresetsSelect<true>;
   };
   db: {
     defaultIDType: number;
@@ -120,9 +153,7 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'users';
-  };
+  user: User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -152,10 +183,31 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  tenant?: (number | null) | Tenant;
   roles?: TUserRole;
   username?: string | null;
   tenants?: TUserTenants;
   profile?: (number | null) | Media;
+  addresses?: {
+    docs?: (number | Address)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  favorites?: {
+    docs?: (number | Favorite)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  bookingBy?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  deliverBy?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -174,6 +226,7 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -200,7 +253,7 @@ export interface Tenant {
  */
 export interface Media {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -217,11 +270,157 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  label?: string | null;
+  user: number | User;
+  streetAddress1: string;
+  streetAddress2?: string | null;
+  apartment?: string | null;
+  city?: string | null;
+  province?: string | null;
+  postalCode?: number | null;
+  phone?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "favorites".
+ */
+export interface Favorite {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  user?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "billing".
+ */
+export interface Billing {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  bookedBy?: (number | null) | User;
+  deliveredBy?: (number | null) | User;
+  area?: (number | null) | Area;
+  shop?: (number | null) | Shop;
+  company?: (number | null) | Company;
+  products?:
+    | {
+        productName?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  deliverAt: string;
+  extraDiscount?: number | null;
+  profit?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "areas".
+ */
+export interface Area {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Overview of all shops.
+   */
+  shops?: {
+    docs?: (number | Shop)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Overview of all invoices and bills generated for this shop.
+   */
+  bills?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops".
+ */
+export interface Shop {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  owner: number | User;
+  area?: (number | null) | Area;
+  shopType?: (number | null) | ShopType;
+  paidBy?: (number | null) | PaymentMethod;
+  phone?: number | null;
+  address?: string | null;
+  /**
+   * Overview of all invoices and bills generated for this shop.
+   */
+  bills?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-types".
+ */
+export interface ShopType {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-methods".
+ */
+export interface PaymentMethod {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  bills?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   updatedAt: string;
   createdAt: string;
@@ -232,7 +431,7 @@ export interface Page {
  */
 export interface Category {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -241,28 +440,10 @@ export interface Category {
   slug: string;
   isPublished: boolean;
   displayOnLandingPage: boolean;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "companies".
- */
-export interface Company {
-  id: number;
-  tenant?: (number | Tenant)[] | null;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "areas".
- */
-export interface Area {
-  id: number;
-  tenant?: (number | Tenant)[] | null;
-  title: string;
+  /**
+   * If this is a sub-category, select its parent. Otherwise, leave blank for top-level.
+   */
+  parentCategory?: (number | null) | Category;
   updatedAt: string;
   createdAt: string;
 }
@@ -272,42 +453,53 @@ export interface Area {
  */
 export interface Brand {
   id: number;
-  tenant?: (number | Tenant)[] | null;
+  tenant?: (number | null) | Tenant;
   title: string;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "shops".
+ * via the `definition` "order-status".
  */
-export interface Shop {
+export interface OrderStatus {
   id: number;
-  tenant?: (number | Tenant)[] | null;
-  title: string;
-  owner: number | User;
-  area?: (number | null) | Area;
-  popType?: ('RETAILER' | 'WHOLESELER') | null;
-  payType?: ('CASH' | 'CHEQUE' | 'BILL') | null;
-  phone?: number | null;
-  address?: string | null;
+  tenant?: (number | null) | Tenant;
+  label?: string | null;
+  value?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billing".
+ * via the `definition` "transactions".
  */
-export interface Billing {
+export interface Transaction {
   id: number;
-  tenant?: (number | Tenant)[] | null;
-  bookingBy: number | User;
-  deliverBy: number | User;
+  bookedBy: number | User;
+  deliveredBy: number | User;
   area: number | Area;
   shop: number | Shop;
   company: number | Company;
+  products?:
+    | {
+        id?: string | null;
+      }[]
+    | null;
   deliverAt: string;
   extraDiscount?: number | null;
+  profit?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  status?: (number | null) | OrderStatus;
   updatedAt: string;
   createdAt: string;
 }
@@ -357,6 +549,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'billing';
         value: number | Billing;
+      } | null)
+    | ({
+        relationTo: 'order-status';
+        value: number | OrderStatus;
+      } | null)
+    | ({
+        relationTo: 'favorites';
+        value: number | Favorite;
+      } | null)
+    | ({
+        relationTo: 'addresses';
+        value: number | Address;
+      } | null)
+    | ({
+        relationTo: 'payment-methods';
+        value: number | PaymentMethod;
+      } | null)
+    | ({
+        relationTo: 'shop-types';
+        value: number | ShopType;
+      } | null)
+    | ({
+        relationTo: 'transactions';
+        value: number | Transaction;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -402,13 +622,78 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-query-presets".
+ */
+export interface PayloadQueryPreset {
+  id: number;
+  title: string;
+  isShared?: boolean | null;
+  access?: {
+    read?: {
+      constraint?: ('everyone' | 'onlyMe' | 'specificUsers') | null;
+      users?: (number | User)[] | null;
+    };
+    update?: {
+      constraint?: ('everyone' | 'onlyMe' | 'specificUsers') | null;
+      users?: (number | User)[] | null;
+    };
+    delete?: {
+      constraint?: ('everyone' | 'onlyMe' | 'specificUsers') | null;
+      users?: (number | User)[] | null;
+    };
+  };
+  where?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  columns?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  groupBy?: string | null;
+  relatedCollection:
+    | 'users'
+    | 'media'
+    | 'pages'
+    | 'categories'
+    | 'companies'
+    | 'areas'
+    | 'brands'
+    | 'shops'
+    | 'billing'
+    | 'favorites'
+    | 'transactions';
+  /**
+   * This is a temporary field used to determine if updating the preset would remove the user's access to it. When `true`, this record will be deleted after running the preset's `validate` function.
+   */
+  isTemp?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  tenant?: T;
   roles?: T;
   username?: T;
   tenants?: T | TUserTenantsSelect<T>;
   profile?: T;
+  addresses?: T;
+  favorites?: T;
+  bookingBy?: T;
+  deliverBy?: T;
   updatedAt?: T;
   createdAt?: T;
   deletedAt?: T;
@@ -489,6 +774,7 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   isPublished?: T;
   displayOnLandingPage?: T;
+  parentCategory?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -499,6 +785,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface CompaniesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  bills?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -509,6 +796,8 @@ export interface CompaniesSelect<T extends boolean = true> {
 export interface AreasSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  shops?: T;
+  bills?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -531,10 +820,11 @@ export interface ShopsSelect<T extends boolean = true> {
   title?: T;
   owner?: T;
   area?: T;
-  popType?: T;
-  payType?: T;
+  shopType?: T;
+  paidBy?: T;
   phone?: T;
   address?: T;
+  bills?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -544,13 +834,112 @@ export interface ShopsSelect<T extends boolean = true> {
  */
 export interface BillingSelect<T extends boolean = true> {
   tenant?: T;
-  bookingBy?: T;
-  deliverBy?: T;
+  bookedBy?: T;
+  deliveredBy?: T;
   area?: T;
   shop?: T;
   company?: T;
+  products?:
+    | T
+    | {
+        productName?: T;
+        id?: T;
+      };
   deliverAt?: T;
   extraDiscount?: T;
+  profit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "order-status_select".
+ */
+export interface OrderStatusSelect<T extends boolean = true> {
+  tenant?: T;
+  label?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "favorites_select".
+ */
+export interface FavoritesSelect<T extends boolean = true> {
+  tenant?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses_select".
+ */
+export interface AddressesSelect<T extends boolean = true> {
+  tenant?: T;
+  label?: T;
+  user?: T;
+  streetAddress1?: T;
+  streetAddress2?: T;
+  apartment?: T;
+  city?: T;
+  province?: T;
+  postalCode?: T;
+  phone?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-methods_select".
+ */
+export interface PaymentMethodsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-types_select".
+ */
+export interface ShopTypesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions_select".
+ */
+export interface TransactionsSelect<T extends boolean = true> {
+  bookedBy?: T;
+  deliveredBy?: T;
+  area?: T;
+  shop?: T;
+  company?: T;
+  products?:
+    | T
+    | {
+        id?: T;
+      };
+  deliverAt?: T;
+  extraDiscount?: T;
+  profit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  tenant?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -583,6 +972,43 @@ export interface PayloadPreferencesSelect<T extends boolean = true> {
 export interface PayloadMigrationsSelect<T extends boolean = true> {
   name?: T;
   batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-query-presets_select".
+ */
+export interface PayloadQueryPresetsSelect<T extends boolean = true> {
+  title?: T;
+  isShared?: T;
+  access?:
+    | T
+    | {
+        read?:
+          | T
+          | {
+              constraint?: T;
+              users?: T;
+            };
+        update?:
+          | T
+          | {
+              constraint?: T;
+              users?: T;
+            };
+        delete?:
+          | T
+          | {
+              constraint?: T;
+              users?: T;
+            };
+      };
+  where?: T;
+  columns?: T;
+  groupBy?: T;
+  relatedCollection?: T;
+  isTemp?: T;
   updatedAt?: T;
   createdAt?: T;
 }

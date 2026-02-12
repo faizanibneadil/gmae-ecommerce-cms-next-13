@@ -14,38 +14,43 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build",
-    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && yarn build --turbopack"
+    "ci": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && pnpm build",
+    "ci:turbopack": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types && payload generate:importmap && payload migrate:create --skip-empty && payload migrate:status && payload migrate && payload migrate:status && pnpm build --turbopack"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
     "@hookform/resolvers": "^5.2.1",
-    "@payloadcms/admin-bar": "^3.70.0",
-    "@payloadcms/db-postgres": "^3.70.0",
-    "@payloadcms/email-resend": "^3.70.0",
-    "@payloadcms/live-preview-react": "^3.70.0",
-    "@payloadcms/next": "^3.70.0",
-    "@payloadcms/plugin-form-builder": "^3.70.0",
-    "@payloadcms/plugin-multi-tenant": "^3.70.0",
-    "@payloadcms/plugin-redirects": "^3.70.0",
-    "@payloadcms/plugin-search": "^3.70.0",
-    "@payloadcms/plugin-seo": "^3.70.0",
-    "@payloadcms/richtext-lexical": "^3.70.0",
-    "@payloadcms/sdk": "^3.70.0",
+    "@payloadcms/admin-bar": "^3.76.0",
+    "@payloadcms/db-postgres": "^3.76.0",
+    "@payloadcms/email-resend": "^3.76.0",
+    "@payloadcms/live-preview-react": "^3.76.0",
+    "@payloadcms/next": "^3.76.0",
+    "@payloadcms/plugin-form-builder": "^3.76.0",
+    "@payloadcms/plugin-multi-tenant": "^3.76.0",
+    "@payloadcms/plugin-redirects": "^3.76.0",
+    "@payloadcms/plugin-search": "^3.76.0",
+    "@payloadcms/plugin-seo": "^3.76.0",
+    "@payloadcms/richtext-lexical": "^3.76.0",
+    "@payloadcms/sdk": "^3.76.0",
+    "@payloadcms/ui": "^3.76.0",
     "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cross-env": "^10.1.0",
     "graphql": "^16.11.0",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
     "next-pwa": "^5.6.0",
     "next-themes": "^0.4.6",
-    "payload": "^3.70.0",
+    "payload": "^3.76.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.69.0",
     "react-to-print": "^2.14.15",
-    "tailwind-merge": "^3.4.0"
+    "sharp": "^0.34.5",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -64,5 +69,20 @@
     "firefox 67",
     "opera 51",
     "safari 12"
-  ]
+  ],
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0",
+    "pnpm": "^9 || ^10"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.18.20"
+    },
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  },
+  "packageManager": "pnpm@10.29.1"
 }

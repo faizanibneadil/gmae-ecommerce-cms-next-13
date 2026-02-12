@@ -36,6 +36,7 @@ export const Users: CollectionConfig<'users'> = {
   admin: {
     useAsTitle: 'email',
   },
+  enableQueryPresets: true,
   auth: true,
   endpoints: [],
   fields: [
@@ -55,6 +56,9 @@ export const Users: CollectionConfig<'users'> = {
         { label: "Super Admin", value: "SUPER_ADMIN" },
         { label: "User", value: "USER" },
       ],
+      // admin: {
+      //   position: 'sidebar'
+      // }
       // access: {
       //   update: ({ req }) => {
       //     return isSuperAdmin(req.user)
@@ -67,7 +71,10 @@ export const Users: CollectionConfig<'users'> = {
       hooks: {
         beforeValidate: [ensureUniqueUsername],
       },
-      index: true,
+      // admin: {
+      //   position: 'sidebar'
+      // }
+      // index: true,
       // unique: true
     },
     {
@@ -85,6 +92,76 @@ export const Users: CollectionConfig<'users'> = {
       relationTo: 'media',
       label: 'Profile Avatar',
     },
+    {
+      name: 'addresses',
+      label: 'Saved Addresses',
+      type: 'join',
+      collection: 'addresses',
+      on: 'user',
+      admin: {
+        allowCreate: false,
+        disableGroupBy: false,
+        disableListColumn: false,
+        disableListFilter: false,
+        disableRowTypes: false,
+      }
+    },
+    {
+      name: 'favorites',
+      label: 'Favorite Products',
+      type: 'join',
+      collection: 'favorites',
+      on: 'user',
+      admin: {
+        allowCreate: false,
+        disableGroupBy: false,
+        disableListColumn: false,
+        disableListFilter: false,
+        disableRowTypes: false,
+      }
+    },
+    {
+      name: 'bookingBy',
+      label: 'Booked Billings',
+      type: 'join',
+      collection: 'billing',
+      on: 'bookedBy', // Ensure this field exists in 'billing' collection
+      admin: {
+        allowCreate: false,
+        disableGroupBy: false,
+        disableListColumn: false,
+        disableListFilter: false,
+        disableRowTypes: false,
+      }
+    },
+    {
+      name: 'deliverBy',
+      label: 'Delivered Billings',
+      type: 'join',
+      collection: 'billing',
+      on: 'deliveredBy', // Ensure this field exists in 'billing' collection
+      admin: {
+        allowCreate: false,
+        disableGroupBy: false,
+        disableListColumn: false,
+        disableListFilter: false,
+        disableRowTypes: false,
+      }
+    },
+    // {
+    //   name: 'orders',
+    //   label: 'Order History',
+    //   type: 'join',
+    //   collection: 'orders',
+    //   on: 'customer',
+    // admin: {
+    //   allowCreate:false,
+    //   disableGroupBy: false,
+    //   disableListColumn:false,
+    //   disableListFilter:false,
+    //   disableRowTypes:false,
+    // }
+    // },
   ],
   // The following hook sets a cookie based on the domain a user logs in from.
   // It checks the domain and matches it to a tenant in the system, then sets

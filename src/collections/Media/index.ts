@@ -6,6 +6,7 @@ export const Media: CollectionConfig = {
   admin: { 
     // group: NavigationGroups.portfolio 
   },
+  enableQueryPresets: true,
   upload: {
     formatOptions:{
       format: 'webp',

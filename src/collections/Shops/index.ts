@@ -8,6 +8,7 @@ export const Shops: CollectionConfig<'shops'> = {
     admin: {
         useAsTitle: 'title'
     },
+    enableQueryPresets: true,
     fields: [
         {
             type: 'text',
@@ -39,24 +40,17 @@ export const Shops: CollectionConfig<'shops'> = {
             type: 'row',
             fields: [
                 {
-                    type: 'select',
-                    name: 'popType',
-                    label: 'Pop Type',
-                    options: [
-                        { label: 'Retailer', value: 'RETAILER' },
-                        { label: 'Wholeseler', value: 'WHOLESELER' }
-                    ],
+                    type: 'relationship',
+                    relationTo: 'shop-types',
+                    name: 'shopType',
+                    label: 'Shop Type',
                     admin: { width: '50%' }
                 },
                 {
-                    type: 'select',
-                    name: 'payType',
-                    label: 'Pay Type',
-                    options: [
-                        { label: 'Cash', value: 'CASH' },
-                        { label: 'Cheque', value: 'CHEQUE' },
-                        { label: 'Bill', value: 'BILL' }
-                    ],
+                    type: 'relationship',
+                    relationTo: 'payment-methods',
+                    name: 'paidBy',
+                    label: 'Payment Methods',
                     admin: { width: '50%' }
                 },
             ]
@@ -68,7 +62,7 @@ export const Shops: CollectionConfig<'shops'> = {
                     type: 'number',
                     name: 'phone',
                     label: 'Phone',
-                    admin: { width: '50%'}
+                    admin: { width: '50%' }
                 },
                 {
                     type: 'text',
@@ -77,6 +71,21 @@ export const Shops: CollectionConfig<'shops'> = {
                     admin: { width: '50%' }
                 }
             ]
+        },
+        {
+            name: 'bills',
+            type: 'join',
+            collection: 'billing',
+            on: 'shop',
+            label: 'Shop Billing History',
+            admin: {
+                allowCreate: false,
+                disableGroupBy: false,
+                disableListColumn: false,
+                disableListFilter: false,
+                disableRowTypes: false,
+                description: 'Overview of all invoices and bills generated for this shop.',
+            }
         },
     ]
 }

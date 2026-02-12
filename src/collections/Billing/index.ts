@@ -1,91 +1,38 @@
 import type { CollectionConfig } from "payload";
 import { Pages } from "../Pages";
+import { ProfitField } from "./fields/CalculateProfit";
+import { BookedByField } from "./fields/BookedByField";
+import { DeliveredByField } from "./fields/DeliveredByField";
+import { AreaField } from "./fields/AreaField";
+import { ShopsField } from "./fields/ShopsField";
+import { CompanyField } from "./fields/CompanyField";
+import { ProductsField } from "./fields/ProductsField";
 
 export const Billing: CollectionConfig<'billing'> = {
     slug: 'billing',
     labels: { plural: 'Billings', singular: 'Billing' },
     access: Pages.access,
     admin: {
-        useAsTitle: 'createdAt'
+        useAsTitle: 'createdAt',
     },
+    enableQueryPresets: true,
     fields: [
         {
             type: 'row',
-            fields: [
-                {
-                    type: 'relationship',
-                    relationTo: 'users',
-                    filterOptions: () => ({ 'roles': { in: ['BOOKER'] } }),
-                    name: 'bookingBy',
-                    label: 'Booking By (Booker)',
-                    required: true,
-                    admin: {
-                        width: '50%',
-                        allowCreate: false,
-                        allowEdit: false,
-                        placeholder:'Select a Booker'
-                    }
-                },
-                {
-                    type: 'relationship',
-                    relationTo: 'users',
-                    filterOptions: () => ({ 'roles': { in: ['SALES_MAN'] } }),
-                    name: 'deliverBy',
-                    label: 'Deliver By (Sale Man)',
-                    required: true,
-                    admin: {
-                        width: '50%',
-                        allowCreate: false,
-                        allowEdit: false,
-                        placeholder:'Select a Sale Man'
-                    }
-                }
-            ]
+            fields: [BookedByField(), DeliveredByField()]
         },
         {
             type: 'row',
-            fields: [
-                {
-                    type: 'relationship',
-                    relationTo: 'areas',
-                    name: 'area',
-                    label: 'Area',
-                    required: true,
-                    admin: {
-                        width: '33.33%',
-                        allowCreate: false,
-                        allowEdit: false,
-                        placeholder: 'Select a Area'
-                    },
-                },
-                {
-                    type: 'relationship',
-                    relationTo: 'shops',
-                    name: 'shop',
-                    label: 'Shop',
-                    required: true,
-                    admin: {
-                        width: '33.33%',
-                        allowCreate: false,
-                        allowEdit: false,
-                        placeholder:'Select a Shop'
-                    },
-                    filterOptions: ({ data }) => ({ 'area.id': { equals: data?.area } }),
-                },
-                {
-                    type: 'relationship',
-                    relationTo: 'companies',
-                    name: 'company',
-                    label: 'Company',
-                    required: true,
-                    admin: {
-                        width: '33.33%',
-                        allowCreate: false,
-                        allowEdit: false,
-                        placeholder:'Select a Company'
-                    }
-                }
-            ]
+            fields: [AreaField(), ShopsField(), CompanyField()]
+        },
+        {
+            type: 'group',
+            label: 'Billing Products',
+            admin: {
+                hideGutter: true,
+                description: 'Before start select product you have to select Company based on company product will show.',
+            },
+            fields: [ProductsField()]
         },
         {
             type: 'row',
@@ -108,6 +55,10 @@ export const Billing: CollectionConfig<'billing'> = {
                     defaultValue: 0
                 }
             ]
+        },
+        {
+            type: 'row',
+            fields: [ProfitField()]
         }
     ],
 }
