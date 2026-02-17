@@ -6,8 +6,6 @@ import { DeliveredByField } from "./fields/DeliveredByField";
 import { AreaField } from "./fields/AreaField";
 import { ShopsField } from "./fields/ShopsField";
 import { CompanyField } from "./fields/CompanyField";
-import { ProductsField } from "./fields/ProductsField";
-import { revalidatePath } from "next/cache";
 
 export const Billing: CollectionConfig<'billing'> = {
     slug: 'billing',
@@ -115,7 +113,6 @@ export const Billing: CollectionConfig<'billing'> = {
                             }
                         }
 
-                        revalidatePath(`/admin/collection/billing/${billId}`,'page')
                     }
                 ]
             },
@@ -140,27 +137,16 @@ export const Billing: CollectionConfig<'billing'> = {
                 isSortable: false,
             }
         },
-        // {
-        //     name: 'billingItemsUI',
-        //     type: 'ui',
-        //     admin: {
-        //         components: {
-        //             Field: '@/collections/Billing/components/BillingItemsTable.tsx#BillingItemsTable',
-        //         },
-        //     },
-        // },
         {
             name: 'billingItems',
             type: 'join',
             collection: 'billingVariants',
             on: 'billId',
             admin: {
-                // hidden:true,
                 defaultColumns: ['variant', 'quantity', 'discount'],
                 allowCreate: false,
             }
         },
-        // ProductsField(),
         {
             type: 'row',
             fields: [
