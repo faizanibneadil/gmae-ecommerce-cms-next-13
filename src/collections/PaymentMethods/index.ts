@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-export const PaymentMethods: CollectionConfig<'payment-methods'> = {
-    slug: 'payment-methods',
+export const PaymentMethods: CollectionConfig<'paymentMethods'> = {
+    slug: 'paymentMethods',
     admin: {
         useAsTitle: 'name',
     },

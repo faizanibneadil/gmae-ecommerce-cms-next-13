@@ -41,14 +41,14 @@ export const Shops: CollectionConfig<'shops'> = {
             fields: [
                 {
                     type: 'relationship',
-                    relationTo: 'shop-types',
+                    relationTo: 'shopTypes',
                     name: 'shopType',
                     label: 'Shop Type',
                     admin: { width: '50%' }
                 },
                 {
                     type: 'relationship',
-                    relationTo: 'payment-methods',
+                    relationTo: 'paymentMethods',
                     name: 'paidBy',
                     label: 'Payment Methods',
                     admin: { width: '50%' }

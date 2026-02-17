@@ -1,4 +1,4 @@
-// import { isSuperAdmin } from "@/access/isSuperAdmin"
+import { isSuperAdmin } from "@/access/isSuperAdmin"
 // import { getUserTenantIDs } from "@/utilities/getUserTenantIDs"
 import { getUserTenantIDs } from "@/utilities/getUserTenantIDs"
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant"
@@ -17,22 +17,29 @@ export const multiTenancy = multiTenantPlugin<Config>({
         brands: {},
         shops: {},
         billing: {},
-        "order-status": {},
+        orderStatus: {},
         addresses: {},
         favorites: {},
         users: {},
-        "payment-methods": {},
-        "shop-types": {},
-        orders: {}
+        paymentMethods: {},
+        shopTypes: {},
+        orders: {},
+        products: {},
+        transactions: {},
+        currencies: {},
+        variantOptions: {},
+        variantTypes: {},
+        variants: {},
+        billingVariants: {}
     },
     tenantField: {
         // hasMany: true,
         access: {
             read: () => true,
             update: ({ req }) => {
-                // if (isSuperAdmin(req.user)) {
-                //     return true
-                // }
+                if (isSuperAdmin(req.user)) {
+                    return true
+                }
                 return getUserTenantIDs(req.user).length > 0
                 // return true
             },

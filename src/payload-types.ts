@@ -93,13 +93,19 @@ export interface Config {
     brands: Brand;
     shops: Shop;
     billing: Billing;
-    'order-status': OrderStatus;
+    orderStatus: OrderStatus;
     favorites: Favorite;
     addresses: Address;
-    'payment-methods': PaymentMethod;
-    'shop-types': ShopType;
+    paymentMethods: PaymentMethod;
+    shopTypes: ShopType;
     transactions: Transaction;
     orders: Order;
+    products: Product;
+    currencies: Currency;
+    variantOptions: VariantOption;
+    variantTypes: VariantType;
+    variants: Variant;
+    billingVariants: BillingVariant;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -122,6 +128,15 @@ export interface Config {
     shops: {
       bills: 'billing';
     };
+    billing: {
+      billingItems: 'billingVariants';
+    };
+    products: {
+      variants: 'variants';
+    };
+    variantTypes: {
+      options: 'variantOptions';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -134,13 +149,19 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     shops: ShopsSelect<false> | ShopsSelect<true>;
     billing: BillingSelect<false> | BillingSelect<true>;
-    'order-status': OrderStatusSelect<false> | OrderStatusSelect<true>;
+    orderStatus: OrderStatusSelect<false> | OrderStatusSelect<true>;
     favorites: FavoritesSelect<false> | FavoritesSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
-    'payment-methods': PaymentMethodsSelect<false> | PaymentMethodsSelect<true>;
-    'shop-types': ShopTypesSelect<false> | ShopTypesSelect<true>;
+    paymentMethods: PaymentMethodsSelect<false> | PaymentMethodsSelect<true>;
+    shopTypes: ShopTypesSelect<false> | ShopTypesSelect<true>;
     transactions: TransactionsSelect<false> | TransactionsSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    currencies: CurrenciesSelect<false> | CurrenciesSelect<true>;
+    variantOptions: VariantOptionsSelect<false> | VariantOptionsSelect<true>;
+    variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
+    variants: VariantsSelect<false> | VariantsSelect<true>;
+    billingVariants: BillingVariantsSelect<false> | BillingVariantsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -310,12 +331,12 @@ export interface Billing {
   area?: (number | null) | Area;
   shop?: (number | null) | Shop;
   company?: (number | null) | Company;
-  products?:
-    | {
-        productName?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  billingProducts?: (number | Product)[] | null;
+  billingItems?: {
+    docs?: (number | BillingVariant)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   deliverAt: string;
   extraDiscount?: number | null;
   profit?: number | null;
@@ -376,7 +397,7 @@ export interface Shop {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "shop-types".
+ * via the `definition` "shopTypes".
  */
 export interface ShopType {
   id: number;
@@ -388,7 +409,7 @@ export interface ShopType {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payment-methods".
+ * via the `definition` "paymentMethods".
  */
 export interface PaymentMethod {
   id: number;
@@ -416,12 +437,133 @@ export interface Company {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "products".
  */
-export interface Page {
+export interface Product {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  gallery?:
+    | {
+        image: number | Media;
+        variantOption?: (number | null) | VariantOption;
+        id?: string | null;
+      }[]
+    | null;
+  enableVariants?: boolean | null;
+  variantTypes?: (number | VariantType)[] | null;
+  variants?: {
+    docs?: (number | Variant)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * This price will also be used for sorting and filtering products. If you have variants enabled then you can enter the lowest or average price to help with search and filtering, but this price will not be used for checkout.
+   */
+  prices?:
+    | {
+        currency?: (number | null) | Currency;
+        price?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  inventory?: number | null;
+  relatedProducts?: (number | Product)[] | null;
+  categories?: (number | Category)[] | null;
+  company?: (number | null) | Company;
+  brand?: (number | null) | Brand;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantOptions".
+ */
+export interface VariantOption {
+  id: number;
+  _variantOptions_options_order?: string | null;
+  tenant?: (number | null) | Tenant;
+  variantType: number | VariantType;
+  label: string;
+  /**
+   * should be defaulted or dynamic based on label
+   */
+  value: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantTypes".
+ */
+export interface VariantType {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  label: string;
+  name: string;
+  options?: {
+    docs?: (number | VariantOption)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Variant Collection Description.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants".
+ */
+export interface Variant {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  /**
+   * Used for administrative purposes, not shown to customers. This is populated by default.
+   */
+  title?: string | null;
+  product: number | Product;
+  options: (number | VariantOption)[];
+  /**
+   * This price will also be used for sorting and filtering products. If you have variants enabled then you can enter the lowest or average price to help with search and filtering, but this price will not be used for checkout.
+   */
+  prices?:
+    | {
+        currency?: (number | null) | Currency;
+        price?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  inventory?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "currencies".
+ */
+export interface Currency {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  label?: string | null;
+  code?: string | null;
+  decimals?: number | null;
+  symbol?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -460,7 +602,32 @@ export interface Brand {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "order-status".
+ * via the `definition` "billingVariants".
+ */
+export interface BillingVariant {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  billId: number | Billing;
+  variant: number | Variant;
+  quantity?: number | null;
+  discount?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orderStatus".
  */
 export interface OrderStatus {
   id: number;
@@ -476,6 +643,7 @@ export interface OrderStatus {
  */
 export interface Transaction {
   id: number;
+  tenant?: (number | null) | Tenant;
   bookedBy: number | User;
   deliveredBy: number | User;
   area: number | Area;
@@ -551,7 +719,7 @@ export interface PayloadLockedDocument {
         value: number | Billing;
       } | null)
     | ({
-        relationTo: 'order-status';
+        relationTo: 'orderStatus';
         value: number | OrderStatus;
       } | null)
     | ({
@@ -563,11 +731,11 @@ export interface PayloadLockedDocument {
         value: number | Address;
       } | null)
     | ({
-        relationTo: 'payment-methods';
+        relationTo: 'paymentMethods';
         value: number | PaymentMethod;
       } | null)
     | ({
-        relationTo: 'shop-types';
+        relationTo: 'shopTypes';
         value: number | ShopType;
       } | null)
     | ({
@@ -577,6 +745,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'orders';
         value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'currencies';
+        value: number | Currency;
+      } | null)
+    | ({
+        relationTo: 'variantOptions';
+        value: number | VariantOption;
+      } | null)
+    | ({
+        relationTo: 'variantTypes';
+        value: number | VariantType;
+      } | null)
+    | ({
+        relationTo: 'variants';
+        value: number | Variant;
+      } | null)
+    | ({
+        relationTo: 'billingVariants';
+        value: number | BillingVariant;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -839,12 +1031,8 @@ export interface BillingSelect<T extends boolean = true> {
   area?: T;
   shop?: T;
   company?: T;
-  products?:
-    | T
-    | {
-        productName?: T;
-        id?: T;
-      };
+  billingProducts?: T;
+  billingItems?: T;
   deliverAt?: T;
   extraDiscount?: T;
   profit?: T;
@@ -853,7 +1041,7 @@ export interface BillingSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "order-status_select".
+ * via the `definition` "orderStatus_select".
  */
 export interface OrderStatusSelect<T extends boolean = true> {
   tenant?: T;
@@ -892,7 +1080,7 @@ export interface AddressesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payment-methods_select".
+ * via the `definition` "paymentMethods_select".
  */
 export interface PaymentMethodsSelect<T extends boolean = true> {
   tenant?: T;
@@ -903,7 +1091,7 @@ export interface PaymentMethodsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "shop-types_select".
+ * via the `definition` "shopTypes_select".
  */
 export interface ShopTypesSelect<T extends boolean = true> {
   tenant?: T;
@@ -917,6 +1105,7 @@ export interface ShopTypesSelect<T extends boolean = true> {
  * via the `definition` "transactions_select".
  */
 export interface TransactionsSelect<T extends boolean = true> {
+  tenant?: T;
   bookedBy?: T;
   deliveredBy?: T;
   area?: T;
@@ -940,6 +1129,110 @@ export interface TransactionsSelect<T extends boolean = true> {
 export interface OrdersSelect<T extends boolean = true> {
   tenant?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  description?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        variantOption?: T;
+        id?: T;
+      };
+  enableVariants?: T;
+  variantTypes?: T;
+  variants?: T;
+  prices?:
+    | T
+    | {
+        currency?: T;
+        price?: T;
+        id?: T;
+      };
+  inventory?: T;
+  relatedProducts?: T;
+  categories?: T;
+  company?: T;
+  brand?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "currencies_select".
+ */
+export interface CurrenciesSelect<T extends boolean = true> {
+  tenant?: T;
+  label?: T;
+  code?: T;
+  decimals?: T;
+  symbol?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantOptions_select".
+ */
+export interface VariantOptionsSelect<T extends boolean = true> {
+  _variantOptions_options_order?: T;
+  tenant?: T;
+  variantType?: T;
+  label?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variantTypes_select".
+ */
+export interface VariantTypesSelect<T extends boolean = true> {
+  tenant?: T;
+  label?: T;
+  name?: T;
+  options?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants_select".
+ */
+export interface VariantsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  product?: T;
+  options?: T;
+  prices?:
+    | T
+    | {
+        currency?: T;
+        price?: T;
+        id?: T;
+      };
+  inventory?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "billingVariants_select".
+ */
+export interface BillingVariantsSelect<T extends boolean = true> {
+  tenant?: T;
+  billId?: T;
+  variant?: T;
+  quantity?: T;
+  discount?: T;
   updatedAt?: T;
   createdAt?: T;
 }

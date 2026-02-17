@@ -11,7 +11,7 @@ export const Orders: CollectionConfig<'orders'> = {
     fields: [
         {
             type: 'relationship',
-            relationTo: 'order-status',
+            relationTo: 'orderStatus',
             name: 'status',
             label: 'Order Status',
             validate: ValidateOrderStatus,

@@ -15,6 +15,12 @@ import { PaymentMethods } from "./PaymentMethods";
 import { ShopTypes } from "./ShopTypes";
 import { Transactions } from "./Transactions";
 import { Orders } from "./Orders";
+import { Products } from "./Products";
+import { Currencies } from "./Currencies";
+import { VariantOptions } from "./VariantOptions";
+import { VariantTypes } from "./VariantTypes";
+import { Variants } from "./Variants";
+import { BillingVariants } from "./BillingProducts";
 
 export const collections = [
     Users,
@@ -33,5 +39,11 @@ export const collections = [
     PaymentMethods,
     ShopTypes,
     Transactions,
-    Orders
+    Orders,
+    Products,
+    Currencies,
+    VariantOptions,
+    VariantTypes,
+    Variants,
+    BillingVariants
 ]

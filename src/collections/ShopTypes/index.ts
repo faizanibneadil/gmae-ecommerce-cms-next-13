@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-export const ShopTypes: CollectionConfig<'shop-types'> = {
-    slug: 'shop-types',
+export const ShopTypes: CollectionConfig<'shopTypes'> = {
+    slug: 'shopTypes',
     admin: {
         useAsTitle: 'name',
     },

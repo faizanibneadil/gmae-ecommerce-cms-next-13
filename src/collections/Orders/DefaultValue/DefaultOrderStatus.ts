@@ -12,7 +12,7 @@ export const DefaultOrderStatus: DefaultValue = async ({ req }) => {
 
         const orderStatus = await req.payload.find({
             req,
-            collection: 'order-status',
+            collection: 'orderStatus',
             where: {
                 and: [
                     {

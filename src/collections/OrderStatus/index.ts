@@ -1,8 +1,8 @@
 import type { CollectionConfig } from "payload";
 import { CapitalizeOrderStatusValue } from "./hooks/CapitalizeOrderStatusValue";
 
-export const OrderStatus: CollectionConfig<'order-status'> = {
-    slug: 'order-status',
+export const OrderStatus: CollectionConfig<'orderStatus'> = {
+    slug: 'orderStatus',
     labels: { plural: 'Order Statuses', singular: 'Order Status' },
     admin: {
         useAsTitle: 'label',
