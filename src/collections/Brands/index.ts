@@ -16,20 +16,20 @@ export const Brands: CollectionConfig<'brands'> = {
             required: true,
             label: 'Title'
         },
-        // {
-        //     name: 'products',
-        //     type: 'join',
-        //     collection: 'products',
-        //     on: 'brand',
-        //     label: 'Linked Products',
-        //     admin: {
-                // allowCreate: false,
-                // disableGroupBy: false,
-                // disableListColumn: false,
-                // disableListFilter: false,
-                // disableRowTypes: false,
-        //         description: 'List of all products belonging to this brand.',
-        //     }
-        // },
+        {
+            name: 'products',
+            type: 'join',
+            collection: 'products',
+            on: 'brand',
+            label: 'Linked Products',
+            admin: {
+                allowCreate: false,
+                disableGroupBy: false,
+                disableListColumn: false,
+                disableListFilter: false,
+                disableRowTypes: false,
+                description: 'List of all products belonging to this brand.',
+            }
+        },
     ]
 }

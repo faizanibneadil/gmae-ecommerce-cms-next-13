@@ -6,7 +6,8 @@ export const VariantTypes: CollectionConfig<'variantTypes'> = {
     labels: { plural: 'Variant Types', singular: 'Variant Type' },
     access: Pages.access,
     admin: {
-        useAsTitle: 'label'
+        useAsTitle: 'label',
+        // hidden:true
     },
     fields: [
         {

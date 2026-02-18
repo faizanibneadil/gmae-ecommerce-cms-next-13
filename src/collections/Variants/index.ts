@@ -10,7 +10,8 @@ export const Variants: CollectionConfig<'variants'> = {
     access: Pages.access,
     admin: {
         useAsTitle: 'title',
-        description: 'Variant Collection Description.'
+        description: 'Variant Collection Description.',
+        // hidden:true
     },
     fields: [
         {
@@ -56,7 +57,13 @@ export const Variants: CollectionConfig<'variants'> = {
             required: true,
             validate: validateOptions,
         },
-        PricesField(),
+        {
+            type: 'join',
+            collection: 'prices',
+            on: 'variant',
+            name: 'prices'
+        },
+        // PricesField(),
         {
             name: 'inventory',
             type: 'number',

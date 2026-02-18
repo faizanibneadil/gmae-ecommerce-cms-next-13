@@ -4,6 +4,7 @@ export const ShopTypes: CollectionConfig<'shopTypes'> = {
     slug: 'shopTypes',
     admin: {
         useAsTitle: 'name',
+        // hidden:true
     },
     access: {
         read: () => true,

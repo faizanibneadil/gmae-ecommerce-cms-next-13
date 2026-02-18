@@ -7,7 +7,8 @@ export const Currencies: CollectionConfig<'currencies'> = {
     access: Pages.access,
     admin: {
         useAsTitle: 'label',
-        defaultColumns: ['label', 'code', 'decimals', 'symbol']
+        defaultColumns: ['label', 'code', 'decimals', 'symbol'],
+        // hidden:true
     },
     fields: [
         {
@@ -52,5 +53,23 @@ export const Currencies: CollectionConfig<'currencies'> = {
                 }
             ]
         },
+        {
+            type: 'relationship',
+            name: 'variant',
+            relationTo: 'variants',
+            hasMany:true,
+            admin: {
+                position: 'sidebar'
+            }
+        },
+        {
+            type: 'relationship',
+            name: 'product',
+            relationTo: 'products',
+            hasMany: true,
+            admin: {
+                position: 'sidebar'
+            }
+        }
     ]
 }

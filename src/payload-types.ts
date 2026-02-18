@@ -106,6 +106,8 @@ export interface Config {
     variantTypes: VariantType;
     variants: Variant;
     billingItems: BillingItem;
+    prices: Price;
+    countries: Country;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -125,6 +127,9 @@ export interface Config {
       shops: 'shops';
       bills: 'billing';
     };
+    brands: {
+      products: 'products';
+    };
     shops: {
       bills: 'billing';
     };
@@ -133,9 +138,14 @@ export interface Config {
     };
     products: {
       variants: 'variants';
+      prices: 'prices';
+      invoices: 'billing';
     };
     variantTypes: {
       options: 'variantOptions';
+    };
+    variants: {
+      prices: 'prices';
     };
   };
   collectionsSelect: {
@@ -162,6 +172,8 @@ export interface Config {
     variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
     variants: VariantsSelect<false> | VariantsSelect<true>;
     billingItems: BillingItemsSelect<false> | BillingItemsSelect<true>;
+    prices: PricesSelect<false> | PricesSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -472,22 +484,21 @@ export interface Product {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  /**
-   * This price will also be used for sorting and filtering products. If you have variants enabled then you can enter the lowest or average price to help with search and filtering, but this price will not be used for checkout.
-   */
-  prices?:
-    | {
-        currency?: (number | null) | Currency;
-        price?: number | null;
-        id?: string | null;
-      }[]
-    | null;
+  prices?: {
+    docs?: (number | Price)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   inventory?: number | null;
   relatedProducts?: (number | Product)[] | null;
+  invoices?: {
+    docs?: (number | Billing)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   categories?: (number | Category)[] | null;
   company?: (number | null) | Company;
   brand?: (number | null) | Brand;
-  billId?: (number | null) | Billing;
   updatedAt: string;
   createdAt: string;
 }
@@ -540,17 +551,26 @@ export interface Variant {
   title?: string | null;
   product: number | Product;
   options: (number | VariantOption)[];
-  /**
-   * This price will also be used for sorting and filtering products. If you have variants enabled then you can enter the lowest or average price to help with search and filtering, but this price will not be used for checkout.
-   */
-  prices?:
-    | {
-        currency?: (number | null) | Currency;
-        price?: number | null;
-        id?: string | null;
-      }[]
-    | null;
+  prices?: {
+    docs?: (number | Price)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   inventory?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prices".
+ */
+export interface Price {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  currency?: (number | null) | Currency;
+  product?: (number | null) | Product;
+  variant?: (number | null) | Variant;
+  price?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -565,6 +585,8 @@ export interface Currency {
   code?: string | null;
   decimals?: number | null;
   symbol?: string | null;
+  variant?: (number | Variant)[] | null;
+  product?: (number | Product)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -598,6 +620,14 @@ export interface Brand {
   id: number;
   tenant?: (number | null) | Tenant;
   title: string;
+  /**
+   * List of all products belonging to this brand.
+   */
+  products?: {
+    docs?: (number | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -670,6 +700,18 @@ export interface Order {
   id: number;
   tenant?: (number | null) | Tenant;
   status?: (number | null) | OrderStatus;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  label?: string | null;
+  value?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -771,6 +813,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'billingItems';
         value: number | BillingItem;
+      } | null)
+    | ({
+        relationTo: 'prices';
+        value: number | Price;
+      } | null)
+    | ({
+        relationTo: 'countries';
+        value: number | Country;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1002,6 +1052,7 @@ export interface AreasSelect<T extends boolean = true> {
 export interface BrandsSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
+  products?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1152,19 +1203,13 @@ export interface ProductsSelect<T extends boolean = true> {
   enableVariants?: T;
   variantTypes?: T;
   variants?: T;
-  prices?:
-    | T
-    | {
-        currency?: T;
-        price?: T;
-        id?: T;
-      };
+  prices?: T;
   inventory?: T;
   relatedProducts?: T;
+  invoices?: T;
   categories?: T;
   company?: T;
   brand?: T;
-  billId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1178,6 +1223,8 @@ export interface CurrenciesSelect<T extends boolean = true> {
   code?: T;
   decimals?: T;
   symbol?: T;
+  variant?: T;
+  product?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1215,13 +1262,7 @@ export interface VariantsSelect<T extends boolean = true> {
   title?: T;
   product?: T;
   options?: T;
-  prices?:
-    | T
-    | {
-        currency?: T;
-        price?: T;
-        id?: T;
-      };
+  prices?: T;
   inventory?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1237,6 +1278,30 @@ export interface BillingItemsSelect<T extends boolean = true> {
   variant?: T;
   quantity?: T;
   discount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prices_select".
+ */
+export interface PricesSelect<T extends boolean = true> {
+  tenant?: T;
+  currency?: T;
+  product?: T;
+  variant?: T;
+  price?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  tenant?: T;
+  label?: T;
+  value?: T;
   updatedAt?: T;
   createdAt?: T;
 }

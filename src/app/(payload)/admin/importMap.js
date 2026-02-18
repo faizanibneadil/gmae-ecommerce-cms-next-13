@@ -10,7 +10,6 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { CurrencyInfo as CurrencyInfo_75a13f8a4274722f1a8e1085198d4de6 } from '@/fields/Prices/components/CurrencyInfo.tsx'
 import { VariantOptionsSelector as VariantOptionsSelector_572cb5d65f4780487101f065ca8b9c9d } from '@/collections/Variants/components/VariantOptionsSelector/index.tsx'
 import { Qty as Qty_620587a6d4cf03e140f24df11a13ead5 } from '@/collections/BillingItems/Qty.tsx'
 import { QueryPresetsAccessCell as QueryPresetsAccessCell_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
@@ -37,7 +36,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@/fields/Prices/components/CurrencyInfo.tsx#CurrencyInfo": CurrencyInfo_75a13f8a4274722f1a8e1085198d4de6,
   "@/collections/Variants/components/VariantOptionsSelector/index.tsx#VariantOptionsSelector": VariantOptionsSelector_572cb5d65f4780487101f065ca8b9c9d,
   "@/collections/BillingItems/Qty.tsx#Qty": Qty_620587a6d4cf03e140f24df11a13ead5,
   "@payloadcms/next/client#QueryPresetsAccessCell": QueryPresetsAccessCell_2b8867833a34864a02ddf429b0728a40,

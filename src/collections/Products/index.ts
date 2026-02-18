@@ -14,7 +14,8 @@ export const Products: CollectionConfig<'products'> = {
     labels: { plural: 'Products', singular: 'Product' },
     access: Pages.access,
     admin: {
-        useAsTitle: 'title'
+        useAsTitle: 'title',
+        defaultColumns: ['title','variants','prices','inventory']
     },
     fields: [
         { name: 'title', type: 'text', required: true },
@@ -136,7 +137,13 @@ export const Products: CollectionConfig<'products'> = {
                             maxDepth: 2,
                             on: 'product',
                         },
-                        PricesField(),
+                        {
+                            type: 'join',
+                            collection: 'prices',
+                            on: 'product',
+                            name: 'prices'
+                        },
+                        // PricesField(),
                         {
                             name: 'inventory',
                             type: 'number',
@@ -172,6 +179,17 @@ export const Products: CollectionConfig<'products'> = {
                     ],
                     label: 'Product Details',
                 },
+                {
+                    fields: [
+                        {
+                            type: 'join',
+                            collection: 'billing',
+                            name: 'invoices',
+                            on: 'billingProducts'
+                        }
+                    ],
+                    label: 'Invoices'
+                }
             ],
         },
         {
@@ -201,15 +219,6 @@ export const Products: CollectionConfig<'products'> = {
                 sortOptions: 'title',
             },
             relationTo: 'brands',
-        },
-        {
-            name: 'billId',
-            type: 'relationship',
-            relationTo: 'billing',
-            index: true,
-            admin: {
-                position: 'sidebar'
-            }
         },
     ]
 }

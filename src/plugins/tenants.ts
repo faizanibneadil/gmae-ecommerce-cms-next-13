@@ -30,7 +30,9 @@ export const multiTenancy = multiTenantPlugin<Config>({
         variantOptions: {},
         variantTypes: {},
         variants: {},
-        billingItems: {}
+        billingItems: {},
+        prices:{},
+        countries:{}
     },
     tenantField: {
         // hasMany: true,

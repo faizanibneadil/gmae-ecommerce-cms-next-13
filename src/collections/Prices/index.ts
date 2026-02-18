@@ -1,38 +1,37 @@
-import { CollectionConfig } from "payload";
+import type { CollectionConfig } from "payload";
 import { Pages } from "../Pages";
 
-export const BillingItems: CollectionConfig<'billingItems'> = {
-    slug: 'billingItems',
-    labels: { plural: 'Billing Items', singular: 'Billing Item' },
+export const Prices: CollectionConfig<'prices'> = {
+    slug: 'prices',
     access: Pages.access,
     admin: {
-        pagination: {
-            defaultLimit: 100
-        },
-        // hidden: true,
+        useAsTitle: 'currency',
+        defaultColumns: ['currency','product','variant','price']
+    },
+    labels: {
+        plural: 'Prices',
+        singular: 'Price'
     },
     fields: [
         {
-            name: 'billId',
             type: 'relationship',
-            relationTo: 'billing',
-            index: true,
+            relationTo: 'currencies',
+            name: 'currency'
         },
         {
-            name: 'product',
             type: 'relationship',
             relationTo: 'products',
+            name: 'product'
         },
         {
-            name: 'variant',
             type: 'relationship',
             relationTo: 'variants',
+            name: 'variant',
             admin: {
                 condition: ({ product }) => Boolean(product)
             },
             filterOptions: ({ data }) => {
                 const productID = data?.product
-
                 if (productID) {
                     return {
                         product: {
@@ -40,24 +39,13 @@ export const BillingItems: CollectionConfig<'billingItems'> = {
                         }
                     }
                 }
-
                 return false
             }
         },
         {
-            name: 'quantity',
             type: 'number',
-            defaultValue: 0,
-            admin: {
-                components: {
-                    Cell: '@/collections/BillingItems/Qty.tsx#Qty'
-                }
-            }
-        },
-        {
-            name: 'discount',
-            type: 'number',
-            defaultValue: 0,
+            name: 'price',
+            defaultValue: 0
         }
     ]
 }
