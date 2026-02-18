@@ -20,7 +20,7 @@ import { Currencies } from "./Currencies";
 import { VariantOptions } from "./VariantOptions";
 import { VariantTypes } from "./VariantTypes";
 import { Variants } from "./Variants";
-import { BillingVariants } from "./BillingProducts";
+import { BillingItems } from "./BillingItems";
 
 export const collections = [
     Users,
@@ -45,5 +45,5 @@ export const collections = [
     VariantOptions,
     VariantTypes,
     Variants,
-    BillingVariants
+    BillingItems
 ]

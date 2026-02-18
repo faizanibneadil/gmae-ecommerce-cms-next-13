@@ -105,7 +105,7 @@ export interface Config {
     variantOptions: VariantOption;
     variantTypes: VariantType;
     variants: Variant;
-    billingVariants: BillingVariant;
+    billingItems: BillingItem;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -129,7 +129,7 @@ export interface Config {
       bills: 'billing';
     };
     billing: {
-      billingItems: 'billingVariants';
+      items: 'billingItems';
     };
     products: {
       variants: 'variants';
@@ -161,7 +161,7 @@ export interface Config {
     variantOptions: VariantOptionsSelect<false> | VariantOptionsSelect<true>;
     variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
     variants: VariantsSelect<false> | VariantsSelect<true>;
-    billingVariants: BillingVariantsSelect<false> | BillingVariantsSelect<true>;
+    billingItems: BillingItemsSelect<false> | BillingItemsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -332,8 +332,8 @@ export interface Billing {
   shop?: (number | null) | Shop;
   company?: (number | null) | Company;
   billingProducts?: (number | Product)[] | null;
-  billingItems?: {
-    docs?: (number | BillingVariant)[];
+  items?: {
+    docs?: (number | BillingItem)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -487,6 +487,7 @@ export interface Product {
   categories?: (number | Category)[] | null;
   company?: (number | null) | Company;
   brand?: (number | null) | Brand;
+  billId?: (number | null) | Billing;
   updatedAt: string;
   createdAt: string;
 }
@@ -602,13 +603,14 @@ export interface Brand {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billingVariants".
+ * via the `definition` "billingItems".
  */
-export interface BillingVariant {
+export interface BillingItem {
   id: number;
   tenant?: (number | null) | Tenant;
-  billId: number | Billing;
-  variant: number | Variant;
+  billId?: (number | null) | Billing;
+  product?: (number | null) | Product;
+  variant?: (number | null) | Variant;
   quantity?: number | null;
   discount?: number | null;
   updatedAt: string;
@@ -767,8 +769,8 @@ export interface PayloadLockedDocument {
         value: number | Variant;
       } | null)
     | ({
-        relationTo: 'billingVariants';
-        value: number | BillingVariant;
+        relationTo: 'billingItems';
+        value: number | BillingItem;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1032,7 +1034,7 @@ export interface BillingSelect<T extends boolean = true> {
   shop?: T;
   company?: T;
   billingProducts?: T;
-  billingItems?: T;
+  items?: T;
   deliverAt?: T;
   extraDiscount?: T;
   profit?: T;
@@ -1162,6 +1164,7 @@ export interface ProductsSelect<T extends boolean = true> {
   categories?: T;
   company?: T;
   brand?: T;
+  billId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1225,11 +1228,12 @@ export interface VariantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billingVariants_select".
+ * via the `definition` "billingItems_select".
  */
-export interface BillingVariantsSelect<T extends boolean = true> {
+export interface BillingItemsSelect<T extends boolean = true> {
   tenant?: T;
   billId?: T;
+  product?: T;
   variant?: T;
   quantity?: T;
   discount?: T;

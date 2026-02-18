@@ -108,6 +108,7 @@ export const Products: CollectionConfig<'products'> = {
                         {
                             name: 'enableVariants',
                             type: 'checkbox',
+                            defaultValue: false
                         },
                         {
                             name: 'variantTypes',
@@ -200,6 +201,15 @@ export const Products: CollectionConfig<'products'> = {
                 sortOptions: 'title',
             },
             relationTo: 'brands',
+        },
+        {
+            name: 'billId',
+            type: 'relationship',
+            relationTo: 'billing',
+            index: true,
+            admin: {
+                position: 'sidebar'
+            }
         },
     ]
 }

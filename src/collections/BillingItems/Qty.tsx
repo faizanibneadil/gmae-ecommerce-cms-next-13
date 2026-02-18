@@ -3,7 +3,7 @@
 import { toast } from "@payloadcms/ui"
 
 export const Qty = (props: any) => {
-    console.log(props)
+    // console.log(props)
 
     const updateEntry = async (value: number | string) => {
         try {
