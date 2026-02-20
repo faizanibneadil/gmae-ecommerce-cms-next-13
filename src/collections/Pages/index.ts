@@ -35,6 +35,19 @@ export const Pages: CollectionConfig<'pages'> = {
             label: 'Title',
             name: 'title',
             required: true
+        },
+        {
+            type: 'tabs',
+            tabs: [
+                {
+                    label: 'Content',
+                    fields: []
+                },
+                {
+                    label: 'SEO',
+                    fields: []
+                }
+            ]
         }
     ]
 }

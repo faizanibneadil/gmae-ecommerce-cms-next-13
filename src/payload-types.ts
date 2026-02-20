@@ -92,7 +92,7 @@ export interface Config {
     areas: Area;
     brands: Brand;
     shops: Shop;
-    billing: Billing;
+    invoices: Invoice;
     orderStatus: OrderStatus;
     favorites: Favorite;
     addresses: Address;
@@ -105,9 +105,10 @@ export interface Config {
     variantOptions: VariantOption;
     variantTypes: VariantType;
     variants: Variant;
-    billingItems: BillingItem;
+    invoiceItems: InvoiceItem;
     prices: Price;
     countries: Country;
+    menus: Menu;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -117,29 +118,29 @@ export interface Config {
     users: {
       addresses: 'addresses';
       favorites: 'favorites';
-      bookingBy: 'billing';
-      deliverBy: 'billing';
+      bookingBy: 'invoices';
+      deliverBy: 'invoices';
     };
     companies: {
-      bills: 'billing';
+      bills: 'invoices';
     };
     areas: {
       shops: 'shops';
-      bills: 'billing';
+      bills: 'invoices';
     };
     brands: {
       products: 'products';
     };
     shops: {
-      bills: 'billing';
+      bills: 'invoices';
     };
-    billing: {
-      items: 'billingItems';
+    invoices: {
+      items: 'invoiceItems';
     };
     products: {
       variants: 'variants';
       prices: 'prices';
-      invoices: 'billing';
+      invoices: 'invoices';
     };
     variantTypes: {
       options: 'variantOptions';
@@ -158,7 +159,7 @@ export interface Config {
     areas: AreasSelect<false> | AreasSelect<true>;
     brands: BrandsSelect<false> | BrandsSelect<true>;
     shops: ShopsSelect<false> | ShopsSelect<true>;
-    billing: BillingSelect<false> | BillingSelect<true>;
+    invoices: InvoicesSelect<false> | InvoicesSelect<true>;
     orderStatus: OrderStatusSelect<false> | OrderStatusSelect<true>;
     favorites: FavoritesSelect<false> | FavoritesSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
@@ -171,9 +172,10 @@ export interface Config {
     variantOptions: VariantOptionsSelect<false> | VariantOptionsSelect<true>;
     variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
     variants: VariantsSelect<false> | VariantsSelect<true>;
-    billingItems: BillingItemsSelect<false> | BillingItemsSelect<true>;
+    invoiceItems: InvoiceItemsSelect<false> | InvoiceItemsSelect<true>;
     prices: PricesSelect<false> | PricesSelect<true>;
     countries: CountriesSelect<false> | CountriesSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -232,12 +234,12 @@ export interface User {
     totalDocs?: number;
   };
   bookingBy?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
   deliverBy?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -333,9 +335,9 @@ export interface Favorite {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billing".
+ * via the `definition` "invoices".
  */
-export interface Billing {
+export interface Invoice {
   id: number;
   tenant?: (number | null) | Tenant;
   bookedBy?: (number | null) | User;
@@ -345,7 +347,7 @@ export interface Billing {
   company?: (number | null) | Company;
   billingProducts?: (number | Product)[] | null;
   items?: {
-    docs?: (number | BillingItem)[];
+    docs?: (number | InvoiceItem)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -375,7 +377,7 @@ export interface Area {
    * Overview of all invoices and bills generated for this shop.
    */
   bills?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -400,7 +402,7 @@ export interface Shop {
    * Overview of all invoices and bills generated for this shop.
    */
   bills?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -440,7 +442,7 @@ export interface Company {
   tenant?: (number | null) | Tenant;
   title: string;
   bills?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -492,7 +494,7 @@ export interface Product {
   inventory?: number | null;
   relatedProducts?: (number | Product)[] | null;
   invoices?: {
-    docs?: (number | Billing)[];
+    docs?: (number | Invoice)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -633,12 +635,12 @@ export interface Brand {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billingItems".
+ * via the `definition` "invoiceItems".
  */
-export interface BillingItem {
+export interface InvoiceItem {
   id: number;
   tenant?: (number | null) | Tenant;
-  billId?: (number | null) | Billing;
+  billId?: (number | null) | Invoice;
   product?: (number | null) | Product;
   variant?: (number | null) | Variant;
   quantity?: number | null;
@@ -717,6 +719,26 @@ export interface Country {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus".
+ */
+export interface Menu {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  links?:
+    | {
+        linkType?: ('internal' | 'external') | null;
+        label?: string | null;
+        page?: (number | null) | Page;
+        externalLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -759,8 +781,8 @@ export interface PayloadLockedDocument {
         value: number | Shop;
       } | null)
     | ({
-        relationTo: 'billing';
-        value: number | Billing;
+        relationTo: 'invoices';
+        value: number | Invoice;
       } | null)
     | ({
         relationTo: 'orderStatus';
@@ -811,8 +833,8 @@ export interface PayloadLockedDocument {
         value: number | Variant;
       } | null)
     | ({
-        relationTo: 'billingItems';
-        value: number | BillingItem;
+        relationTo: 'invoiceItems';
+        value: number | InvoiceItem;
       } | null)
     | ({
         relationTo: 'prices';
@@ -821,6 +843,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'countries';
         value: number | Country;
+      } | null)
+    | ({
+        relationTo: 'menus';
+        value: number | Menu;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -914,9 +940,10 @@ export interface PayloadQueryPreset {
     | 'areas'
     | 'brands'
     | 'shops'
-    | 'billing'
+    | 'invoices'
     | 'favorites'
-    | 'transactions';
+    | 'transactions'
+    | 'products';
   /**
    * This is a temporary field used to determine if updating the preset would remove the user's access to it. When `true`, this record will be deleted after running the preset's `validate` function.
    */
@@ -1075,9 +1102,9 @@ export interface ShopsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billing_select".
+ * via the `definition` "invoices_select".
  */
-export interface BillingSelect<T extends boolean = true> {
+export interface InvoicesSelect<T extends boolean = true> {
   tenant?: T;
   bookedBy?: T;
   deliveredBy?: T;
@@ -1269,9 +1296,9 @@ export interface VariantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "billingItems_select".
+ * via the `definition` "invoiceItems_select".
  */
-export interface BillingItemsSelect<T extends boolean = true> {
+export interface InvoiceItemsSelect<T extends boolean = true> {
   tenant?: T;
   billId?: T;
   product?: T;
@@ -1302,6 +1329,25 @@ export interface CountriesSelect<T extends boolean = true> {
   tenant?: T;
   label?: T;
   value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus_select".
+ */
+export interface MenusSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  links?:
+    | T
+    | {
+        linkType?: T;
+        label?: T;
+        page?: T;
+        externalLink?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

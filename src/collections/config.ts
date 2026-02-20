@@ -7,7 +7,7 @@ import { Companies } from "./Companies";
 import { Areas } from "./Areas";
 import { Brands } from "./Brands";
 import { Shops } from "./Shops";
-import { Billing } from "./Billing";
+import { Invoices } from "./Invoices";
 import { OrderStatus } from "./OrderStatus";
 import { Favorites } from "./Favorites";
 import { Addresses } from "./Addresses";
@@ -20,9 +20,10 @@ import { Currencies } from "./Currencies";
 import { VariantOptions } from "./VariantOptions";
 import { VariantTypes } from "./VariantTypes";
 import { Variants } from "./Variants";
-import { BillingItems } from "./BillingItems";
+import { InvoiceItems } from "./InvoiceItems";
 import { Prices } from "./Prices";
 import { Countries } from "./Countries";
+import { Menus } from "./Menus";
 
 export const collections = [
     Users,
@@ -34,7 +35,7 @@ export const collections = [
     Areas,
     Brands,
     Shops,
-    Billing,
+    Invoices,
     OrderStatus,
     Favorites,
     Addresses,
@@ -47,7 +48,8 @@ export const collections = [
     VariantOptions,
     VariantTypes,
     Variants,
-    BillingItems,
+    InvoiceItems,
     Prices,
-    Countries
+    Countries,
+    Menus
 ]

@@ -8,9 +8,9 @@ import { ShopsField } from "./fields/ShopsField";
 import { CompanyField } from "./fields/CompanyField";
 import { PopulateSelectedProductsVariants } from "./hooks/PopulateSelectedProductsVariants";
 
-export const Billing: CollectionConfig<'billing'> = {
-    slug: 'billing',
-    labels: { plural: 'Billings', singular: 'Billing' },
+export const Invoices: CollectionConfig<'invoices'> = {
+    slug: 'invoices',
+    labels: { plural: 'Invoices', singular: 'Invoice' },
     access: Pages.access,
     admin: {
         useAsTitle: 'createdAt',
@@ -57,12 +57,12 @@ export const Billing: CollectionConfig<'billing'> = {
         {
             name: 'items',
             type: 'join',
-            collection: 'billingItems',
+            collection: 'invoiceItems',
             on: 'billId',
             maxDepth:2,
             admin: {
                 components: {
-                    Field: '@/collections/Billing/components/SyncBillingItems.tsx#SyncBillingItems'
+                    Field: '@/collections/Invoices/components/SyncBillingItems.tsx#SyncBillingItems'
                 },
                 condition: ({ company, billingProducts }) => {
                     const hasCompany = Boolean(company)

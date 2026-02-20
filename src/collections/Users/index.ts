@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
+import { isSuperAdmin } from '@/access/isSuperAdmin'
 
 
 
@@ -56,14 +57,14 @@ export const Users: CollectionConfig<'users'> = {
         { label: "Super Admin", value: "SUPER_ADMIN" },
         { label: "User", value: "USER" },
       ],
-      // admin: {
-      //   position: 'sidebar'
-      // }
-      // access: {
-      //   update: ({ req }) => {
-      //     return isSuperAdmin(req.user)
-      //   },
-      // },
+      admin: {
+        position: 'sidebar'
+      },
+      access: {
+        update: ({ req }) => {
+          return isSuperAdmin(req.user)
+        },
+      },
     },
     {
       name: 'username',
@@ -122,9 +123,9 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       name: 'bookingBy',
-      label: 'Booked Billings',
+      label: 'Booked Invoices',
       type: 'join',
-      collection: 'billing',
+      collection: 'invoices',
       on: 'bookedBy', // Ensure this field exists in 'billing' collection
       admin: {
         allowCreate: false,
@@ -136,9 +137,9 @@ export const Users: CollectionConfig<'users'> = {
     },
     {
       name: 'deliverBy',
-      label: 'Delivered Billings',
+      label: 'Delivered Invoices',
       type: 'join',
-      collection: 'billing',
+      collection: 'invoices',
       on: 'deliveredBy', // Ensure this field exists in 'billing' collection
       admin: {
         allowCreate: false,

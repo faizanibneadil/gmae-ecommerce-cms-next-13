@@ -22,6 +22,11 @@ export default buildConfig({
     //     }
     // },
     admin: {
+        autoLogin: {
+            email: 'faizanibneadil1@gmail.com',
+            password: 'faizan98',
+            prefillOnly: true
+        },
         dashboard: {
             widgets: []
         },
@@ -59,6 +64,45 @@ export default buildConfig({
     sharp,
     onInit: async (payload) => {
         payload.logger.info('App is initialized ...')
+
+        const tenantCount = await payload.count({ collection: 'tenants' })
+        const usersCount = await payload.count({ collection: 'users' })
+        if (tenantCount.totalDocs === 0) {
+            try {
+                const t = await payload.create({
+                    collection: 'tenants',
+                    data: {
+                        name: 't1',
+                        slug: 't1',
+                        domain: 't1',
+                    }
+                })
+                payload.logger.info('Creating tenant ...')
+                console.log({t})
+
+                if(usersCount?.totalDocs === 0){
+                    const u = await payload.create({
+                        collection: 'users',
+                        data: {
+                            email: 'faizanibneadil1@gmail.com',
+                            password: 'faizan98',
+                            tenant: t,
+                            roles: ['SUPER_ADMIN'],
+                            tenants: [{
+                                roles: ['tenant-admin'],
+                                tenant: t,
+                                id: String(t.id)
+                            }]
+                        }
+                    })
+                    payload.logger.info('Creating user ...')
+                    console.log({u})
+                }
+
+            } catch (error) {
+                console.error(error)
+            }
+        }
 
     },
     plugins: [...plugins],

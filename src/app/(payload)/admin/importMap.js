@@ -2,7 +2,7 @@ import { TenantField as TenantField_1d0591e3cf4f332c83a86da13a0de59a } from '@pa
 import { AssignTenantFieldTrigger as AssignTenantFieldTrigger_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { WatchTenantCollection as WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a } from '@payloadcms/plugin-multi-tenant/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { SyncBillingItems as SyncBillingItems_d530617488782a14e722693740dffa85 } from '@/collections/Billing/components/SyncBillingItems.tsx'
+import { SyncBillingItems as SyncBillingItems_559a27d31e949f823f3e63532b8fea33 } from '@/collections/Invoices/components/SyncBillingItems.tsx'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -11,7 +11,7 @@ import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { VariantOptionsSelector as VariantOptionsSelector_572cb5d65f4780487101f065ca8b9c9d } from '@/collections/Variants/components/VariantOptionsSelector/index.tsx'
-import { Qty as Qty_620587a6d4cf03e140f24df11a13ead5 } from '@/collections/BillingItems/Qty.tsx'
+import { Qty as Qty_0a9526e9b3affca943fd168ef3841c7a } from '@/collections/InvoiceItems/Qty.tsx'
 import { QueryPresetsAccessCell as QueryPresetsAccessCell_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { QueryPresetsWhereCell as QueryPresetsWhereCell_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
 import { QueryPresetsWhereField as QueryPresetsWhereField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
@@ -28,7 +28,7 @@ export const importMap = {
   "@payloadcms/plugin-multi-tenant/client#AssignTenantFieldTrigger": AssignTenantFieldTrigger_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/plugin-multi-tenant/client#WatchTenantCollection": WatchTenantCollection_1d0591e3cf4f332c83a86da13a0de59a,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
-  "@/collections/Billing/components/SyncBillingItems.tsx#SyncBillingItems": SyncBillingItems_d530617488782a14e722693740dffa85,
+  "@/collections/Invoices/components/SyncBillingItems.tsx#SyncBillingItems": SyncBillingItems_559a27d31e949f823f3e63532b8fea33,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -37,7 +37,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/collections/Variants/components/VariantOptionsSelector/index.tsx#VariantOptionsSelector": VariantOptionsSelector_572cb5d65f4780487101f065ca8b9c9d,
-  "@/collections/BillingItems/Qty.tsx#Qty": Qty_620587a6d4cf03e140f24df11a13ead5,
+  "@/collections/InvoiceItems/Qty.tsx#Qty": Qty_0a9526e9b3affca943fd168ef3841c7a,
   "@payloadcms/next/client#QueryPresetsAccessCell": QueryPresetsAccessCell_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/next/client#QueryPresetsWhereCell": QueryPresetsWhereCell_2b8867833a34864a02ddf429b0728a40,
   "@payloadcms/next/client#QueryPresetsWhereField": QueryPresetsWhereField_2b8867833a34864a02ddf429b0728a40,

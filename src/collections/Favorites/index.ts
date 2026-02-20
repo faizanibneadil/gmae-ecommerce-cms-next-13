@@ -12,6 +12,21 @@ export const Favorites: CollectionConfig<'favorites'> = {
             type: 'relationship',
             relationTo: 'users',
             name: 'user'
+        },
+        {
+            type: 'relationship',
+            relationTo: 'products',
+            name: 'product'
+        },
+        {
+            type: 'relationship',
+            relationTo: 'variants',
+            name: 'variant'
+        },
+        {
+            type: 'relationship',
+            relationTo: 'categories',
+            name: 'category'
         }
     ]
 }

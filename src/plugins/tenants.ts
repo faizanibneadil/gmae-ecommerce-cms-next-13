@@ -16,7 +16,7 @@ export const multiTenancy = multiTenantPlugin<Config>({
         areas: {},
         brands: {},
         shops: {},
-        billing: {},
+        invoices: {},
         orderStatus: {},
         addresses: {},
         favorites: {},
@@ -30,9 +30,10 @@ export const multiTenancy = multiTenantPlugin<Config>({
         variantOptions: {},
         variantTypes: {},
         variants: {},
-        billingItems: {},
-        prices:{},
-        countries:{}
+        invoiceItems: {},
+        prices: {},
+        countries: {},
+        menus: {}
     },
     tenantField: {
         // hasMany: true,

@@ -7,7 +7,6 @@ import {
     InlineToolbarFeature,
     lexicalEditor
 } from '@payloadcms/richtext-lexical'
-import { PricesField } from "@/fields/Prices";
 
 export const Products: CollectionConfig<'products'> = {
     slug: 'products',
@@ -17,6 +16,7 @@ export const Products: CollectionConfig<'products'> = {
         useAsTitle: 'title',
         defaultColumns: ['title','variants','prices','inventory']
     },
+    enableQueryPresets:true,
     fields: [
         { name: 'title', type: 'text', required: true },
         {
@@ -183,7 +183,7 @@ export const Products: CollectionConfig<'products'> = {
                     fields: [
                         {
                             type: 'join',
-                            collection: 'billing',
+                            collection: 'invoices',
                             name: 'invoices',
                             on: 'billingProducts'
                         }

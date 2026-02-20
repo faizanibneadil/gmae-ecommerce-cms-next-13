@@ -1,9 +1,9 @@
 import { CollectionConfig } from "payload";
 import { Pages } from "../Pages";
 
-export const BillingItems: CollectionConfig<'billingItems'> = {
-    slug: 'billingItems',
-    labels: { plural: 'Billing Items', singular: 'Billing Item' },
+export const InvoiceItems: CollectionConfig<'invoiceItems'> = {
+    slug: 'invoiceItems',
+    labels: { plural: 'Invoice Items', singular: 'Invoice Item' },
     access: Pages.access,
     admin: {
         pagination: {
@@ -15,7 +15,7 @@ export const BillingItems: CollectionConfig<'billingItems'> = {
         {
             name: 'billId',
             type: 'relationship',
-            relationTo: 'billing',
+            relationTo: 'invoices',
             index: true,
         },
         {
@@ -50,7 +50,7 @@ export const BillingItems: CollectionConfig<'billingItems'> = {
             defaultValue: 0,
             admin: {
                 components: {
-                    Cell: '@/collections/BillingItems/Qty.tsx#Qty'
+                    Cell: '@/collections/InvoiceItems/Qty.tsx#Qty'
                 }
             }
         },

@@ -75,9 +75,9 @@ export const Shops: CollectionConfig<'shops'> = {
         {
             name: 'bills',
             type: 'join',
-            collection: 'billing',
+            collection: 'invoices',
             on: 'shop',
-            label: 'Shop Billing History',
+            label: 'Shop Invoices History',
             admin: {
                 allowCreate: false,
                 disableGroupBy: false,

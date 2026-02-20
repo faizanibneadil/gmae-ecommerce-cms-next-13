@@ -7,7 +7,7 @@ export type PricesFieldType = (overrides?: Partial<JoinField>) => JoinField
 export const PricesField: PricesFieldType = (overrides = {}) => {
     const _field: JoinField = {
         type: 'join',
-        collection: 'billing',
+        collection: 'invoices',
         name: 'invoices',
         on: 'billingProducts',
         // defaultValue: SetDefaultPrice(),

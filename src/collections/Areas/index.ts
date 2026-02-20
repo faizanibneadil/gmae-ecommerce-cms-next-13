@@ -35,9 +35,9 @@ export const Areas: CollectionConfig<'areas'> = {
         {
             name: 'bills',
             type: 'join',
-            collection: 'billing',
+            collection: 'invoices',
             on: 'shop',
-            label: 'Area Billing History',
+            label: 'Area Invoices History',
             admin: {
                 allowCreate: false,
                 disableGroupBy: false,

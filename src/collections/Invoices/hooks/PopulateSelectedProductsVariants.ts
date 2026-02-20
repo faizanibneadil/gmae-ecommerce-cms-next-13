@@ -1,7 +1,7 @@
-import { Billing } from "@/payload-types";
+import { Invoice } from "@/payload-types";
 import type { FieldHook } from "payload";
 
-export type PopulateSelectedProductsVariantsType = () => FieldHook<Billing, Billing['billingProducts'], Billing>
+export type PopulateSelectedProductsVariantsType = () => FieldHook<Invoice, Invoice['billingProducts'], Invoice>
 
 export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsType = () => {
     return async ({ value, previousValue, req, data, originalDoc: doc }) => {
@@ -16,7 +16,7 @@ export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsT
         // 2. Fetch Existing Items from DB (Kyuki data variable mein sirf IDs hain)
         // Hamein depth 0 chahiye taake sirf IDs milein performance ke liye
         const existingEntries = await req.payload.find({
-            collection: 'billingItems',
+            collection: 'invoiceItems',
             where: { billId: { equals: billId } },
             depth: 0,
             limit: 0,
@@ -27,7 +27,7 @@ export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsT
         if (!billingProductsIDs || billingProductsIDs.length === 0) {
             if (existingEntries.docs.length > 0) {
                 await req.payload.delete({
-                    collection: 'billingItems',
+                    collection: 'invoiceItems',
                     where: { billId: { equals: billId } },
                     req,
                 });
@@ -82,7 +82,7 @@ export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsT
         // 5. Execute Delete
         if (idsToDelete.length > 0) {
             await req.payload.delete({
-                collection: 'billingItems',
+                collection: 'invoiceItems',
                 where: { id: { in: idsToDelete } },
                 req,
             });
@@ -97,7 +97,7 @@ export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsT
             if (!alreadyInDB_Variants.has(variantID)) {
                 executablePromises.push(
                     req.payload.create({
-                        collection: 'billingItems',
+                        collection: 'invoiceItems',
                         data: { billId, variant: variantID, product: parentID, quantity: 0, discount: 0, tenant },
                         req
                     })
@@ -110,7 +110,7 @@ export const PopulateSelectedProductsVariants: PopulateSelectedProductsVariantsT
             if (!alreadyInDB_Products.has(pID)) {
                 executablePromises.push(
                     req.payload.create({
-                        collection: 'billingItems',
+                        collection: 'invoiceItems',
                         data: { billId, product: pID, quantity: 0, discount: 0, tenant },
                         req
                     })
