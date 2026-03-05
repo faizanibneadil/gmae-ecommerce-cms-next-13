@@ -1,8 +1,8 @@
-import { Billing } from "@/payload-types";
+import { Invoice } from "@/payload-types";
 import type { Validate } from "payload";
 import { relationship } from "payload/shared";
 
-export const ValueIsRequired: Validate<any, Billing, any> = (value, args) => {
+export const ValueIsRequired: Validate<any,Invoice, any> = (value, args) => {
 
     if (!value) {
         return 'Area is Required.'
