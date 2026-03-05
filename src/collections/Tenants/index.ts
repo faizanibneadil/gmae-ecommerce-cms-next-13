@@ -1,0 +1,49 @@
+import type { CollectionConfig } from 'payload'
+
+// import { isSuperAdminAccess } from '@/access/isSuperAdmin'
+// import { updateAndDeleteAccess } from './access/updateAndDelete'
+// import { NavigationGroups } from '@/constants'
+
+export const Distributions: CollectionConfig<'tenants'> = {
+  slug: 'tenants',
+  trash:true,
+  access: {
+    create: () => true,
+    delete: () => true,
+    read: ({ req }) => Boolean(req.user),
+    update: () => true,
+  },
+  admin: {
+    useAsTitle: 'name',
+    // group: NavigationGroups.management
+  },
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'domain',
+      type: 'text',
+      admin: {
+        description: 'Used for domain-based tenant handling',
+      },
+      // index:true,
+      // unique:true
+    },
+    {
+      name: 'slug',
+      type: 'text',
+      admin: {
+        description: 'Used for url paths, example: /tenant-slug/page-slug',
+      },
+      index: true,
+      required: true,
+      // unique:true
+    }
+  ],
+  hooks:{
+    afterError: [console.log]
+  }
+}
