@@ -330,122 +330,9 @@ export interface Favorite {
   id: number;
   tenant?: (number | null) | Tenant;
   user?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "invoices".
- */
-export interface Invoice {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  bookedBy?: (number | null) | User;
-  deliveredBy?: (number | null) | User;
-  area?: (number | null) | Area;
-  shop?: (number | null) | Shop;
-  company?: (number | null) | Company;
-  billingProducts?: (number | Product)[] | null;
-  items?: {
-    docs?: (number | InvoiceItem)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  deliverAt: string;
-  extraDiscount?: number | null;
-  profit?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "areas".
- */
-export interface Area {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  /**
-   * Overview of all shops.
-   */
-  shops?: {
-    docs?: (number | Shop)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Overview of all invoices and bills generated for this shop.
-   */
-  bills?: {
-    docs?: (number | Invoice)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "shops".
- */
-export interface Shop {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  owner: number | User;
-  area?: (number | null) | Area;
-  shopType?: (number | null) | ShopType;
-  paidBy?: (number | null) | PaymentMethod;
-  phone?: number | null;
-  address?: string | null;
-  /**
-   * Overview of all invoices and bills generated for this shop.
-   */
-  bills?: {
-    docs?: (number | Invoice)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "shopTypes".
- */
-export interface ShopType {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  name: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "paymentMethods".
- */
-export interface PaymentMethod {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  name: string;
-  isActive?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "companies".
- */
-export interface Company {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  title: string;
-  bills?: {
-    docs?: (number | Invoice)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
+  product?: (number | null) | Product;
+  variant?: (number | null) | Variant;
+  category?: (number | null) | Category;
   updatedAt: string;
   createdAt: string;
 }
@@ -594,6 +481,137 @@ export interface Currency {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "invoices".
+ */
+export interface Invoice {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  bookedBy?: (number | null) | User;
+  deliveredBy?: (number | null) | User;
+  area?: (number | null) | Area;
+  shop?: (number | null) | Shop;
+  company?: (number | null) | Company;
+  billingProducts?: (number | Product)[] | null;
+  items?: {
+    docs?: (number | InvoiceItem)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  deliverAt: string;
+  extraDiscount?: number | null;
+  profit?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "areas".
+ */
+export interface Area {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Overview of all shops.
+   */
+  shops?: {
+    docs?: (number | Shop)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Overview of all invoices and bills generated for this shop.
+   */
+  bills?: {
+    docs?: (number | Invoice)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops".
+ */
+export interface Shop {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  owner: number | User;
+  area?: (number | null) | Area;
+  shopType?: (number | null) | ShopType;
+  paidBy?: (number | null) | PaymentMethod;
+  phone?: number | null;
+  address?: string | null;
+  /**
+   * Overview of all invoices and bills generated for this shop.
+   */
+  bills?: {
+    docs?: (number | Invoice)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopTypes".
+ */
+export interface ShopType {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "paymentMethods".
+ */
+export interface PaymentMethod {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  bills?: {
+    docs?: (number | Invoice)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "invoiceItems".
+ */
+export interface InvoiceItem {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  billId?: (number | null) | Invoice;
+  product?: (number | null) | Product;
+  variant?: (number | null) | Variant;
+  quantity?: number | null;
+  discount?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -630,21 +648,6 @@ export interface Brand {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "invoiceItems".
- */
-export interface InvoiceItem {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  billId?: (number | null) | Invoice;
-  product?: (number | null) | Product;
-  variant?: (number | null) | Variant;
-  quantity?: number | null;
-  discount?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1137,6 +1140,9 @@ export interface OrderStatusSelect<T extends boolean = true> {
 export interface FavoritesSelect<T extends boolean = true> {
   tenant?: T;
   user?: T;
+  product?: T;
+  variant?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }
