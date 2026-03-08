@@ -7,6 +7,7 @@ import { collections } from './collections/config'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { plugins } from './plugins/config'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -41,7 +42,7 @@ export default buildConfig({
     collections: [...collections],
     blocks: [],
     globals: [],
-    // editor: editorConfig,
+    editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET!,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
     typescript: {
