@@ -1070,6 +1070,42 @@ export interface PayloadMcpApiKey {
      */
     delete?: boolean | null;
   };
+  variants?: {
+    /**
+     * Allow clients to find variants.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create variants.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update variants.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete variants.
+     */
+    delete?: boolean | null;
+  };
+  pages?: {
+    /**
+     * Allow clients to find pages.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create pages.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update pages.
+     */
+    update?: boolean | null;
+    /**
+     * Allow clients to delete pages.
+     */
+    delete?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -1928,6 +1964,22 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
   label?: T;
   description?: T;
   products?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  variants?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+        delete?: T;
+      };
+  pages?:
     | T
     | {
         find?: T;
