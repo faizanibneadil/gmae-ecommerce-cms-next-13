@@ -16,17 +16,17 @@ import { mcpPlugin } from "@payloadcms/plugin-mcp"
 export const plugins: Plugin[] = [
     seoPlugin({
         uploadsCollection: 'media',
-        generateTitle: ({doc}) => doc?.title ?? 'Unknown Title',
-        generateDescription: ({doc}) => doc?.description ?? 'Unknown Description',
-        generateImage: ({doc}) => doc?.image,
+        generateTitle: ({ doc }) => doc?.title ?? 'Unknown Title',
+        generateDescription: ({ doc }) => doc?.description ?? 'Unknown Description',
+        generateImage: ({ doc }) => doc?.image,
         generateURL: () => getServerSideURL()
     }),
     redirectsPlugin({
         collections: ['pages'],
-        redirectTypes: ['301','302','303','307','308']
+        redirectTypes: ['301', '302', '303', '307', '308']
     }),
     searchPlugin({
-        collections: ['products','variants','pages','categories']
+        collections: ['products', 'variants', 'pages', 'categories']
     }),
     formBuilderPlugin({
         formOverrides: {
@@ -57,9 +57,31 @@ export const plugins: Plugin[] = [
         redirectRelationships: ['pages']
     }),
     mcpPlugin({
+        userCollection: 'users',
         collections: {
             products: {
-                enabled: true
+                enabled: true,
+                description: 'The Products Collection'
+            },
+            variants: {
+                enabled: true,
+                description: 'Products\'s Variants Collection'
+            },
+            pages: {
+                enabled: true,
+                description: 'Pages Collection'
+            }
+        },
+        mcp: {
+            serverOptions: {
+                serverInfo: {
+                    name: 'easypeasy MCP Server',
+                    version: '1.0.0'
+                },
+            },
+            handlerOptions: {
+                verboseLogs: true,
+                // basePath: getServerSideURL()
             }
         },
         overrideApiKeyCollection: (collection) => {
